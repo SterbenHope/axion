@@ -1,0 +1,53 @@
+{
+  "title": "Transaction History",
+  "subtitle": "View all your deposits, withdrawals and gaming transactions",
+  "filters": {
+    "all": "All",
+    "deposits": "Deposits",
+    "withdrawals": "Withdrawals",
+    "games": "Games",
+    "bonuses": "Bonuses",
+    "promo": "Promo Codes"
+  },
+  "status": {
+    "pending": "Pending",
+    "completed": "Completed",
+    "failed": "Failed",
+    "cancelled": "Cancelled"
+  },
+  "types": {
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "gameWin": "Game Win",
+    "gameLoss": "Game Loss",
+    "bonus": "Bonus",
+    "promoCode": "Promo Code",
+    "refund": "Refund"
+  },
+  "table": {
+    "date": "Date",
+    "type": "Type",
+    "amount": "Amount",
+    "balance": "Balance",
+    "status": "Status",
+    "description": "Description",
+    "actions": "Actions"
+  },
+  "messages": {
+    "noTransactions": "No transactions found",
+    "loading": "Loading transactions...",
+    "error": "Error loading transactions",
+    "refresh": "Refresh"
+  },
+  "details": {
+    "title": "Transaction Details",
+    "transactionId": "Transaction ID",
+    "timestamp": "Timestamp",
+    "amount": "Amount",
+    "fee": "Fee",
+    "netAmount": "Net Amount",
+    "status": "Status",
+    "description": "Description",
+    "close": "Close"
+  }
+}

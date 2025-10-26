@@ -1,0 +1,19 @@
+{
+  "title": "NeonCasino",
+  "subtitle": "Welcome to the casino of the future! Play slots, blackjack and wheel of fortune with virtual currency NeonCoins",
+  "startPlaying": "Start Playing",
+  "viewGames": "View Games",
+  "activePlayers": "Active Players",
+  "neonCoinsCirculation": "NeonCoins in Circulation",
+  "winsToday": "Wins Today",
+  "currencyInfo": "1 NC = 1 EUR = 1 USD",
+  "hero": {
+    "subtitle": "Welcome to the casino of the future! Play slots, blackjack and wheel of fortune with virtual currency NeonCoins",
+    "cta": "Start Playing"
+  },
+  "games": {
+    "title": "Games",
+    "subtitle": "Immerse yourself in the exciting world of cyberpunk games with our collection of neon games",
+    "viewAll": "View All Games"
+  }
+}

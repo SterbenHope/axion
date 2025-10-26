@@ -1,0 +1,50 @@
+{
+  "title": "Verifica Identità",
+  "description": "Carica documenti per verificare la tua identità",
+  "status": {
+    "none": "Non inviato",
+    "pending": "In revisione",
+    "verified": "Verificato",
+    "rejected": "Rifiutato"
+  },
+  "documents": {
+    "title": "Documenti Richiesti",
+    "passport": "Passaporto",
+    "idCard": "Carta d'Identità",
+    "driversLicense": "Patente di Guida",
+    "selfie": "Selfie con documento",
+    "frontSide": "Lato anteriore",
+    "backSide": "Lato posteriore"
+  },
+  "upload": {
+    "title": "Carica Documenti",
+    "dragAndDrop": "Trascina e rilascia i file qui o clicca per selezionare",
+    "maxSize": "Dimensione massima: 5MB",
+    "formats": "Formati supportati: JPG, PNG, PDF",
+    "uploading": "Caricamento...",
+    "uploaded": "Caricato",
+    "error": "Errore di caricamento"
+  },
+  "form": {
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "dateOfBirth": "Data di Nascita",
+    "nationality": "Nazionalità",
+    "address": "Indirizzo",
+    "city": "Città",
+    "country": "Paese",
+    "postalCode": "Codice Postale",
+    "phone": "Telefono",
+    "submit": "Invia per verifica",
+    "submitting": "Invio...",
+    "submitted": "Inviato per verifica"
+  },
+  "messages": {
+    "success": "Documenti inviati con successo per la verifica",
+    "error": "Errore durante l'invio dei documenti",
+    "required": "Tutti i campi sono obbligatori",
+    "processing": "I tuoi documenti sono in elaborazione",
+    "verificationTime": "La verifica richiede generalmente 1-3 giorni lavorativi"
+  }
+}
+

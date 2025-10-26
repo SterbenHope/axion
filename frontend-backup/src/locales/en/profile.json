@@ -1,0 +1,21 @@
+{
+  "title": "Profile",
+  "personalInfo": "Personal Information",
+  "security": "Security",
+  "preferences": "Preferences",
+  "activity": "Activity",
+  "editProfile": "Edit Profile",
+  "changePassword": "Change Password",
+  "twoFactor": "Two-Factor Authentication",
+  "notifications": "Notifications",
+  "privacy": "Privacy",
+  "saveChanges": "Save Changes",
+  "changesSaved": "Changes saved successfully!",
+  "kycStatus": "KYC Status",
+  "kycPending": "KYC verification in progress",
+  "kycVerified": "KYC verified",
+  "kycRejected": "KYC rejected",
+  "kycNone": "KYC not submitted",
+  "uploadDocuments": "Upload Documents",
+  "verificationRequired": "Verification required for withdrawals"
+}

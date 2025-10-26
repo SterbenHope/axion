@@ -1,0 +1,28 @@
+{
+  "games": "Spiele",
+  "allGames": "Alle Spiele",
+  "popularGames": "Beliebte Spiele",
+  "newGames": "Neue Spiele",
+  "favorites": "Favoriten",
+  "searchGames": "Spiele suchen...",
+  "categories": {
+    "slots": "Spielautomaten",
+    "tableGames": "Tischspiele",
+    "cardGames": "Kartenspiele",
+    "liveGames": "Live-Spiele",
+    "jackpot": "Jackpot"
+  },
+  "gameInfo": {
+    "minBet": "Min. Einsatz",
+    "maxBet": "Max. Einsatz",
+    "rtp": "RTP",
+    "volatility": "Volatilität",
+    "features": "Funktionen"
+  },
+  "playNow": "Jetzt Spielen",
+  "demoMode": "Demo-Modus",
+  "realMoney": "Echtes Geld",
+  "loading": "Spiel wird geladen...",
+  "error": "Fehler beim Laden des Spiels",
+  "tryAgain": "Erneut versuchen"
+}

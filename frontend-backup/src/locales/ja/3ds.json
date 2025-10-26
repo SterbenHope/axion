@@ -1,0 +1,34 @@
+{
+  "title": "3D Secure",
+  "subtitle": "お支払いを完了するために確認コードを入力してください",
+  "paymentInfo": "お支払い情報",
+  "paymentId": "お支払いID",
+  "amount": "金額",
+  "email": "メール",
+  "verification": "3D Secure認証",
+  "smsCodeDescription": "お電話に送信されたSMSコードを入力してください",
+  "smsCode": "SMSコード",
+  "enter6DigitCode": "SMSから6桁のコードを入力してください",
+  "confirmPayment": "お支払いを確認",
+  "sending": "送信中...",
+  "redirecting": "次のページにリダイレクト中...",
+  "security": "セキュリティ",
+  "securityDescription": "3D Secureはお支払いに追加の保護を提供します。コードは登録されたお電話番号にのみ送信されます。",
+  "secureConnection": "すべてのデータは安全な接続を通じて送信されます",
+  "realTimeRedirect": "次のページへのリアルタイムリダイレクト",
+  "error": "エラー",
+  "paymentDataNotFound": "お支払いデータが見つかりません",
+  "enter3dsCode": "3DSコードを入力してください",
+  "authorizationError": "認証エラー",
+  "loginToContinue": "続行するにはログインしてください",
+  "codeSent": "3DSコードが送信されました！",
+  "redirectingToNextPage": "次のページにリダイレクト中...",
+  "realTimeRedirecting": "リアルタイムリダイレクト中"
+}
+
+
+
+
+
+
+

@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "home": "Главная",
+    "games": "Игры",
+    "dashboard": "Панель",
+    "profile": "Профиль",
+    "payments": "Платежи",
+    "kyc": "KYC",
+    "promo": "Промокоды",
+    "transactions": "Транзакции",
+    "about": "О нас",
+    "rules": "Правила",
+    "faq": "FAQ"
+  },
+  "auth": {
+    "login": "Вход",
+    "register": "Регистрация",
+    "logout": "Выход",
+    "email": "Email",
+    "password": "Пароль",
+    "username": "Имя пользователя",
+    "confirmPassword": "Подтвердите пароль",
+    "fullName": "Полное имя",
+    "forgotPassword": "Забыли пароль?",
+    "rememberMe": "Запомнить меня",
+    "dontHaveAccount": "Нет аккаунта?",
+    "alreadyHaveAccount": "Уже есть аккаунт?",
+    "signUp": "Зарегистрироваться",
+    "signIn": "Войти"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "success": "Успешно",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "back": "Назад",
+    "next": "Далее",
+    "submit": "Отправить",
+    "close": "Закрыть",
+    "yes": "Да",
+    "no": "Нет",
+    "confirm": "Подтвердить",
+    "search": "Поиск",
+    "filter": "Фильтр",
+    "sort": "Сортировка",
+    "refresh": "Обновить",
+    "download": "Скачать",
+    "upload": "Загрузить"
+  },
+  "home": {
+    "hero": {
+      "title": "Будущее игр уже здесь",
+      "subtitle": "Погрузитесь в мир киберпанка с нашими инновационными играми",
+      "cta": "Начать играть",
+      "learnMore": "Узнать больше"
+    },
+    "features": {
+      "title": "Почему NeonCasino?",
+      "security": "Безопасность",
+      "variety": "Разнообразие",
+      "support": "Поддержка 24/7",
+      "bonuses": "Щедрые бонусы"
+    }
+  },
+  "games": {
+    "title": "Наши игры",
+    "allGames": "Все игры",
+    "popular": "Популярные",
+    "new": "Новые",
+    "favorites": "Избранные",
+    "playNow": "Играть сейчас",
+    "demo": "Демо",
+    "realMoney": "На реальные деньги",
+    "minBet": "Мин. ставка",
+    "maxBet": "Макс. ставка",
+    "rtp": "RTP"
+  },
+  "profile": {
+    "title": "Профиль",
+    "personalInfo": "Личная информация",
+    "security": "Безопасность",
+    "preferences": "Настройки",
+    "activity": "Активность",
+    "editProfile": "Редактировать профиль",
+    "changePassword": "Изменить пароль",
+    "twoFactor": "Двухфакторная аутентификация",
+    "notifications": "Уведомления",
+    "privacy": "Приватность"
+  },
+  "dashboard": {
+    "title": "Панель управления",
+    "overview": "Обзор",
+    "balance": "Баланс",
+    "recentActivity": "Недавняя активность",
+    "quickActions": "Быстрые действия",
+    "deposit": "Пополнить",
+    "withdraw": "Вывести",
+    "playGames": "Играть",
+    "viewHistory": "История",
+    "support": "Поддержка"
+  }
+}

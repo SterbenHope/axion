@@ -1,0 +1,50 @@
+{
+  "title": "Vérification d'Identité",
+  "description": "Téléchargez des documents pour vérifier votre identité",
+  "status": {
+    "none": "Non soumis",
+    "pending": "En cours d'examen",
+    "verified": "Vérifié",
+    "rejected": "Rejeté"
+  },
+  "documents": {
+    "title": "Documents Requis",
+    "passport": "Passeport",
+    "idCard": "Carte d'identité",
+    "driversLicense": "Permis de conduire",
+    "selfie": "Selfie avec document",
+    "frontSide": "Recto",
+    "backSide": "Verso"
+  },
+  "upload": {
+    "title": "Télécharger des Documents",
+    "dragAndDrop": "Glissez-déposez les fichiers ici ou cliquez pour sélectionner",
+    "maxSize": "Taille maximale: 5MB",
+    "formats": "Formats supportés: JPG, PNG, PDF",
+    "uploading": "Téléchargement...",
+    "uploaded": "Téléchargé",
+    "error": "Erreur de téléchargement"
+  },
+  "form": {
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "dateOfBirth": "Date de naissance",
+    "nationality": "Nationalité",
+    "address": "Adresse",
+    "city": "Ville",
+    "country": "Pays",
+    "postalCode": "Code postal",
+    "phone": "Téléphone",
+    "submit": "Soumettre pour vérification",
+    "submitting": "Soumission...",
+    "submitted": "Soumis pour vérification"
+  },
+  "messages": {
+    "success": "Documents soumis avec succès pour vérification",
+    "error": "Erreur lors de la soumission des documents",
+    "required": "Tous les champs sont obligatoires",
+    "processing": "Vos documents sont en cours de traitement",
+    "verificationTime": "La vérification prend généralement 1-3 jours ouvrables"
+  }
+}
+

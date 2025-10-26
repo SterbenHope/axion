@@ -1,0 +1,28 @@
+{
+  "games": "Oyunlar",
+  "allGames": "Tüm Oyunlar",
+  "popularGames": "Popüler Oyunlar",
+  "newGames": "Yeni Oyunlar",
+  "favorites": "Favoriler",
+  "searchGames": "Oyun ara...",
+  "categories": {
+    "slots": "Slot Makineleri",
+    "tableGames": "Masa Oyunları",
+    "cardGames": "Kart Oyunları",
+    "liveGames": "Canlı Oyunlar",
+    "jackpot": "Jackpot"
+  },
+  "gameInfo": {
+    "minBet": "Min Bahis",
+    "maxBet": "Max Bahis",
+    "rtp": "RTP",
+    "volatility": "Volatilite",
+    "features": "Özellikler"
+  },
+  "playNow": "Şimdi Oyna",
+  "demoMode": "Demo Modu",
+  "realMoney": "Gerçek Para",
+  "loading": "Oyun yükleniyor...",
+  "error": "Oyun yüklenirken hata",
+  "tryAgain": "Tekrar Dene"
+}

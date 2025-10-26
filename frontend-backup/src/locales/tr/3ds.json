@@ -1,0 +1,34 @@
+{
+  "title": "3D Secure",
+  "subtitle": "Ödemeyi tamamlamak için onay kodunu girin",
+  "paymentInfo": "Ödeme Bilgileri",
+  "paymentId": "Ödeme ID",
+  "amount": "Tutar",
+  "email": "Email",
+  "verification": "3D Secure Doğrulama",
+  "smsCodeDescription": "Telefonunuza gönderilen SMS kodunu girin",
+  "smsCode": "SMS Kodu",
+  "enter6DigitCode": "SMS'den 6 haneli kodu girin",
+  "confirmPayment": "Ödemeyi Onayla",
+  "sending": "Gönderiliyor...",
+  "redirecting": "Sonraki sayfaya yönlendiriliyor...",
+  "security": "Güvenlik",
+  "securityDescription": "3D Secure, ödemeleriniz için ek koruma sağlar. Kod sadece kayıtlı telefon numaranıza gönderilir.",
+  "secureConnection": "Tüm veriler güvenli bir bağlantı üzerinden iletilir",
+  "realTimeRedirect": "Sonraki sayfaya gerçek zamanlı yönlendirme",
+  "error": "Hata",
+  "paymentDataNotFound": "Ödeme verileri bulunamadı",
+  "enter3dsCode": "3DS kodunu girin",
+  "authorizationError": "Yetkilendirme Hatası",
+  "loginToContinue": "Devam etmek için giriş yapın",
+  "codeSent": "3DS kodu gönderildi!",
+  "redirectingToNextPage": "Sonraki sayfaya yönlendiriliyor...",
+  "realTimeRedirecting": "Gerçek zamanlı yönlendirme"
+}
+
+
+
+
+
+
+

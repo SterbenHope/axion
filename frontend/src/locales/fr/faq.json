@@ -1,0 +1,35 @@
+{
+  "title": "Questions Fréquemment Posées",
+  "subtitle": "Trouvez des réponses aux questions les plus courantes sur NeonCasino",
+  "contactSupport": "Contacter le Support",
+  "noAnswer": "Vous n'avez pas trouvé la réponse à votre question ?",
+  "questions": {
+    "neoncoins": {
+      "question": "Que sont les NeonCoins ?",
+      "answer": "Les NeonCoins sont la monnaie virtuelle de NeonCasino, utilisée pour jouer à nos jeux cyberpunk. 1 NC = 1 EUR = 1 USD."
+    },
+    "balance": {
+      "question": "Comment recharger le solde ?",
+      "answer": "Vous pouvez recharger votre solde via la section 'Paiements' en utilisant des cartes bancaires, des cryptomonnaies ou des virements bancaires."
+    },
+    "kyc": {
+      "question": "Qu'est-ce que la vérification KYC ?",
+      "answer": "KYC (Know Your Customer) est un processus de vérification d'identité requis pour les retraits et la sécurité."
+    },
+    "promo": {
+      "question": "Comment utiliser les codes promo ?",
+      "answer": "Entrez le code promo dans la section 'Codes Promo' et cliquez sur 'Activer'. Le bonus sera crédité sur votre solde."
+    },
+    "games": {
+      "question": "Quels jeux sont disponibles ?",
+      "answer": "Nous avons des machines à sous, du blackjack, une roue de la fortune et d'autres jeux dans le style cyberpunk."
+    },
+    "withdraw": {
+      "question": "Comment retirer les gains ?",
+      "answer": "Pour retirer des fonds, vous devez compléter la vérification KYC. Après approbation, vous pouvez retirer des fonds via la section 'Transactions'."
+    }
+  }
+}
+
+
+

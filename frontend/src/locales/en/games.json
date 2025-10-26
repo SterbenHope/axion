@@ -1,0 +1,59 @@
+{
+  "title": "Games",
+  "subtitle": "Choose a game and try your luck with virtual currency NeonCoins",
+  "categories": {
+    "all": "All Games",
+    "slots": "Slots",
+    "table": "Table Games",
+    "live": "Live Games",
+    "popular": "Popular",
+    "new": "New"
+  },
+  "games": {
+    "slots": {
+      "title": "Neon Slots",
+      "description": "Spin the reels in our cyberpunk slots",
+      "minBet": "Min bet: 1 NC",
+      "maxBet": "Max bet: 1000 NC",
+      "rtp": "RTP: 96.5%"
+    },
+    "blackjack": {
+      "title": "Cyber Blackjack",
+      "description": "Beat the dealer in this classic card game",
+      "minBet": "Min bet: 5 NC",
+      "maxBet": "Max bet: 500 NC",
+      "rtp": "RTP: 99.5%"
+    },
+    "wheel": {
+      "title": "Fortune Wheel",
+      "description": "Spin the wheel of fortune and win big prizes",
+      "minBet": "Min bet: 1 NC",
+      "maxBet": "Max bet: 100 NC",
+      "rtp": "RTP: 95.0%"
+    }
+  },
+  "gameplay": {
+    "balance": "Balance",
+    "bet": "Bet",
+    "win": "Win",
+    "lose": "Lose",
+    "draw": "Draw",
+    "spin": "Spin",
+    "hit": "Hit",
+    "stand": "Stand",
+    "double": "Double",
+    "split": "Split",
+    "deal": "Deal",
+    "newGame": "New Game"
+  },
+  "messages": {
+    "insufficientBalance": "Insufficient funds",
+    "betTooHigh": "Bet too high",
+    "betTooLow": "Bet too low",
+    "gameInProgress": "Game in progress",
+    "gameOver": "Game over",
+    "youWon": "You won!",
+    "youLost": "You lost",
+    "draw": "Draw!"
+  }
+}

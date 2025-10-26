@@ -1,0 +1,22 @@
+{
+  "welcomeBack": "おかえりなさい",
+  "yourBalance": "残高",
+  "neonCoins": "ネオコイン",
+  "recentGames": "最近のゲーム",
+  "achievements": "実績",
+  "noRecentGames": "最近のゲームがありません",
+  "noRecentGamesDescription": "ゲーム履歴を表示するには、ゲームを開始してください",
+  "noAchievements": "まだ実績がありません",
+  "noAchievementsDescription": "チャレンジを完了して実績を解除してください",
+  "playNow": "今すぐプレイ",
+  "viewAll": "すべて表示",
+  "loading": "読み込み中...",
+  "error": "エラー",
+  "tryAgain": "再試行",
+  "stats": {
+    "gamesPlayed": "プレイしたゲーム",
+    "totalWinnings": "総獲得額",
+    "winRate": "勝率",
+    "level": "レベル"
+  }
+}

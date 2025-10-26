@@ -1,0 +1,54 @@
+{
+  "title": "Reglas del Juego",
+  "subtitle": "Aprende las reglas y características de nuestros juegos",
+  "generalRules": "Reglas Generales",
+  "gameRules": "Reglas del Juego",
+  "additionalInfo": "Información Adicional",
+  "contactSupport": "Para información adicional, por favor contacta nuestro servicio de soporte",
+  "contactSupportButton": "Contactar Soporte",
+  "games": {
+    "neonSlots": {
+      "title": "Neon Slots",
+      "description": "Tragamonedas clásicas con tema cyberpunk",
+      "rules": [
+        "Apuesta mínima: 1 NC",
+        "Apuesta máxima: 1000 NC",
+        "Líneas de pago: 20 líneas fijas",
+        "RTP: 96.5%",
+        "Características: Símbolos Wild, bonos Scatter, giros gratis"
+      ]
+    },
+    "neonBlackjack": {
+      "title": "Neon Blackjack",
+      "description": "Blackjack clásico con diseño moderno",
+      "rules": [
+        "Apuesta mínima: 5 NC",
+        "Apuesta máxima: 500 NC",
+        "RTP: 99.5%",
+        "Reglas: Blackjack americano",
+        "Características: Doblar, dividir, seguro"
+      ]
+    },
+    "neonWheel": {
+      "title": "Neon Wheel",
+      "description": "Ruleta de la fortuna con múltiples sectores",
+      "rules": [
+        "Apuesta mínima: 1 NC",
+        "Apuesta máxima: 100 NC",
+        "RTP: 97.2%",
+        "Sectores: 24 sectores diferentes",
+        "Características: Multiplicadores, rondas de bono"
+      ]
+    }
+  },
+  "general": [
+    "Todos los juegos están destinados al entretenimiento",
+    "Se utiliza moneda virtual NeonCoins",
+    "Edad mínima: 18 años",
+    "Está prohibido el uso de bots y automatización",
+    "La administración se reserva el derecho de cambiar las reglas"
+  ]
+}
+
+
+

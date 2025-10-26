@@ -1,0 +1,157 @@
+.payment-notification {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 24px;
+  gap: 24px;
+  background: linear-gradient(135deg, rgba(19, 22, 32, 0.5) 0%, rgba(19, 22, 32, 0) 100%), #22273E;
+  border-radius: 6px;
+  min-width: 400px;
+}
+
+.notification-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.notification-icon.success {
+  color: #4CAF50;
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.notification-icon.error {
+  color: #F44336;
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.notification-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.notification-title {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.5em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.notification-message {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5em;
+  color: #8C98A9;
+  text-align: center;
+  margin: 0;
+}
+
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.transaction-label {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: #8C98A9;
+}
+
+.transaction-id {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #FFFFFF;
+  word-break: break-all;
+}
+
+.notification-button {
+  width: 100%;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.5em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notification-button.success {
+  background: linear-gradient(90deg, #D86C1A 0%, #E87E25 100%);
+  color: #1B2235;
+}
+
+.notification-button.success:hover {
+  background: linear-gradient(90deg, #E87E25 0%, #D86C1A 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(232, 126, 37, 0.4);
+}
+
+.notification-button.error {
+  background: linear-gradient(90deg, #C62828 0%, #F44336 100%);
+  color: #FFFFFF;
+}
+
+.notification-button.error:hover {
+  background: linear-gradient(90deg, #F44336 0%, #C62828 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+}
+
+.notification-button:active {
+  transform: translateY(0);
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .payment-notification {
+    min-width: auto;
+    width: 100%;
+    padding: 24px 16px;
+  }
+
+  .notification-title {
+    font-size: 20px;
+  }
+
+  .notification-message {
+    font-size: 14px;
+  }
+}
+

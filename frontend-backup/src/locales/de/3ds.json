@@ -1,0 +1,34 @@
+{
+  "title": "3D Secure",
+  "subtitle": "Geben Sie den Bestätigungscode ein, um die Zahlung abzuschließen",
+  "paymentInfo": "Zahlungsinformationen",
+  "paymentId": "Zahlungs-ID",
+  "amount": "Betrag",
+  "email": "Email",
+  "verification": "3D Secure Verifizierung",
+  "smsCodeDescription": "Geben Sie den SMS-Code ein, der an Ihr Telefon gesendet wurde",
+  "smsCode": "SMS-Code",
+  "enter6DigitCode": "Geben Sie den 6-stelligen Code aus der SMS ein",
+  "confirmPayment": "Zahlung bestätigen",
+  "sending": "Wird gesendet...",
+  "redirecting": "Weiterleitung zur nächsten Seite...",
+  "security": "Sicherheit",
+  "securityDescription": "3D Secure bietet zusätzlichen Schutz für Ihre Zahlungen. Der Code wird nur an Ihre registrierte Telefonnummer gesendet.",
+  "secureConnection": "Alle Daten werden über eine sichere Verbindung übertragen",
+  "realTimeRedirect": "Echtzeit-Weiterleitung zur nächsten Seite",
+  "error": "Fehler",
+  "paymentDataNotFound": "Zahlungsdaten nicht gefunden",
+  "enter3dsCode": "Geben Sie den 3DS-Code ein",
+  "authorizationError": "Autorisierungsfehler",
+  "loginToContinue": "Bitte melden Sie sich an, um fortzufahren",
+  "codeSent": "3DS-Code gesendet!",
+  "redirectingToNextPage": "Weiterleitung zur nächsten Seite...",
+  "realTimeRedirecting": "Echtzeit-Weiterleitung"
+}
+
+
+
+
+
+
+

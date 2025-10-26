@@ -1,0 +1,28 @@
+{
+  "games": "Jogos",
+  "allGames": "Todos os Jogos",
+  "popularGames": "Jogos Populares",
+  "newGames": "Novos Jogos",
+  "favorites": "Favoritos",
+  "searchGames": "Pesquisar jogos...",
+  "categories": {
+    "slots": "Caça-níqueis",
+    "tableGames": "Jogos de Mesa",
+    "cardGames": "Jogos de Cartas",
+    "liveGames": "Jogos ao Vivo",
+    "jackpot": "Jackpot"
+  },
+  "gameInfo": {
+    "minBet": "Aposta Mín",
+    "maxBet": "Aposta Máx",
+    "rtp": "RTP",
+    "volatility": "Volatilidade",
+    "features": "Recursos"
+  },
+  "playNow": "Jogar Agora",
+  "demoMode": "Modo Demo",
+  "realMoney": "Dinheiro Real",
+  "loading": "Carregando jogo...",
+  "error": "Erro ao carregar jogo",
+  "tryAgain": "Tentar Novamente"
+}

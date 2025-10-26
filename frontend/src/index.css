@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  /* Unified input styles for all forms - black text on white/light background */
+  input, 
+  select, 
+  textarea {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    font-weight: 500 !important;
+  }
+  
+  input::placeholder, 
+  select::placeholder, 
+  textarea::placeholder {
+    color: #666666 !important;
+    opacity: 1 !important;
+  }
+  
+  input:hover,
+  select:hover,
+  textarea:hover {
+    background-color: #FFFFFF !important;
+    border-color: #00ffff !important;
+  }
+  
+  input:focus, 
+  select:focus, 
+  textarea:focus {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border-color: #00ffff !important;
+    font-weight: 600 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.3) !important;
+  }
+}
+
+/* Custom casino styles */
+.casino-app {
+  @apply bg-gradient-to-br from-black via-gray-900 to-black min-h-screen;
+  background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.cyber-grid {
+  background-image: 
+    linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-color: #0a0a0a;
+}
+
+.neon-text {
+  @apply text-cyan-400;
+  text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+  color: #00ffff;
+}
+
+.glass-effect {
+  @apply bg-black/50 backdrop-blur-sm border border-cyan-500/30;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.gradient-border {
+  border: 2px solid transparent;
+  background: linear-gradient(45deg, #00ffff, #0080ff) border-box;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+.neon-glow {
+  box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+}
+
+/* Chat toggle button */
+.chat-toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #FFC701, #FF922E);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(255, 199, 1, 0.3);
+  z-index: 999;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 24px;
+}
+
+.chat-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(255, 199, 1, 0.4);
+}
+
+/* Chat close button */
+.chat-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 0, 0, 0.3) !important;
+  border: 2px solid rgba(255, 0, 0, 0.5) !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  padding: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10002 !important;
+  pointer-events: all !important;
+}
+
+.chat-close-btn:hover {
+  background: rgba(255, 0, 0, 0.5) !important;
+  border-color: rgba(255, 0, 0, 0.7) !important;
+  transform: scale(1.1);
+}
+
+.chat-close-btn:active {
+  transform: scale(0.95);
+}
+
+/* Notification animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}

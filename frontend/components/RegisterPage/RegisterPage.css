@@ -1,0 +1,397 @@
+/* Register Page Modal Styles */
+.register-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.register-modal {
+  position: relative;
+  width: 480px;
+  min-height: 682px;
+  background: #161B2A;
+  border: 1px solid #3B3C43;
+  border-radius: 4px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-background {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: calc(100% - 2px);
+  height: 208.63px;
+  z-index: 1;
+}
+
+.modal-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-header {
+  position: relative;
+  z-index: 2;
+  padding: 33px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coins-icon {
+  width: 19px;
+  height: 19px;
+}
+
+.coins-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.header-title {
+  color: #FFFFFF;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.close-button {
+  width: 14px;
+  height: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.close-button svg {
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 33px 33px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-label {
+  color: #8C98A9;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.info-icon {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.info-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+  height: 40px;
+}
+
+.input-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #20273D;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.form-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(102, 110, 151, 0.2);
+  border-radius: 4px;
+  padding: 0 17px;
+  color: #000000 !important;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 500 !important;
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+  z-index: 2;
+}
+
+.form-input::placeholder {
+  color: #666666 !important;
+}
+
+.form-input:focus {
+  border-color: #FFC239;
+  color: #000000 !important;
+  background: #FFFFFF !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 0 2px rgba(255, 194, 57, 0.3) !important;
+}
+
+.form-input:not(:placeholder-shown) {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+.register-button {
+  width: 100%;
+  height: 48px;
+  background: #FFC239;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.register-button:hover {
+  background: #FFD966;
+}
+
+.register-text {
+  color: #161B2A;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  text-align: center;
+  display: block;
+}
+
+.features-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-card {
+  width: 100%;
+  height: 119px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+}
+
+.daily-cases {
+  background-image: url('/images/free-coins-rain.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.flash-codes {
+  background-image: url('/images/free-coins-rain.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.feature-content {
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-title {
+  color: #FFFFFF;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.feature-description {
+  color: #8C98A9;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 280px;
+}
+
+.feature-image {
+  width: 93.5px;
+  height: 71.77px;
+}
+
+.feature-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.social-media {
+  display: flex;
+  gap: 4px;
+}
+
+.social-icon {
+  width: 60.77px;
+  height: 61.84px;
+}
+
+.social-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .register-modal {
+    width: 90%;
+    max-width: 400px;
+    min-height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-background {
+    width: calc(100% - 2px);
+    height: 150px;
+  }
+
+  .modal-header {
+    padding: 20px;
+  }
+
+  .modal-content {
+    padding: 0 20px 20px;
+  }
+
+  .header-title {
+    font-size: 20px;
+  }
+
+  .feature-content {
+    padding: 15px;
+  }
+
+  .feature-text {
+    gap: 6px;
+  }
+
+  .feature-title {
+    font-size: 14px;
+  }
+
+  .feature-description {
+    font-size: 11px;
+  }
+
+  .feature-image {
+    width: 70px;
+    height: 55px;
+  }
+
+  .social-icon {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-modal {
+    width: 95%;
+    margin: 20px;
+  }
+
+  .modal-header {
+    padding: 15px;
+  }
+
+  .modal-content {
+    padding: 0 15px 15px;
+  }
+
+  .header-title {
+    font-size: 18px;
+  }
+
+  .feature-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .feature-text {
+    align-items: center;
+  }
+
+  .feature-description {
+    max-width: none;
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "title": "Identitätsprüfung",
+  "description": "Laden Sie Dokumente hoch, um Ihre Identität zu überprüfen",
+  "status": {
+    "none": "Nicht eingereicht",
+    "pending": "In Bearbeitung",
+    "verified": "Verifiziert",
+    "rejected": "Abgelehnt"
+  },
+  "documents": {
+    "title": "Erforderliche Dokumente",
+    "passport": "Reisepass",
+    "idCard": "Personalausweis",
+    "driversLicense": "Führerschein",
+    "selfie": "Selfie mit Dokument",
+    "frontSide": "Vorderseite",
+    "backSide": "Rückseite"
+  },
+  "upload": {
+    "title": "Dokumente Hochladen",
+    "dragAndDrop": "Dateien hier ablegen oder klicken, um auszuwählen",
+    "maxSize": "Maximale Größe: 5MB",
+    "formats": "Unterstützte Formate: JPG, PNG, PDF",
+    "uploading": "Hochladen...",
+    "uploaded": "Hochgeladen",
+    "error": "Upload-Fehler"
+  },
+  "form": {
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "dateOfBirth": "Geburtsdatum",
+    "nationality": "Staatsangehörigkeit",
+    "address": "Adresse",
+    "city": "Stadt",
+    "country": "Land",
+    "postalCode": "Postleitzahl",
+    "phone": "Telefon",
+    "submit": "Zur Überprüfung einreichen",
+    "submitting": "Übermitteln...",
+    "submitted": "Zur Überprüfung übermittelt"
+  },
+  "messages": {
+    "success": "Dokumente erfolgreich zur Überprüfung eingereicht",
+    "error": "Fehler beim Einreichen der Dokumente",
+    "required": "Alle Felder sind erforderlich",
+    "processing": "Ihre Dokumente werden bearbeitet",
+    "verificationTime": "Die Überprüfung dauert in der Regel 1-3 Werktage"
+  }
+}
+

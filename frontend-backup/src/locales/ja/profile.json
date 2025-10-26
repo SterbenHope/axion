@@ -1,0 +1,42 @@
+{
+  "profile": "プロフィール",
+  "personalInfo": "個人情報",
+  "security": "セキュリティ",
+  "preferences": "設定",
+  "verification": "認証",
+  "personalInfo": {
+    "username": "ユーザー名",
+    "email": "メールアドレス",
+    "firstName": "名",
+    "lastName": "姓",
+    "phone": "電話番号",
+    "dateOfBirth": "生年月日",
+    "country": "国",
+    "city": "都市",
+    "address": "住所",
+    "saveChanges": "変更を保存",
+    "changesSaved": "変更が正常に保存されました"
+  },
+  "security": {
+    "currentPassword": "現在のパスワード",
+    "newPassword": "新しいパスワード",
+    "confirmPassword": "パスワード確認",
+    "changePassword": "パスワード変更",
+    "twoFactorAuth": "二段階認証",
+    "enable2FA": "2FAを有効化",
+    "disable2FA": "2FAを無効化"
+  },
+  "verification": {
+    "kycStatus": "KYCステータス",
+    "verified": "認証済み",
+    "pending": "保留中",
+    "rejected": "拒否",
+    "uploadDocuments": "書類をアップロード",
+    "documentTypes": {
+      "passport": "パスポート",
+      "idCard": "身分証明書",
+      "driversLicense": "運転免許証",
+      "utilityBill": "公共料金の請求書"
+    }
+  }
+}

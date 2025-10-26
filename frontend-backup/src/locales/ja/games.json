@@ -1,0 +1,28 @@
+{
+  "games": "ゲーム",
+  "allGames": "すべてのゲーム",
+  "popularGames": "人気ゲーム",
+  "newGames": "新着ゲーム",
+  "favorites": "お気に入り",
+  "searchGames": "ゲームを検索...",
+  "categories": {
+    "slots": "スロット",
+    "tableGames": "テーブルゲーム",
+    "cardGames": "カードゲーム",
+    "liveGames": "ライブゲーム",
+    "jackpot": "ジャックポット"
+  },
+  "gameInfo": {
+    "minBet": "最小ベット",
+    "maxBet": "最大ベット",
+    "rtp": "RTP",
+    "volatility": "ボラティリティ",
+    "features": "機能"
+  },
+  "playNow": "今すぐプレイ",
+  "demoMode": "デモモード",
+  "realMoney": "リアルマネー",
+  "loading": "ゲームを読み込み中...",
+  "error": "ゲームの読み込みエラー",
+  "tryAgain": "再試行"
+}

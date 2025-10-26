@@ -1,0 +1,28 @@
+{
+  "title": "Promo Codes",
+  "description": "Activate promo codes to receive bonuses",
+  "enterCode": "Enter promo code",
+  "placeholder": "Enter promo code",
+  "activate": "Activate",
+  "activating": "Activating...",
+  "activated": "Promo code activated!",
+  "invalid": "Invalid promo code",
+  "expired": "Promo code expired",
+  "alreadyUsed": "Promo code already used",
+  "bonusReceived": "Bonus received",
+  "neoncoins": "NeonCoins",
+  "messages": {
+    "success": "Promo code successfully activated!",
+    "error": "Error activating promo code",
+    "codeRequired": "Please enter a promo code",
+    "invalidCode": "Invalid or expired promo code",
+    "alreadyActivated": "This promo code has already been activated"
+  },
+  "info": {
+    "title": "Promo Code Information",
+    "oneTime": "Each code can only be used once",
+    "expiration": "Promo codes may have expiration dates",
+    "bonuses": "Bonuses are credited to your balance",
+    "terms": "General terms and conditions apply"
+  }
+}

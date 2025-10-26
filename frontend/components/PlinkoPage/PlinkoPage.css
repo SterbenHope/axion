@@ -1,0 +1,488 @@
+.plinko-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0F121B 0%, #1A1F2E 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.plinko-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Control Panel */
+.plinko-controls {
+  background: linear-gradient(218deg, rgba(19, 22, 32, 0.5) 0%, rgba(19, 22, 32, 0) 100%);
+  border: 2px solid rgba(102, 110, 151, 0.2);
+  border-radius: 5px;
+  padding: 30px;
+  width: 460px;
+  min-height: 527px;
+}
+
+.control-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-group label {
+  color: #8C98A9;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mode-buttons,
+.difficulty-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.mode-buttons button,
+.difficulty-buttons button {
+  background: transparent;
+  border: none;
+  color: #8C98A9;
+  padding: 5.5px 12px;
+  border-radius: 2px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mode-buttons button.active,
+.difficulty-buttons button.active {
+  background: linear-gradient(135deg, #D86C1A 18%, #E87E25 61%);
+  color: #1B2235;
+}
+
+.bet-input-container {
+  display: flex;
+  align-items: center;
+  background: #272F48;
+  border-radius: 2px;
+  padding: 10px 16px;
+  gap: 8px;
+}
+
+.coin-icon {
+  font-size: 18px;
+}
+
+.bet-input {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 14px;
+  outline: none;
+  flex: 1;
+  text-align: center;
+}
+
+.bet-input::placeholder {
+  color: #8C98A9;
+}
+
+.bet-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.bet-actions button {
+  background: #666E97;
+  border: none;
+  color: #FFFFFF;
+  width: 22px;
+  height: 22px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quick-bet-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.quick-bet,
+.quick-bet-buttons button {
+  background: transparent;
+  border: none;
+  color: #8C98A9;
+  padding: 5.5px 12px;
+  border-radius: 2px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quick-bet:hover,
+.quick-bet-buttons button:hover {
+  background: rgba(102, 110, 151, 0.2);
+}
+
+.row-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.row-buttons button {
+  background: transparent;
+  border: none;
+  color: #8C98A9;
+  padding: 5.5px 12px;
+  border-radius: 2px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row-buttons button.active {
+  background: linear-gradient(135deg, #D86C1A 18%, #E87E25 61%);
+  color: #1B2235;
+}
+
+.max-win {
+  color: #8C98A9;
+  font-size: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.place-bet-btn {
+  background: linear-gradient(90deg, #D86C1A 0%, #E87E25 100%);
+  border: none;
+  color: #161B2A;
+  padding: 12px 0;
+  border-radius: 2px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.place-bet-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(216, 108, 26, 0.4);
+}
+
+.place-bet-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Game Field */
+.plinko-game-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+}
+
+.plinko-board {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  background: linear-gradient(135deg, #1A1F2E 0%, #2A3441 100%);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.plinko-pins {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 300px;
+}
+
+.pin-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.pin {
+  width: 8px;
+  height: 8px;
+  background: #FF922E;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.multiplier-slots {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.multiplier-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 25px;
+}
+
+.multiplier-icon {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.multiplier-0,
+.multiplier-10 {
+  background: radial-gradient(circle, #F79143 0%, #EA520D 100%);
+}
+
+.multiplier-1,
+.multiplier-2,
+.multiplier-3,
+.multiplier-7,
+.multiplier-8,
+.multiplier-9 {
+  background: radial-gradient(circle, #CF67FF 0%, #981EEE 100%);
+}
+
+.multiplier-4,
+.multiplier-5,
+.multiplier-6 {
+  background: radial-gradient(circle, #7B7DFF 0%, #2C40EE 100%);
+}
+
+.multiplier-value {
+  color: #FFFFFF;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
+}
+
+.plinko-ball {
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.8);
+  z-index: 10;
+  animation: ballPulse 0.3s infinite;
+}
+
+@keyframes ballPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Game History */
+.plinko-history {
+  background: linear-gradient(218deg, rgba(19, 22, 32, 0.5) 0%, rgba(19, 22, 32, 0) 100%);
+  border: 2px solid rgba(102, 110, 151, 0.2);
+  border-radius: 5px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.history-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(102, 110, 151, 0.2);
+  margin-bottom: 15px;
+}
+
+.history-header div {
+  color: #8C98A9;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(38, 45, 79, 0.3);
+  border-radius: 4px;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #666E97;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.bet-info,
+.payout-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.coin-icon {
+  font-size: 16px;
+}
+
+.multiplier-info {
+  text-align: center;
+  color: #8C98A9;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.win {
+  color: #33EBB4;
+}
+
+.loss {
+  color: #FF6B6B;
+}
+
+.date-info {
+  text-align: center;
+  color: #8C98A9;
+  font-size: 12px;
+}
+
+/* Animations */
+@keyframes ballDrop {
+  0% {
+    transform: translateY(-50px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(300px);
+    opacity: 0;
+  }
+}
+
+.ball {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+  border-radius: 50%;
+  animation: ballDrop 3s ease-in-out forwards;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .plinko-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .plinko-controls {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .plinko-history {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .plinko-page {
+    padding: 10px;
+  }
+  
+  .plinko-controls {
+    padding: 20px;
+  }
+  
+  .quick-bet-buttons {
+    justify-content: center;
+  }
+  
+  .history-header,
+  .history-item {
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  
+  .history-header div:nth-child(n+3),
+  .history-item > div:nth-child(n+3) {
+    display: none;
+  }
+}
+
+
+
+

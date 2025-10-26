@@ -1,0 +1,50 @@
+{
+  "title": "Verificación de Identidad",
+  "description": "Sube documentos para verificar tu identidad",
+  "status": {
+    "none": "No enviado",
+    "pending": "En revisión",
+    "verified": "Verificado",
+    "rejected": "Rechazado"
+  },
+  "documents": {
+    "title": "Documentos Requeridos",
+    "passport": "Pasaporte",
+    "idCard": "Cédula",
+    "driversLicense": "Licencia de Conducir",
+    "selfie": "Selfie con documento",
+    "frontSide": "Lado frontal",
+    "backSide": "Lado trasero"
+  },
+  "upload": {
+    "title": "Subir Documentos",
+    "dragAndDrop": "Arrastra y suelta archivos aquí o haz clic para seleccionar",
+    "maxSize": "Tamaño máximo: 5MB",
+    "formats": "Formatos soportados: JPG, PNG, PDF",
+    "uploading": "Subiendo...",
+    "uploaded": "Subido",
+    "error": "Error al subir"
+  },
+  "form": {
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "dateOfBirth": "Fecha de Nacimiento",
+    "nationality": "Nacionalidad",
+    "address": "Dirección",
+    "city": "Ciudad",
+    "country": "País",
+    "postalCode": "Código Postal",
+    "phone": "Teléfono",
+    "submit": "Enviar para verificación",
+    "submitting": "Enviando...",
+    "submitted": "Enviado para verificación"
+  },
+  "messages": {
+    "success": "Documentos enviados exitosamente para verificación",
+    "error": "Error al enviar documentos",
+    "required": "Todos los campos son obligatorios",
+    "processing": "Tus documentos están siendo procesados",
+    "verificationTime": "La verificación generalmente toma 1-3 días hábiles"
+  }
+}
+

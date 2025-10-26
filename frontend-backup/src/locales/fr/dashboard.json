@@ -1,0 +1,22 @@
+{
+  "welcomeBack": "Bon retour",
+  "yourBalance": "Votre Solde",
+  "neonCoins": "Pièces Neon",
+  "recentGames": "Jeux Récents",
+  "achievements": "Succès",
+  "noRecentGames": "Aucun jeu récent",
+  "noRecentGamesDescription": "Commencez à jouer pour voir votre historique ici",
+  "noAchievements": "Aucun succès pour le moment",
+  "noAchievementsDescription": "Complétez des défis pour débloquer des succès",
+  "playNow": "Jouer Maintenant",
+  "viewAll": "Voir Tout",
+  "loading": "Chargement...",
+  "error": "Erreur",
+  "tryAgain": "Réessayer",
+  "stats": {
+    "gamesPlayed": "Jeux Joués",
+    "totalWinnings": "Gains Totaux",
+    "winRate": "Taux de Victoire",
+    "level": "Niveau"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "Informazioni su NeonCasino",
+  "subtitle": "Il futuro del gaming online è qui",
+  "description": "NeonCasino è una piattaforma di gaming online all'avanguardia che combina l'emozione dei giochi di casino tradizionali con l'innovazione della tecnologia moderna. La nostra piattaforma offre un'esperienza di gioco unica con tema cyberpunk che trasporta i giocatori in un mondo futurista di intrattenimento.",
+  "features": {
+    "innovation": {
+      "title": "Tecnologia Innovativa",
+      "description": "Utilizziamo tecnologie web moderne per creare un'esperienza di gioco fluida"
+    },
+    "security": {
+      "title": "Sicurezza",
+      "description": "I tuoi dati sono protetti da protocolli di crittografia moderni"
+    },
+    "community": {
+      "title": "Comunità",
+      "description": "Unisciti alla crescente comunità di giocatori di NeonCasino"
+    },
+    "quality": {
+      "title": "Giochi di Qualità",
+      "description": "Giochi accuratamente testati con algoritmi equi"
+    },
+    "multilingual": {
+      "title": "Multilingue",
+      "description": "Supporto per più lingue per giocatori da tutto il mondo"
+    },
+    "rewards": {
+      "title": "Ricompense",
+      "description": "Sistema di achievement e ricompense per motivare i giocatori"
+    }
+  },
+  "stats": {
+    "games": "Giochi",
+    "languages": "Lingue",
+    "players": "Giocatori",
+    "uptime": "Tempo di Attività"
+  }
+}
+
+
+

@@ -1,0 +1,22 @@
+{
+  "welcomeBack": "Tekrar hoş geldiniz",
+  "yourBalance": "Bakiyeniz",
+  "neonCoins": "Neon Jetonları",
+  "recentGames": "Son Oyunlar",
+  "achievements": "Başarılar",
+  "noRecentGames": "Son oyun yok",
+  "noRecentGamesDescription": "Oyun geçmişinizi görmek için oynamaya başlayın",
+  "noAchievements": "Henüz başarı yok",
+  "noAchievementsDescription": "Başarıları açmak için görevleri tamamlayın",
+  "playNow": "Şimdi Oyna",
+  "viewAll": "Tümünü Gör",
+  "loading": "Yükleniyor...",
+  "error": "Hata",
+  "tryAgain": "Tekrar Dene",
+  "stats": {
+    "gamesPlayed": "Oynanan Oyunlar",
+    "totalWinnings": "Toplam Kazanç",
+    "winRate": "Kazanma Oranı",
+    "level": "Seviye"
+  }
+}

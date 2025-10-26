@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "home": "Home",
+    "games": "Games",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "payments": "Payments",
+    "kyc": "KYC",
+    "promo": "Promo Codes",
+    "transactions": "Transactions",
+    "about": "About",
+    "rules": "Rules",
+    "faq": "FAQ"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "confirmPassword": "Confirm Password",
+    "fullName": "Full Name",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember Me",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signUp": "Sign Up",
+    "signIn": "Sign In"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "refresh": "Refresh",
+    "download": "Download",
+    "upload": "Upload"
+  },
+  "home": {
+    "hero": {
+      "title": "The Future of Gaming is Here",
+      "subtitle": "Immerse yourself in the cyberpunk world with our innovative games",
+      "cta": "Start Playing",
+      "learnMore": "Learn More"
+    },
+    "features": {
+      "title": "Why NeonCasino?",
+      "security": "Security",
+      "variety": "Variety",
+      "support": "24/7 Support",
+      "bonuses": "Generous Bonuses"
+    }
+  },
+  "games": {
+    "title": "Our Games",
+    "allGames": "All Games",
+    "popular": "Popular",
+    "new": "New",
+    "favorites": "Favorites",
+    "playNow": "Play Now",
+    "demo": "Demo",
+    "realMoney": "Real Money",
+    "minBet": "Min Bet",
+    "maxBet": "Max Bet",
+    "rtp": "RTP"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "security": "Security",
+    "preferences": "Preferences",
+    "activity": "Activity",
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "twoFactor": "Two-Factor Authentication",
+    "notifications": "Notifications",
+    "privacy": "Privacy"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Overview",
+    "balance": "Balance",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "playGames": "Play Games",
+    "viewHistory": "View History",
+    "support": "Support"
+  }
+}

@@ -1,0 +1,3 @@
+web: gunicorn neoncasino.wsgi:application --bind 0.0.0.0:$PORT
+worker: celery -A neoncasino worker --loglevel=info
+beat: celery -A neoncasino beat --loglevel=info

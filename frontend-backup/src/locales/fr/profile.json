@@ -1,0 +1,42 @@
+{
+  "profile": "Profil",
+  "personalInfo": "Informations Personnelles",
+  "security": "Sécurité",
+  "preferences": "Préférences",
+  "verification": "Vérification",
+  "personalInfo": {
+    "username": "Nom d'utilisateur",
+    "email": "Email",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "phone": "Téléphone",
+    "dateOfBirth": "Date de naissance",
+    "country": "Pays",
+    "city": "Ville",
+    "address": "Adresse",
+    "saveChanges": "Sauvegarder les modifications",
+    "changesSaved": "Modifications sauvegardées avec succès"
+  },
+  "security": {
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "changePassword": "Changer le mot de passe",
+    "twoFactorAuth": "Authentification à deux facteurs",
+    "enable2FA": "Activer 2FA",
+    "disable2FA": "Désactiver 2FA"
+  },
+  "verification": {
+    "kycStatus": "Statut KYC",
+    "verified": "Vérifié",
+    "pending": "En attente",
+    "rejected": "Rejeté",
+    "uploadDocuments": "Télécharger des documents",
+    "documentTypes": {
+      "passport": "Passeport",
+      "idCard": "Carte d'identité",
+      "driversLicense": "Permis de conduire",
+      "utilityBill": "Facture d'électricité"
+    }
+  }
+}

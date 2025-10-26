@@ -1,0 +1,42 @@
+{
+  "profile": "Profil",
+  "personalInfo": "Kişisel Bilgiler",
+  "security": "Güvenlik",
+  "preferences": "Tercihler",
+  "verification": "Doğrulama",
+  "personalInfo": {
+    "username": "Kullanıcı adı",
+    "email": "E-posta",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "phone": "Telefon",
+    "dateOfBirth": "Doğum tarihi",
+    "country": "Ülke",
+    "city": "Şehir",
+    "address": "Adres",
+    "saveChanges": "Değişiklikleri kaydet",
+    "changesSaved": "Değişiklikler başarıyla kaydedildi"
+  },
+  "security": {
+    "currentPassword": "Mevcut şifre",
+    "newPassword": "Yeni şifre",
+    "confirmPassword": "Şifreyi onayla",
+    "changePassword": "Şifreyi değiştir",
+    "twoFactorAuth": "İki faktörlü kimlik doğrulama",
+    "enable2FA": "2FA'yı etkinleştir",
+    "disable2FA": "2FA'yı devre dışı bırak"
+  },
+  "verification": {
+    "kycStatus": "KYC Durumu",
+    "verified": "Doğrulandı",
+    "pending": "Beklemede",
+    "rejected": "Reddedildi",
+    "uploadDocuments": "Belge yükle",
+    "documentTypes": {
+      "passport": "Pasaport",
+      "idCard": "Kimlik kartı",
+      "driversLicense": "Sürücü belgesi",
+      "utilityBill": "Elektrik faturası"
+    }
+  }
+}
