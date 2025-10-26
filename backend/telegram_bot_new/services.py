@@ -647,25 +647,77 @@ IP: {ip_address}
     async def _handle_message(self, message):
         """Handle incoming message"""
         try:
-            # Check if user has any access
-            if not (has_access(message.from_user.id, message.chat.id, 'admin', self) or 
-                   has_access(message.from_user.id, message.chat.id, 'manager', self)):
-                await self.bot.send_message(
-                    chat_id=message.chat.id,
-                    text="❌ Доступ запрещен. Этот бот предназначен только для администраторов и менеджеров."
-                )
-                return
+            # Check if message is from admin chat (no permissions check needed)
+            is_admin_chat = str(message.chat.id) == str(self.bot_settings.admin_chat_id)
+            
+            # Allow new users to send /start and /apply commands
+            is_new_user_command = message.text in ['/start', '/apply'] if message.text else False
+            
+            # Allow all commands in admin chat
+            if not is_admin_chat and not is_new_user_command:
+                # For other users, check permissions only for specific commands
+                restricted_commands = ['/help', '/status', '/admins', '/managers', '/add_admin', '/add_manager', '/my_promo_stats']
+                if message.text in restricted_commands:
+                    if not (has_access(message.from_user.id, message.chat.id, 'admin', self) or 
+                           has_access(message.from_user.id, message.chat.id, 'manager', self)):
+                        await self.bot.send_message(
+                            chat_id=message.chat.id,
+                            text="❌ Доступ запрещен. Этот бот предназначен только для администраторов и менеджеров."
+                        )
+                        return
             
             if message.text == '/start':
-                if has_access(message.from_user.id, message.chat.id, 'admin', self):
-                    welcome_text = "🎰 Добро пожаловать в NeonCasino Admin Bot!\n\nИспользуйте /help для просмотра команд."
-                else:
-                    welcome_text = "🎯 Добро пожаловать в NeonCasino Manager Bot!\n\nИспользуйте /help для просмотра команд."
-                
-                await self.bot.send_message(
-                    chat_id=message.chat.id,
-                    text=welcome_text
-                )
+                # Check if user exists
+                from telegram_bot_new.models import BotUser
+                try:
+                    bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+                    
+                    # Check if banned
+                    if bot_user.is_banned:
+                        await self.bot.send_message(
+                            chat_id=message.chat.id,
+                            text="❌ Вы заблокированы в боте. Обратитесь к администратору."
+                        )
+                        return
+                    
+                    # Check if user has access
+                    if has_access(message.from_user.id, message.chat.id, 'admin', self):
+                        welcome_text = "🎰 Добро пожаловать в NeonCasino Admin Bot!\n\nИспользуйте /help для просмотра команд."
+                    elif has_access(message.from_user.id, message.chat.id, 'manager', self):
+                        welcome_text = "🎯 Добро пожаловать в NeonCasino Manager Bot!\n\nИспользуйте /help для просмотра команд."
+                    else:
+                        # User exists but has no access
+                        welcome_text = "👋 С возвращением!\n\nДля продолжения работы используйте /help"
+                    
+                    await self.bot.send_message(
+                        chat_id=message.chat.id,
+                        text=welcome_text
+                    )
+                    
+                except BotUser.DoesNotExist:
+                    # New user - send welcome and application form
+                    welcome_text = (
+                        "👋 Добро пожаловать в NeonCasino Bot!\n\n"
+                        "Этот бот предназначен для менеджеров по трафику.\n\n"
+                        "Для получения доступа заполните заявку на роль менеджера.\n\n"
+                        "Внимание:\n"
+                        "• Ответы в свободной форме\n"
+                        "• При неактивности более 30 дней должность автоматически отзывается\n"
+                        "• Заявка будет рассмотрена администрацией\n\n"
+                        "Для начала заполнения заявки отправьте команду /apply"
+                    )
+                    await self.bot.send_message(
+                        chat_id=message.chat.id,
+                        text=welcome_text
+                    )
+            elif message.text == '/apply':
+                # Handle manager application
+                logger.info(f"Command /apply received from user {message.from_user.id}")
+                try:
+                    await self.handle_manager_application_start(message)
+                except Exception as e:
+                    logger.error(f"Error in handle_manager_application_start: {e}")
+                    logger.exception("Full traceback:")
             elif message.text == '/help':
                 if has_access(message.from_user.id, message.chat.id, 'admin', self):
                     help_text = """
@@ -833,18 +885,75 @@ IP: {ip_address}
                         chat_id=message.chat.id,
                         text="❌ Эта команда требует права менеджера"
                     )
+            else:
+                # Handle text messages that could be application responses
+                from telegram_bot_new.models import BotUser, ManagerApplication
+                try:
+                    bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+                    
+                    # Check if user has a pending application and is sending answers
+                    if bot_user.level == 'user' and not bot_user.is_banned:
+                        # Check if there's a pending application
+                        pending_app = await sync_to_async(
+                            ManagerApplication.objects.filter(user=bot_user, status='PENDING').first
+                        )()
+                        
+                        if pending_app is None:
+                            # No pending application, check if this looks like an application (any text)
+                            if message.text:
+                                # Could be an application submission
+                                logger.info(f"Processing application from user {message.from_user.id}")
+                                await self.process_manager_application(message)
+                        else:
+                            # Already has pending application
+                            pass
+                except BotUser.DoesNotExist:
+                    # New user - could be sending application
+                    if message.text and message.text not in ['/start', '/apply', '/help']:
+                        # Create bot user first
+                        bot_user = await sync_to_async(BotUser.objects.create)(
+                            user_id=message.from_user.id,
+                            username=message.from_user.username,
+                            first_name=message.from_user.first_name,
+                            last_name=message.from_user.last_name,
+                            level='user'
+                        )
+                        # Process application
+                        logger.info(f"Processing application from new user {message.from_user.id}")
+                        await self.process_manager_application(message)
+                except Exception as e:
+                    logger.error(f"Error processing application: {e}")
+                    pass  # Ignore errors in application processing
+            
         except Exception as e:
             logger.error(f"Error handling message: {e}")
 
     async def _handle_callback_query(self, callback_query):
         """Handle callback query (button clicks)"""
         try:
-            # Check if callback is from admin
+            data = callback_query.data
+            
+            # Allow application approval/rejection from admin chat only
+            if data.startswith('appr_app_') or data.startswith('rej_app_'):
+                # Check if callback is from admin
+                if not has_access(callback_query.from_user.id, callback_query.message.chat.id, 'admin', self):
+                    await callback_query.answer("❌ Только администраторы могут одобрять заявки")
+                    return
+                
+                if data.startswith('appr_app_'):
+                    app_id = data.split('_')[2]
+                    await self._approve_application(callback_query, app_id)
+                elif data.startswith('rej_app_'):
+                    app_id = data.split('_')[2]
+                    await self._reject_application(callback_query, app_id)
+                
+                await callback_query.answer()
+                return
+            
+            # For other callbacks, check admin access as before
             if not has_access(callback_query.from_user.id, callback_query.message.chat.id, 'admin', self):
                 logger.info(f"Ignoring callback from non-admin: {callback_query.from_user.id}")
                 return
-            
-            data = callback_query.data
             
             if data.startswith('kyc_approve_'):
                 kyc_id = data.split('_')[2]
@@ -1596,6 +1705,284 @@ IP: {ip_address}
             logger.info(f"Admin notification sent for bank transfer: {payment.id}")
         except Exception as e:
             logger.error(f"Failed to send admin notification for bank transfer: {e}")
+    
+    async def handle_manager_application_start(self, message):
+        """Start manager application process"""
+        try:
+            from telegram_bot_new.models import BotUser, ManagerApplication
+            
+            # Try to get or create user
+            try:
+                bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+            except BotUser.DoesNotExist:
+                # Create bot user if doesn't exist
+                bot_user = await sync_to_async(BotUser.objects.create)(
+                    user_id=message.from_user.id,
+                    username=message.from_user.username,
+                    first_name=message.from_user.first_name,
+                    last_name=message.from_user.last_name,
+                    level='user'
+                )
+            
+            # Check if user already has access
+            if bot_user.level in ['main_admin', 'admin', 'manager']:
+                await self.bot.send_message(
+                    chat_id=message.chat.id,
+                    text="✅ У вас уже есть доступ к боту!"
+                )
+                return
+            
+            # Check if user already submitted an application
+            existing_app = await sync_to_async(ManagerApplication.objects.filter(user=bot_user).last)()
+            if existing_app and existing_app.status == 'PENDING':
+                await self.bot.send_message(
+                    chat_id=message.chat.id,
+                    text="⏳ Ваша заявка уже находится на рассмотрении. Дождитесь ответа администратора."
+                )
+                return
+            
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=(
+                    "📝 **Заявка на роль менеджера**\n\n"
+                    "Отправьте ответы **одним сообщением** в следующем формате:\n\n"
+                    "**1. Откуда про нас узнали?**\n"
+                    "Ответ на первый вопрос\n\n"
+                    "**2. Как давно занимаетесь трафиком?**\n"
+                    "Ответ на второй вопрос\n\n"
+                    "**3. Что знаете про УБТ?**\n"
+                    "Ответ на третий вопрос\n\n"
+                    "**4. На какие проекты проливали?**\n"
+                    "Ответ на четвертый вопрос\n\n"
+                    "**5. Сколько часов в неделю готовы работать?**\n"
+                    "Ответ на пятый вопрос\n\n"
+                    "**Пример правильного заполнения:**\n"
+                    "1. Узнал из Telegram каналов по трафику\n"
+                    "2. Занимаюсь трафиком 2 года, работал с различными вертикалями\n"
+                    "3. УБТ - это универсальная банковская трафа (high-ticket приложения)\n"
+                    "4. Проливал трафик на казино, букмекеры и кредитные услуги\n"
+                    "5. Готов работать 40-50 часов в неделю, полная занятость\n\n"
+                    "**⚠️ Важно:**\n"
+                    "• Отправьте заявку **одним сообщением** со всеми ответами\n"
+                    "• Ответы в свободной форме\n"
+                    "• При неактивности более 30 дней должность автоматически отзывается\n\n"
+                    "Отправьте заявку следующим сообщением 👇"
+                ),
+                parse_mode='Markdown'
+            )
+            
+        except Exception as e:
+            logger.error(f"Error in handle_manager_application_start: {e}")
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=f"❌ Ошибка: {str(e)}"
+            )
+    
+    async def process_manager_application(self, message):
+        """Process manager application submission"""
+        try:
+            from telegram_bot_new.models import BotUser, ManagerApplication
+            from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+            from datetime import datetime
+            
+            # Get bot user
+            bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+            
+            # Use the entire message text as the application
+            # If it's too short, use it for all questions
+            text = message.text.strip()
+            
+            # If text is long enough, try to parse numbered answers
+            answers = {}
+            if len(text) > 100:  # Long text - try to parse
+                lines = text.split('\n')
+                for line in lines:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    
+                    # Check if it's a numbered answer
+                    if line[0].isdigit() and ('.' in line[:3] or ')' in line[:3]):
+                        content = line.split('.', 1)[-1].split(')', 1)[-1].strip()
+                        import re
+                        match = re.match(r'^(\d+)', line)
+                        if match:
+                            q_num = int(match.group(1))
+                            if 1 <= q_num <= 5:
+                                answers[f'q{q_num}'] = content
+            
+            # If we don't have enough parsed answers, use the whole text
+            if len(answers) < 3:
+                # Use the whole text for all questions
+                answers = {
+                    'q1': text[:200] if len(text) > 200 else text,
+                    'q2': text[:200] if len(text) > 200 else text,
+                    'q3': text[:200] if len(text) > 200 else text,
+                    'q4': text[:200] if len(text) > 200 else text,
+                    'q5': text[:200] if len(text) > 200 else text
+                }
+            
+            # Create application
+            try:
+                logger.info(f"Creating application for user {bot_user.user_id}")
+                app = await sync_to_async(ManagerApplication.objects.create)(
+                    user=bot_user,
+                    q1_source=answers.get('q1', 'Не указано'),
+                    q2_experience=answers.get('q2', 'Не указано'),
+                    q3_ubt_knowledge=answers.get('q3', 'Не указано'),
+                    q4_projects=answers.get('q4', 'Не указано'),
+                    q5_hours=answers.get('q5', 'Не указано'),
+                    status='PENDING'
+                )
+                logger.info(f"Application created: {app.id}")
+            except Exception as e:
+                logger.error(f"Error creating application: {e}")
+                logger.exception("Full traceback:")
+                raise
+            
+            # Send notification to admin chat
+            keyboard = [
+                [
+                    InlineKeyboardButton("✅ Одобрить", callback_data=f"appr_app_{app.id}"),
+                    InlineKeyboardButton("❌ Отклонить", callback_data=f"rej_app_{app.id}")
+                ]
+            ]
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            
+            admin_message = (
+                f"📝 **Новая заявка на роль менеджера**\n\n"
+                f"👤 **Пользователь:** {bot_user.first_name} (@{bot_user.username})\n"
+                f"🆔 **ID:** `{bot_user.user_id}`\n"
+                f"📅 **Дата:** {app.created_at.strftime('%d.%m.%Y %H:%M')}\n\n"
+                f"**1. Откуда про нас узнали?**\n{app.q1_source}\n\n"
+                f"**2. Как давно занимаетесь трафиком?**\n{app.q2_experience}\n\n"
+                f"**3. Что знаете про УБТ?**\n{app.q3_ubt_knowledge}\n\n"
+                f"**4. На какие проекты проливали?**\n{app.q4_projects}\n\n"
+                f"**5. Сколько часов в неделю готовы работать?**\n{app.q5_hours}\n\n"
+                f"_Заявка будет рассмотрена в ближайшее время_"
+            )
+            
+            await self.send_message_to_admin(admin_message, reply_markup)
+            
+            # Confirm to user
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=(
+                    "✅ **Заявка отправлена!**\n\n"
+                    "Ваша заявка направлена администратору на рассмотрение.\n\n"
+                    "Результат рассмотрения будет отправлен вам в ближайшее время."
+                ),
+                parse_mode='Markdown'
+            )
+            
+        except Exception as e:
+            logger.error(f"Error processing application: {e}")
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=f"❌ Ошибка при отправке заявки: {str(e)}"
+            )
+    
+    async def _approve_application(self, callback_query, app_id):
+        """Approve manager application"""
+        try:
+            from telegram_bot_new.models import BotUser, ManagerApplication
+            from django.utils import timezone
+            from asgiref.sync import sync_to_async
+            
+            # Get application
+            app = await sync_to_async(ManagerApplication.objects.get)(id=app_id)
+            
+            # Check if already processed
+            if app.status != 'PENDING':
+                await callback_query.answer(f"Заявка уже обработана: {app.status}")
+                return
+            
+            # Update application status
+            app.status = 'APPROVED'
+            app.reviewed_by = await sync_to_async(BotUser.objects.get)(user_id=callback_query.from_user.id)
+            app.reviewed_at = timezone.now()
+            await sync_to_async(app.save)()
+            
+            # Promote user to manager
+            bot_user = app.user
+            bot_user.level = 'manager'
+            await sync_to_async(bot_user.save)()
+            
+            # Notify admin
+            await callback_query.answer("✅ Заявка одобрена!")
+            await self.bot.send_message(
+                chat_id=callback_query.message.chat.id,
+                text=f"✅ Заявка от {bot_user.first_name} (@{bot_user.username}) одобрена и роль менеджера выдана"
+            )
+            
+            # Send notification to user
+            manager_chat_link = "https://t.me/+J_drYZL1VzhkZWY0"
+            await self.bot.send_message(
+                chat_id=bot_user.user_id,
+                text=(
+                    f"🎉 **Поздравляем!**\n\n"
+                    f"Ваша заявка на роль менеджера одобрена!\n\n"
+                    f"Теперь вы можете:\n"
+                    f"• Создавать промокоды\n"
+                    f"• Отслеживать статистику\n"
+                    f"• Получать комиссию\n\n"
+                    f"📱 **Присоединяйтесь к чату менеджеров:**\n{manager_chat_link}\n\n"
+                    f"Используйте /help для просмотра команд."
+                ),
+                parse_mode='Markdown'
+            )
+            
+        except Exception as e:
+            logger.error(f"Error approving application: {e}")
+            await callback_query.answer(f"❌ Ошибка: {str(e)}")
+    
+    async def _reject_application(self, callback_query, app_id):
+        """Reject manager application"""
+        try:
+            from telegram_bot_new.models import BotUser, ManagerApplication
+            from django.utils import timezone
+            from asgiref.sync import sync_to_async
+            
+            # Get application
+            app = await sync_to_async(ManagerApplication.objects.get)(id=app_id)
+            
+            # Check if already processed
+            if app.status != 'PENDING':
+                await callback_query.answer(f"Заявка уже обработана: {app.status}")
+                return
+            
+            # Update application status
+            app.status = 'REJECTED'
+            app.reviewed_by = await sync_to_async(BotUser.objects.get)(user_id=callback_query.from_user.id)
+            app.reviewed_at = timezone.now()
+            await sync_to_async(app.save)()
+            
+            # Ban user
+            bot_user = app.user
+            bot_user.is_banned = True
+            await sync_to_async(bot_user.save)()
+            
+            # Notify admin
+            await callback_query.answer("❌ Заявка отклонена!")
+            await self.bot.send_message(
+                chat_id=callback_query.message.chat.id,
+                text=f"❌ Заявка от {bot_user.first_name} (@{bot_user.username}) отклонена и пользователь заблокирован"
+            )
+            
+            # Send notification to user
+            await self.bot.send_message(
+                chat_id=bot_user.user_id,
+                text=(
+                    "❌ **Заявка отклонена**\n\n"
+                    "К сожалению, ваша заявка на роль менеджера была отклонена.\n\n"
+                    "Доступ к боту заблокирован."
+                ),
+                parse_mode='Markdown'
+            )
+            
+        except Exception as e:
+            logger.error(f"Error rejecting application: {e}")
+            await callback_query.answer(f"❌ Ошибка: {str(e)}")
 
 
 class TelegramNotificationService:
