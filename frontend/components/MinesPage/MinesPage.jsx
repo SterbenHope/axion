@@ -6,13 +6,15 @@ import { API_URL } from '../../http';
 import './MinesPage.css';
 
 const MinesPage = ({ onRegisterModalOpen }) => {
-  const { isAuthenticated } = useAuth();
-  const { t } = useTranslation();
+  const { isAuthenticated, updateUserData } = useAuth();
+  const { t } = useTranslation('games');
   const [minesCount, setMinesCount] = useState(10);
   const [betAmount, setBetAmount] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [revealedCells, setRevealedCells] = useState([]);
-  const [gameHash, setGameHash] = useState('no hash');
+  const [gameHash, setGameHash] = useState('');
+  const [minePositions, setMinePositions] = useState([]);
+  const [gameResult, setGameResult] = useState(null);
 
   // 5x5 grid = 25 cells
   const gridSize = 5;
@@ -22,13 +24,29 @@ const MinesPage = ({ onRegisterModalOpen }) => {
   const cells = Array.from({ length: totalCells }, (_, index) => ({
     id: index,
     isRevealed: revealedCells.includes(index),
-    isMine: false, // In real game this will be determined by server
-    adjacentMines: 0
+    isMine: minePositions.includes(index),
+    isBombHit: false
   }));
 
   const handleCellClick = (cellId) => {
-    if (gameStarted && !revealedCells.includes(cellId)) {
-      setRevealedCells([...revealedCells, cellId]);
+    if (!gameStarted || revealedCells.includes(cellId) || gameResult) return;
+    
+    const isMine = minePositions.includes(cellId);
+    const newRevealedCells = [...revealedCells, cellId];
+    
+    setRevealedCells(newRevealedCells);
+    
+    // Check if hit a mine
+    if (isMine) {
+      setGameResult('lose');
+      setGameStarted(false);
+      // DON'T clear minePositions - keep them visible so all mines show on the grid
+      alert(t('games.mines.mineHit') || '💣 You hit a mine! Game over!');
+      
+      // Update balance after loss
+      if (updateUserData) {
+        updateUserData();
+      }
     }
   };
 
@@ -49,7 +67,7 @@ const MinesPage = ({ onRegisterModalOpen }) => {
     }
     
     if (betAmount <= 0 || minesCount <= 0) {
-      alert('Please enter bet amount and select mines count');
+      alert(t('games.mines.pleaseEnter') || 'Please enter bet amount and select mines count');
       return;
     }
     
@@ -64,22 +82,43 @@ const MinesPage = ({ onRegisterModalOpen }) => {
       });
       
       if (response.data.success) {
+        // Generate random mine positions
+        const mines = [];
+        while (mines.length < minesCount) {
+          const pos = Math.floor(Math.random() * totalCells);
+          if (!mines.includes(pos)) {
+            mines.push(pos);
+          }
+        }
+        
+        setMinePositions(mines);
         setGameStarted(true);
         setRevealedCells([]);
-        setGameHash(Math.random().toString(36).substring(2, 15));
+        setGameResult(null);
+        // Generate random hash for this game
+        const hash = Math.random().toString(36).substring(2, 11) + Math.random().toString(36).substring(2, 11);
+        setGameHash(hash);
         localStorage.setItem('userBalance', response.data.newBalance.toString());
+        
+        if (updateUserData) {
+          updateUserData();
+        }
       }
     } catch (error) {
-      alert(error.response?.data?.error || 'Failed to start game');
+      alert(error.response?.data?.error || t('games.mines.failedToStart') || 'Failed to start game');
     }
   };
 
   const cashOut = async () => {
-    if (!isAuthenticated || !gameStarted) return;
+    if (!isAuthenticated || !gameStarted || revealedCells.length === 0) return;
     
     try {
       const token = localStorage.getItem('token');
-      const multiplier = revealedCells.length * 1.2; // Calculate multiplier
+      
+      // Calculate multiplier based on cells revealed
+      // Each revealed cell increases multiplier by 1.21x
+      const baseMultiplier = 1.0;
+      const multiplier = Math.pow(1.21, revealedCells.length);
       
       const response = await axios.post(`${API_URL}/games/mines/play/`, {
         action: 'cashout',
@@ -90,22 +129,28 @@ const MinesPage = ({ onRegisterModalOpen }) => {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
-      if (response.data.success) {
+      if (response.data && response.data.newBalance !== undefined) {
         localStorage.setItem('userBalance', response.data.newBalance.toString());
+        setGameResult('win');
         setGameStarted(false);
-        setRevealedCells([]);
-        setBetAmount(0);
-        alert(`Cash out successful! Won: ${response.data.payout}`);
+        alert(`${t('games.mines.cashOutSuccess') || '🎉 Cash out successful! Won:'} ${response.data.payout.toFixed(2)}!`);
+        
+        // Update balance after game completes
+        if (updateUserData) {
+          updateUserData();
+        }
       }
     } catch (error) {
-      alert(error.response?.data?.error || 'Failed to cash out');
+      alert(error.response?.data?.error || t('games.mines.failedToCashOut') || 'Failed to cash out');
     }
   };
 
   const resetGame = () => {
     setGameStarted(false);
     setRevealedCells([]);
-    setBetAmount(0);
+    setMinePositions([]); // Clear mines for new game
+    setGameResult(null);
+    // Don't reset betAmount - keep it for next game
   };
 
   return (
@@ -125,25 +170,35 @@ const MinesPage = ({ onRegisterModalOpen }) => {
             
             <div className="mines-grid-container">
               <div className="mines-grid">
-                {cells.map((cell) => (
-                  <div
-                    key={cell.id}
-                    className={`mine-cell ${cell.isRevealed ? 'revealed' : ''}`}
-                    onClick={() => handleCellClick(cell.id)}
-                  >
-                    {cell.isRevealed ? (
+                {cells.map((cell) => {
+                  const shouldShowMine = gameResult === 'lose' && cell.isMine;
+                  const isRevealed = cell.isRevealed || shouldShowMine;
+                  
+                  // Determine what to show
+                  let cellContent;
+                  if (isRevealed) {
+                    if (cell.isMine) {
+                      cellContent = <div className="mine-icon">💣</div>;
+                    } else {
+                      cellContent = <div className="diamond-icon">💎</div>;
+                    }
+                  } else {
+                    cellContent = <div className="cell-question">?</div>;
+                  }
+                  
+                  return (
+                    <div
+                      key={cell.id}
+                      className={`mine-cell ${isRevealed ? 'revealed' : ''} ${cell.isMine && shouldShowMine ? 'mine-hit' : ''}`}
+                      onClick={() => handleCellClick(cell.id)}
+                      style={{ cursor: gameResult || !gameStarted ? 'not-allowed' : 'pointer' }}
+                    >
                       <div className="cell-content">
-                        {cell.isMine ? (
-                          <div className="mine-icon">💣</div>
-                        ) : (
-                          <div className="diamond-icon">💎</div>
-                        )}
+                        {cellContent}
                       </div>
-                    ) : (
-                      <div className="cell-question">?</div>
-                    )}
-                  </div>
-                ))}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -152,7 +207,7 @@ const MinesPage = ({ onRegisterModalOpen }) => {
             <div className="controls-container">
               <div className="bet-section">
                 <div className="bet-amount">
-                  <label className="control-label">Bet amount</label>
+                  <label className="control-label">{t('games.mines.betAmount') || 'Bet amount'}</label>
                   <div className="bet-input-container">
                     <div className="currency-icon">
                       <img src="/images/blackcoin-1a9023c1.svg" alt={t('common.currency')} />
@@ -165,8 +220,8 @@ const MinesPage = ({ onRegisterModalOpen }) => {
                       placeholder="0"
                       disabled={gameStarted}
                     />
-                    <div className="clear-icon">
-                      <img src="/images/copy-icon.svg" alt={t('common.clear')} />
+                    <div className="clear-icon" onClick={() => handleBetAmountChange(0)}>
+                      ✕
                     </div>
                   </div>
                   
@@ -177,12 +232,15 @@ const MinesPage = ({ onRegisterModalOpen }) => {
                     <button className="quick-bet-btn" onClick={() => handleBetAmountChange(betAmount + 5000)}>+5000</button>
                     <button className="quick-bet-btn" onClick={() => handleBetAmountChange(betAmount / 2)}>1/2</button>
                     <button className="quick-bet-btn" onClick={() => handleBetAmountChange(betAmount * 2)}>x2</button>
-                    <button className="quick-bet-btn" onClick={() => handleBetAmountChange(10000)}>max</button>
+                    <button className="quick-bet-btn" onClick={() => {
+                      const balance = parseFloat(localStorage.getItem('userBalance') || '0');
+                      handleBetAmountChange(Math.floor(balance));
+                    }}>max</button>
                   </div>
                 </div>
                 
                 <div className="mines-count">
-                  <label className="control-label">{t('mines.minesAmount')}</label>
+                                      <label className="control-label">{t('games.mines.minesAmount') || 'Mines Count'}</label>
                   <div className="mines-input-container">
                     <div className="mines-icon">
                       <img src="/images/mines-game-56586a.png" alt={t('games.mines')} />
@@ -203,35 +261,58 @@ const MinesPage = ({ onRegisterModalOpen }) => {
                     <button 
                       className={`mines-count-btn ${minesCount === 1 ? 'active' : ''}`}
                       onClick={() => handleMinesCountChange(1)}
+                      disabled={gameStarted}
                     >1</button>
                     <button 
                       className={`mines-count-btn ${minesCount === 3 ? 'active' : ''}`}
                       onClick={() => handleMinesCountChange(3)}
+                      disabled={gameStarted}
                     >3</button>
                     <button 
                       className={`mines-count-btn ${minesCount === 5 ? 'active' : ''}`}
                       onClick={() => handleMinesCountChange(5)}
+                      disabled={gameStarted}
                     >5</button>
                     <button 
                       className={`mines-count-btn ${minesCount === 10 ? 'active' : ''}`}
                       onClick={() => handleMinesCountChange(10)}
+                      disabled={gameStarted}
                     >10</button>
                     <button 
                       className={`mines-count-btn ${minesCount === 24 ? 'active' : ''}`}
                       onClick={() => handleMinesCountChange(24)}
+                      disabled={gameStarted}
                     >24</button>
                   </div>
                 </div>
               </div>
               
               <div className="game-actions">
-                <button 
-                  className="cashout-btn"
-                  onClick={cashOut}
-                  disabled={!gameStarted || revealedCells.length === 0}
-                >
-                  <img src="/images/coinflip-tails.png" alt={t('common.cashOut')} />
-                </button>
+                {!gameStarted ? (
+                  <button 
+                    className="play-btn"
+                    onClick={startGame}
+                    disabled={betAmount <= 0 || minesCount <= 0}
+                  >
+                                          {t('games.mines.play') || 'Play'}
+                  </button>
+                ) : (
+                  <div className="game-buttons">
+                    <button 
+                      className="cashout-btn"
+                      onClick={cashOut}
+                      disabled={revealedCells.length === 0}
+                    >
+                      {t('games.mines.cashOut') || 'Cash Out'}
+                    </button>
+                    <button 
+                      className="reset-btn"
+                      onClick={resetGame}
+                    >
+                      {t('games.mines.reset') || 'Reset'}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -239,7 +320,7 @@ const MinesPage = ({ onRegisterModalOpen }) => {
         
         <div className="mines-footer">
           <p className="footer-text">
-            {t('mines.gameOfChance')}
+            {t('games.mines.gameOfChance')}
           </p>
         </div>
       </div>

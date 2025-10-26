@@ -1,28 +1,104 @@
 {
-  "games": "Spiele",
-  "allGames": "Alle Spiele",
-  "popularGames": "Beliebte Spiele",
-  "newGames": "Neue Spiele",
-  "favorites": "Favoriten",
-  "searchGames": "Spiele suchen...",
+  "title": "Spiele",
+  "subtitle": "Wählen Sie ein Spiel und versuchen Sie Ihr Glück mit der virtuellen Währung NeonCoins",
   "categories": {
+    "all": "Alle Spiele",
     "slots": "Spielautomaten",
-    "tableGames": "Tischspiele",
-    "cardGames": "Kartenspiele",
-    "liveGames": "Live-Spiele",
-    "jackpot": "Jackpot"
+    "table": "Tischspiele",
+    "live": "Live-Spiele",
+    "popular": "Beliebt",
+    "new": "Neu"
   },
-  "gameInfo": {
-    "minBet": "Min. Einsatz",
-    "maxBet": "Max. Einsatz",
-    "rtp": "RTP",
-    "volatility": "Volatilität",
-    "features": "Funktionen"
+  "games": {
+    "slots": {
+      "title": "Neon Slots",
+      "description": "Drehen Sie die Walzen in unseren Cyberpunk-Spielautomaten",
+      "minBet": "Min Einsatz: 1 NC",
+      "maxBet": "Max Einsatz: 1000 NC",
+      "rtp": "RTP: 96.5%"
+    },
+    "blackjack": {
+      "title": "Cyber Blackjack",
+      "description": "Schlagen Sie den Dealer in diesem klassischen Kartenspiel",
+      "minBet": "Min Einsatz: 5 NC",
+      "maxBet": "Max Einsatz: 500 NC",
+      "rtp": "RTP: 99.5%"
+    },
+    "wheel": {
+      "title": "Glücksrad",
+      "description": "Drehen Sie das Glücksrad und gewinnen Sie große Preise",
+      "minBet": "Min Einsatz: 1 NC",
+      "maxBet": "Max Einsatz: 100 NC",
+      "rtp": "RTP: 95.0%",
+      "spin": "RAD DREHEN",
+      "spinning": "Dreht sich...",
+      "maxWin": "MAX GEWINN: 25x Ihr Einsatz! 🎯",
+      "legend": "Ergebnisse",
+      "lose": "VERLIEREN",
+      "bonus": "+10%"
+    },
+    "plinko": {
+      "title": "Plinko",
+      "description": "Lassen Sie den Ball fallen und beobachten Sie, wie er für große Gewinne springt",
+      "minBet": "Min Einsatz: 1 NC",
+      "maxBet": "Max Einsatz: 1000 NC",
+      "rtp": "RTP: 94.5%",
+      "mode": "Modus",
+      "manual": "Manuell",
+      "auto": "Automatisch",
+      "difficulty": "Schwierigkeit",
+      "easy": "Einfach",
+      "normal": "Normal",
+      "hard": "Schwer",
+      "betAmount": "Einsatzbetrag",
+      "amountOfRows": "Anzahl der Reihen",
+      "maxWin": "MAX GEWINN: 10.000.000 Münzen",
+      "placeBet": "Einsatz platzieren",
+      "playing": "Spielt...",
+      "user": "Benutzer",
+      "betAmountLabel": "Einsatzbetrag",
+      "multiplier": "Multiplikator",
+      "payout": "Auszahlung",
+      "date": "Datum"
+    },
+    "mines": {
+      "title": "Minen",
+      "description": "Klicken Sie auf die Zellen, um Diamanten aufzudecken und Minen zu vermeiden",
+      "minesAmount": "Anzahl der Minen",
+      "betAmount": "Einsatzbetrag",
+      "play": "Spielen",
+      "cashOut": "Abheben",
+      "reset": "Zurücksetzen",
+      "gameOfChance": "Dies ist ein Glücksspiel. Spielen Sie verantwortungsbewusst.",
+      "mineHit": "💣 Sie haben eine Mine getroffen! Spiel vorbei!",
+      "pleaseEnter": "Bitte geben Sie den Einsatzbetrag ein und wählen Sie die Anzahl der Minen",
+      "failedToStart": "Spiel konnte nicht gestartet werden",
+      "cashOutSuccess": "🎉 Auszahlung erfolgreich! Gewonnen:",
+      "failedToCashOut": "Auszahlung fehlgeschlagen"
+    }
   },
-  "playNow": "Jetzt Spielen",
-  "demoMode": "Demo-Modus",
-  "realMoney": "Echtes Geld",
-  "loading": "Spiel wird geladen...",
-  "error": "Fehler beim Laden des Spiels",
-  "tryAgain": "Erneut versuchen"
+  "gameplay": {
+    "balance": "Guthaben",
+    "bet": "Einsatz",
+    "win": "Gewinnen",
+    "lose": "Verlieren",
+    "draw": "Unentschieden",
+    "spin": "Drehen",
+    "hit": "Nehmen",
+    "stand": "Halten",
+    "double": "Verdoppeln",
+    "split": "Teilen",
+    "deal": "Geben",
+    "newGame": "Neues Spiel"
+  },
+  "messages": {
+    "insufficientBalance": "Unzureichende Mittel",
+    "betTooHigh": "Einsatz zu hoch",
+    "betTooLow": "Einsatz zu niedrig",
+    "gameInProgress": "Spiel läuft",
+    "gameOver": "Spiel beendet",
+    "youWon": "Sie haben gewonnen!",
+    "youLost": "Sie haben verloren",
+    "draw": "Unentschieden!"
+  }
 }

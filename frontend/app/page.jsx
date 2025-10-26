@@ -156,7 +156,20 @@ const HomePage = () => {
             </div>
             <span className="nav-text">{t('nav.plinko')}</span>
           </div>
-
+          
+          <div className={`nav-item ${currentPage === 'wheel' ? 'active' : ''}`} onClick={() => setCurrentPage('wheel')}>
+            <div className="nav-icon">
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+                <circle cx="13" cy="13" r="11" stroke="#2D3660" strokeWidth="1.5"/>
+                <circle cx="13" cy="13" r="6" stroke="#4D5B97" strokeWidth="1.5"/>
+                <path d="M13 2L13 6" stroke="#3B436B" strokeWidth="1.5"/>
+                <path d="M13 20L13 24" stroke="#3B436B" strokeWidth="1.5"/>
+                <path d="M2 13L6 13" stroke="#3B436B" strokeWidth="1.5"/>
+                <path d="M20 13L24 13" stroke="#3B436B" strokeWidth="1.5"/>
+              </svg>
+            </div>
+            <span className="nav-text">{t('nav.wheel')}</span>
+          </div>
           
         </div>
         
@@ -191,13 +204,13 @@ const HomePage = () => {
               </svg>
               <span>{t('nav.dashboard')}</span>
             </button>
-            <button onClick={() => setCurrentPage('games')} className="nav-link">
+            <button onClick={() => setCurrentPage('main')} className="nav-link">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <circle cx="10" cy="10" r="8" stroke="#3B436B" strokeWidth="1.5"/>
                 <path d="M6 10L14 10" stroke="#4D5B97" strokeWidth="1.5"/>
                 <path d="M10 6L10 14" stroke="#4D5B97" strokeWidth="1.5"/>
               </svg>
-              <span>{t('nav.games')}</span>
+              <span>{t('nav.main')}</span>
             </button>
             <button onClick={() => {
               setPaymentsDefaultTab('deposit');
@@ -573,7 +586,13 @@ const HomePage = () => {
             className="chat-close-btn"
             onClick={(e) => {
               e.stopPropagation();
-              setIsChatOpen(false);
+              // Check if user has made deposit and KYC is verified
+              if (isAuthenticated && user && user.kyc_status === 'VERIFIED' && (user.transactions?.some(t => t.type === 'DEPOSIT') || user.has_deposited)) {
+                setIsChatOpen(false);
+              } else {
+                // Keep chat open if no deposit or KYC not verified
+                alert('You need to complete KYC verification and make a deposit to close the chat');
+              }
             }}
             title="Close chat"
             style={{ zIndex: 10003, position: 'relative' }}

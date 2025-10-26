@@ -1,28 +1,104 @@
 {
-  "games": "Giochi",
-  "allGames": "Tutti i Giochi",
-  "popularGames": "Giochi Popolari",
-  "newGames": "Nuovi Giochi",
-  "favorites": "Preferiti",
-  "searchGames": "Cerca giochi...",
+  "title": "Giochi",
+  "subtitle": "Scegli un gioco e prova la tua fortuna con la valuta virtuale NeonCoins",
   "categories": {
+    "all": "Tutti i Giochi",
     "slots": "Slot Machine",
-    "tableGames": "Giochi da Tavolo",
-    "cardGames": "Giochi di Carte",
-    "liveGames": "Giochi dal Vivo",
-    "jackpot": "Jackpot"
+    "table": "Giochi da Tavolo",
+    "live": "Giochi dal Vivo",
+    "popular": "Popolari",
+    "new": "Nuovi"
   },
-  "gameInfo": {
-    "minBet": "Puntata Min",
-    "maxBet": "Puntata Max",
-    "rtp": "RTP",
-    "volatility": "Volatilità",
-    "features": "Caratteristiche"
+  "games": {
+    "slots": {
+      "title": "Slots Neon",
+      "description": "Gira i rulli nelle nostre slot machine cyberpunk",
+      "minBet": "Min puntata: 1 NC",
+      "maxBet": "Max puntata: 1000 NC",
+      "rtp": "RTP: 96.5%"
+    },
+    "blackjack": {
+      "title": "Blackjack Cyber",
+      "description": "Batti il banco in questo classico gioco di carte",
+      "minBet": "Min puntata: 5 NC",
+      "maxBet": "Max puntata: 500 NC",
+      "rtp": "RTP: 99.5%"
+    },
+    "wheel": {
+      "title": "Ruota della Fortuna",
+      "description": "Gira la ruota della fortuna e vinci grandi premi",
+      "minBet": "Min puntata: 1 NC",
+      "maxBet": "Max puntata: 100 NC",
+      "rtp": "RTP: 95.0%",
+      "spin": "GIRA LA RUOTA",
+      "spinning": "Ruotando...",
+      "maxWin": "VINCITA MAX: 25x la tua puntata! 🎯",
+      "legend": "Risultati",
+      "lose": "PERDERE",
+      "bonus": "+10%"
+    },
+    "plinko": {
+      "title": "Plinko",
+      "description": "Lascia cadere la pallina e guardala rimbalzare per grandi vincite",
+      "minBet": "Min puntata: 1 NC",
+      "maxBet": "Max puntata: 1000 NC",
+      "rtp": "RTP: 94.5%",
+      "mode": "Modalità",
+      "manual": "Manuale",
+      "auto": "Automatico",
+      "difficulty": "Difficoltà",
+      "easy": "Facile",
+      "normal": "Normale",
+      "hard": "Difficile",
+      "betAmount": "Importo della puntata",
+      "amountOfRows": "Numero di righe",
+      "maxWin": "VINCITA MAX: 10.000.000 monete",
+      "placeBet": "piazza puntata",
+      "playing": "Giocando...",
+      "user": "Utente",
+      "betAmountLabel": "Importo della puntata",
+      "multiplier": "Moltiplicatore",
+      "payout": "Pagamento",
+      "date": "Data"
+    },
+    "mines": {
+      "title": "Mine",
+      "description": "Clicca sulle celle per rivelare diamanti e evitare le mine",
+      "minesAmount": "Numero di Mine",
+      "betAmount": "Importo della Puntata",
+      "play": "Gioca",
+      "cashOut": "Incassa",
+      "reset": "Reimposta",
+      "gameOfChance": "Questo è un gioco d'azzardo. Gioca responsabilmente.",
+      "mineHit": "💣 Hai colpito una mina! Partita finita!",
+      "pleaseEnter": "Inserisci l'importo della puntata e seleziona il numero di mine",
+      "failedToStart": "Impossibile avviare il gioco",
+      "cashOutSuccess": "🎉 Incasso riuscito! Vinto:",
+      "failedToCashOut": "Incasso fallito"
+    }
   },
-  "playNow": "Gioca Ora",
-  "demoMode": "Modalità Demo",
-  "realMoney": "Denaro Reale",
-  "loading": "Caricamento del gioco...",
-  "error": "Errore nel caricamento del gioco",
-  "tryAgain": "Riprova"
+  "gameplay": {
+    "balance": "Saldo",
+    "bet": "Puntata",
+    "win": "Vincere",
+    "lose": "Perdere",
+    "draw": "Pareggio",
+    "spin": "Girare",
+    "hit": "Pescare",
+    "stand": "Stare",
+    "double": "Raddoppiare",
+    "split": "Dividere",
+    "deal": "Distribuire",
+    "newGame": "Nuovo Gioco"
+  },
+  "messages": {
+    "insufficientBalance": "Fondi insufficienti",
+    "betTooHigh": "Puntata troppo alta",
+    "betTooLow": "Puntata troppo bassa",
+    "gameInProgress": "Gioco in corso",
+    "gameOver": "Gioco terminato",
+    "youWon": "Hai vinto!",
+    "youLost": "Hai perso",
+    "draw": "Pareggio!"
+  }
 }

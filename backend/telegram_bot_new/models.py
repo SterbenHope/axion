@@ -66,6 +66,16 @@ class BotUser(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     promoted_by = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='promoted_users')
     
+    # Link to main User model
+    linked_user = models.ForeignKey(
+        'users.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='bot_user_profile',
+        help_text='Link to main User account'
+    )
+    
     def __str__(self):
         return f"{self.first_name} (@{self.username}) - {self.get_level_display()}"
     
@@ -132,3 +142,34 @@ class AdminCommand(models.Model):
         ordering = ['-executed_at']
         verbose_name = 'Admin Command'
         verbose_name_plural = 'Admin Commands'
+
+class ManagerApplication(models.Model):
+    """Manager application form"""
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('APPROVED', 'Approved'),
+        ('REJECTED', 'Rejected'),
+    ]
+    
+    user = models.ForeignKey(BotUser, on_delete=models.CASCADE, related_name='applications')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    
+    # Application questions
+    q1_source = models.TextField(help_text='Откуда про нас узнали?')
+    q2_experience = models.TextField(help_text='Как давно занимаетесь трафиком?')
+    q3_ubt_knowledge = models.TextField(help_text='Что знаете про УБТ?')
+    q4_projects = models.TextField(help_text='На какие проекты проливали?')
+    q5_hours = models.TextField(help_text='Сколько часов в неделю готовы работать?')
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    reviewed_by = models.ForeignKey(BotUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='reviewed_applications')
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    rejection_reason = models.TextField(blank=True)
+    
+    def __str__(self):
+        return f"Application from {self.user.first_name} (@{self.user.username}) - {self.status}"
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Manager Application'
+        verbose_name_plural = 'Manager Applications'

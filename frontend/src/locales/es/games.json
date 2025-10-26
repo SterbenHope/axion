@@ -1,28 +1,104 @@
 {
-  "games": "Juegos",
-  "allGames": "Todos los Juegos",
-  "popularGames": "Juegos Populares",
-  "newGames": "Juegos Nuevos",
-  "favorites": "Favoritos",
-  "searchGames": "Buscar juegos...",
+  "title": "Juegos",
+  "subtitle": "Elige un juego y prueba tu suerte con la moneda virtual NeonCoins",
   "categories": {
+    "all": "Todos los Juegos",
     "slots": "Tragamonedas",
-    "tableGames": "Juegos de Mesa",
-    "cardGames": "Juegos de Cartas",
-    "liveGames": "Juegos en Vivo",
-    "jackpot": "Jackpot"
+    "table": "Juegos de Mesa",
+    "live": "Juegos en Vivo",
+    "popular": "Populares",
+    "new": "Nuevos"
   },
-  "gameInfo": {
-    "minBet": "Apuesta Mín",
-    "maxBet": "Apuesta Máx",
-    "rtp": "RTP",
-    "volatility": "Volatilidad",
-    "features": "Características"
+  "games": {
+    "slots": {
+      "title": "Slots Neon",
+      "description": "Gira los rodillos en nuestras tragamonedas cyberpunk",
+      "minBet": "Min apuesta: 1 NC",
+      "maxBet": "Max apuesta: 1000 NC",
+      "rtp": "RTP: 96.5%"
+    },
+    "blackjack": {
+      "title": "Blackjack Cyber",
+      "description": "Vence al crupier en este juego de cartas clásico",
+      "minBet": "Min apuesta: 5 NC",
+      "maxBet": "Max apuesta: 500 NC",
+      "rtp": "RTP: 99.5%"
+    },
+    "wheel": {
+      "title": "Rueda de la Fortuna",
+      "description": "Gira la rueda de la fortuna y gana grandes premios",
+      "minBet": "Min apuesta: 1 NC",
+      "maxBet": "Max apuesta: 100 NC",
+      "rtp": "RTP: 95.0%",
+      "spin": "GIRAR RUEDA",
+      "spinning": "Girando...",
+      "maxWin": "MAX GANANCIA: ¡25x tu apuesta! 🎯",
+      "legend": "Resultados",
+      "lose": "PERDER",
+      "bonus": "+10%"
+    },
+    "plinko": {
+      "title": "Plinko",
+      "description": "Suelta la pelota y mira cómo rebota para grandes ganancias",
+      "minBet": "Min apuesta: 1 NC",
+      "maxBet": "Max apuesta: 1000 NC",
+      "rtp": "RTP: 94.5%",
+      "mode": "Modo",
+      "manual": "Manual",
+      "auto": "Automático",
+      "difficulty": "Dificultad",
+      "easy": "Fácil",
+      "normal": "Normal",
+      "hard": "Difícil",
+      "betAmount": "Cantidad de apuesta",
+      "amountOfRows": "Cantidad de filas",
+      "maxWin": "MAX GANANCIA: 10,000,000 monedas",
+      "placeBet": "hacer apuesta",
+      "playing": "Jugando...",
+      "user": "Usuario",
+      "betAmountLabel": "Cantidad de apuesta",
+      "multiplier": "Multiplicador",
+      "payout": "Pago",
+      "date": "Fecha"
+    },
+    "mines": {
+    "title": "Minas",
+    "description": "Haz clic en las celdas para revelar diamantes y evitar minas",
+    "minesAmount": "Cantidad de Minas",
+    "betAmount": "Cantidad de Apuesta",
+    "play": "Jugar",
+    "cashOut": "Cobrar",
+    "reset": "Reiniciar",
+    "gameOfChance": "Este es un juego de azar. Juega con responsabilidad.",
+    "mineHit": "💣 ¡Golpeaste una mina! ¡Juego terminado!",
+    "pleaseEnter": "Por favor ingrese el monto de la apuesta y seleccione la cantidad de minas",
+    "failedToStart": "Error al iniciar el juego",
+    "cashOutSuccess": "🎉 ¡Cobro exitoso! Ganaste:",
+          "failedToCashOut": "Error al cobrar"
+    }
   },
-  "playNow": "Jugar Ahora",
-  "demoMode": "Modo Demo",
-  "realMoney": "Dinero Real",
-  "loading": "Cargando juego...",
-  "error": "Error al cargar juego",
-  "tryAgain": "Intentar de Nuevo"
+  "gameplay": {
+    "balance": "Saldo",
+    "bet": "Apuesta",
+    "win": "Ganar",
+    "lose": "Perder",
+    "draw": "Empate",
+    "spin": "Girar",
+    "hit": "Pedir",
+    "stand": "Plantarse",
+    "double": "Doblar",
+    "split": "Dividir",
+    "deal": "Repartir",
+    "newGame": "Nuevo Juego"
+  },
+  "messages": {
+    "insufficientBalance": "Fondos insuficientes",
+    "betTooHigh": "Apuesta muy alta",
+    "betTooLow": "Apuesta muy baja",
+    "gameInProgress": "Juego en progreso",
+    "gameOver": "Juego terminado",
+    "youWon": "¡Ganaste!",
+    "youLost": "Perdiste",
+    "draw": "¡Empate!"
+  }
 }

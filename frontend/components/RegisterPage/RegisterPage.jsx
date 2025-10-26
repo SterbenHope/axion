@@ -8,33 +8,33 @@ const RegisterPage = ({ onClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [referralCode, setReferralCode] = useState('');
+  const [promoCode, setPromoCode] = useState('');
   const { register, loading, error } = useAuth();
 
   useEffect(() => {
-    // Check URL parameter ref
+    // Check URL parameter ref for promo code
     const urlParams = new URLSearchParams(window.location.search);
-    const refFromUrl = urlParams.get('ref');
+    const promoFromUrl = urlParams.get('ref');
     
-    if (refFromUrl) {
+    if (promoFromUrl) {
       // Save to localStorage
-      localStorage.setItem('referralCode', refFromUrl.toUpperCase());
-      setReferralCode(refFromUrl.toUpperCase());
+      localStorage.setItem('promoCode', promoFromUrl.toUpperCase());
+      setPromoCode(promoFromUrl.toUpperCase());
     } else {
       // Check localStorage
-      const savedRef = localStorage.getItem('referralCode');
-      if (savedRef) {
-        setReferralCode(savedRef);
+      const savedPromo = localStorage.getItem('promoCode');
+      if (savedPromo) {
+        setPromoCode(savedPromo);
       }
     }
   }, []);
 
   const handleRegister = async () => {
     if (email.trim() && password.trim()) {
-      const result = await register(email, password, referralCode || null);
+      const result = await register(email, password, promoCode || null);
       if (result.success) {
-        // Clear referral code after successful registration
-        localStorage.removeItem('referralCode');
+        // Clear promo code after successful registration
+        localStorage.removeItem('promoCode');
         onClose();
       }
     }
@@ -111,6 +111,23 @@ const RegisterPage = ({ onClose }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={t('register.enterPassword')}
+                  className="form-input"
+                />
+              </div>
+            </div>
+
+            <div className="form-input-group">
+              <div className="form-header">
+                <label className="form-label">{t('register.promoCode')} (Optional)</label>
+              </div>
+              
+              <div className="input-container">
+                <div className="input-background"></div>
+                <input
+                  type="text"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                  placeholder={t('register.enterPromoCode')}
                   className="form-input"
                 />
               </div>

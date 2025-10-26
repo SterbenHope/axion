@@ -81,6 +81,11 @@ class NeonCasinoBot:
             CommandHandler("set_manager_chat", self._handle_with_error(self.set_manager_chat_command)),
             CommandHandler("show_settings", self._handle_with_error(self.show_settings_command)),
             CommandHandler("test_notifications", self._handle_with_error(self.test_notifications_command)),
+            CommandHandler("get_user_id", self._handle_with_error(self.get_user_id_command)),
+            CommandHandler("list_bot_users", self._handle_with_error(self.list_bot_users_command)),
+            CommandHandler("user_detail", self._handle_with_error(self.user_detail_command)),
+            CommandHandler("delete_promo", self._handle_with_error(self.delete_promo_command)),
+            CommandHandler("view_promo", self._handle_with_error(self.view_promo_command)),
             MessageHandler(filters.TEXT & ~filters.COMMAND, self._handle_with_error(self.handle_text_message)),
             CallbackQueryHandler(self._handle_with_error(self.button_callback)),
             MessageHandler(filters.ChatType.GROUPS & filters.COMMAND, self._handle_with_error(self.handle_group_command))
@@ -187,11 +192,10 @@ class NeonCasinoBot:
         """Start promo code creation process"""
         user = update.effective_user
         
-        # Check permissions
-        is_admin = await self.check_admin_permissions(user.id)
+        # Check permissions (managers can create promos)
         is_manager = await self.check_manager_permissions(user.id)
         
-        if not (is_admin or is_manager):
+        if not is_manager:
             await update.message.reply_text("❌ У вас нет прав для создания промокодов.")
             return
         
@@ -623,24 +627,41 @@ class NeonCasinoBot:
                 "/show_settings - Настройки бота\n\n"
                 "**👥 Управление пользователями:**\n"
                 "/users - Список пользователей\n"
+                "/list_bot_users - Список пользователей бота (админы/менеджеры)\n"
+                "/user_detail <user_id> - Детальная информация о пользователе\n"
+                "/get_user_id @username - Получить ID пользователя\n"
                 "/payments - Платежи\n"
                 "/kyc - KYC заявки\n\n"
                 "**🎯 Управление промокодами:**\n"
                 "/create_promo - Создать промокод\n"
                 "/list_promos - Список промокодов\n"
+                "/view_promo <код> - Информация о промокоде\n"
+                "/delete_promo <код> - Удалить промокод\n"
                 "/promo_stats - Статистика промокодов\n"
                 "/set_manager_chat - Настроить чат менеджеров\n"
                 "/test_notifications - Тест уведомлений\n\n"
-                "**📝 Создание промокода:**\n"
-                "1. Используйте /create_promo\n"
-                "2. Отправьте данные в формате:\n"
-                "   Код: PROMO123\n"
-                "   Название: Приветственный бонус\n"
-                "   Описание: Бонус для новых пользователей\n"
-                "   Тип: WELCOME\n"
-                "   Бонус: 1000\n"
-                "   Макс. использований: 100\n"
-                "   Действителен дней: 30"
+                "**📝 Создание промокода (ШАГ ЗА ШАГОМ):**\n\n"
+                "**Шаг 1:** Отправьте команду /create_promo\n\n"
+                "**Шаг 2:** Скопируйте и отправьте данные в формате:\n"
+                "```\n"
+                "Код: WELCOME2024\n"
+                "Название: Приветственный бонус 2024\n"
+                "Описание: Получите 1000 NC при регистрации\n"
+                "Тип: WELCOME\n"
+                "Бонус: 1000\n"
+                "Макс. использований: 1000\n"
+                "Действителен дней: 30\n"
+                "```\n\n"
+                "**📌 Доступные типы промокодов:**\n"
+                "• WELCOME - Приветственный бонус\n"
+                "• DEPOSIT - Бонус на депозит\n"
+                "• RELOAD - Бонус на повторный депозит\n"
+                "• FREE_SPINS - Бесплатные вращения\n"
+                "• CASHBACK - Кэшбэк\n\n"
+                "**💡 Важно:**\n"
+                "• Промокод будет активен сразу\n"
+                "• Все админы и менеджеры могут создавать промокоды\n"
+                "• Уведомления отправляются в админ и менеджер чаты"
             )
         elif is_manager:
             help_text = (
@@ -652,20 +673,29 @@ class NeonCasinoBot:
                 "/create_promo - Создать промокод\n"
                 "/list_promos - Список ваших промокодов\n"
                 "/promo_stats - Ваша статистика\n\n"
-                "**📝 Создание промокода:**\n"
-                "1. Используйте /create_promo\n"
-                "2. Отправьте данные в формате:\n"
-                "   Код: PROMO123\n"
-                "   Название: Приветственный бонус\n"
-                "   Описание: Бонус для новых пользователей\n"
-                "   Тип: WELCOME\n"
-                "   Бонус: 1000\n"
-                "   Макс. использований: 100\n"
-                "   Действителен дней: 30\n\n"
+                "**🔍 Поиск:**\n"
+                "/get_user_id @username - Получить ID пользователя\n\n"
+                "**📝 Создание промокода (ШАГ ЗА ШАГОМ):**\n\n"
+                "**Шаг 1:** Отправьте команду /create_promo\n\n"
+                "**Шаг 2:** Скопируйте и отправьте данные в формате:\n"
+                "```\n"
+                "Код: SUMMER2024\n"
+                "Название: Летний бонус\n"
+                "Описание: Получите 500 NC при регистрации\n"
+                "Тип: WELCOME\n"
+                "Бонус: 500\n"
+                "Макс. использований: 500\n"
+                "Действителен дней: 60\n"
+                "```\n\n"
+                "**📌 Доступные типы промокодов:**\n"
+                "• WELCOME - Приветственный бонус\n"
+                "• DEPOSIT - Бонус на депозит\n"
+                "• RELOAD - Бонус на повторный депозит\n\n"
                 "**💡 Советы:**\n"
                 "• Используйте уникальные коды\n"
                 "• Устанавливайте разумные лимиты\n"
-                "• Описывайте условия четко"
+                "• Описывайте условия четко\n"
+                "• Промокод будет активен сразу после создания"
             )
         else:
             help_text = (
@@ -1208,8 +1238,11 @@ class NeonCasinoBot:
         user = update.effective_user
         chat = update.effective_chat
         
+        logger.info(f"Group command handler triggered. Chat ID: {chat.id}, Admin chat ID: {self.bot_settings.admin_chat_id}")
+        
         # Проверяем, является ли это админ чатом
         if str(chat.id) != self.bot_settings.admin_chat_id:
+            logger.info(f"Chat {chat.id} is not admin chat. Skipping.")
             return
         
         # Создаем или получаем пользователя бота
@@ -1231,6 +1264,8 @@ class NeonCasinoBot:
         
         # Перенаправляем команду на соответствующий обработчик
         command = update.message.text.split()[0][1:]  # Убираем / из команды
+        
+        logger.info(f"Processing command: /{command} from user {user.id}")
         
         if command == "start":
             await self.start_command(update, context)
@@ -1262,10 +1297,279 @@ class NeonCasinoBot:
             await self.show_settings_command(update, context)
         elif command == "test_notifications":
             await self.test_notifications_command(update, context)
+        elif command == "get_user_id":
+            await self.get_user_id_command(update, context)
+        elif command == "list_bot_users":
+            await self.list_bot_users_command(update, context)
+        elif command == "user_detail":
+            await self.user_detail_command(update, context)
+        elif command == "delete_promo":
+            await self.delete_promo_command(update, context)
+        elif command == "view_promo":
+            await self.view_promo_command(update, context)
         elif command == "help":
             await self.help_command(update, context)
         else:
+            logger.warning(f"Unknown command: /{command} from user {user.id} in chat {chat.id}")
             await update.message.reply_text(f"❌ Команда /{command} не найдена или у вас нет прав для её выполнения.")
+    
+    async def get_user_id_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Get user ID by username"""
+        user = update.effective_user
+        
+        # Check permissions - only admins and managers
+        is_manager = await self.check_manager_permissions(user.id)
+        
+        if not is_manager:
+            await update.message.reply_text("❌ У вас нет прав для использования этой команды.")
+            return
+        
+        if not context.args:
+            await update.message.reply_text(
+                "📋 **Получить ID пользователя Telegram**\n\n"
+                "Использование: /get_user_id @username\n\n"
+                "Пример: /get_user_id @example_user"
+            )
+            return
+        
+        username = context.args[0].lstrip('@')
+        
+        try:
+            # Try to get user by username
+            target_user = await self.bot.get_chat(f'@{username}')
+            
+            message = "📋 **Информация о пользователе**\n\n"
+            message += f"👤 Имя: {target_user.first_name or 'Не указано'}\n"
+            if target_user.last_name:
+                message += f"👤 Фамилия: {target_user.last_name}\n"
+            message += f"🆔 Telegram ID: `{target_user.id}`\n"
+            if target_user.username:
+                message += f"👤 Username: @{target_user.username}\n"
+            
+            # Check if user is in database
+            try:
+                bot_user = await sync_to_async(BotUser.objects.get)(user_id=target_user.id)
+                message += f"\n📊 **Статус в системе:**\n"
+                message += f"• Уровень: {bot_user.get_level_display()}\n"
+                message += f"• Активен: {'✅ Да' if bot_user.is_active else '❌ Нет'}\n"
+                message += f"• Забанен: {'❌ Да' if bot_user.is_banned else '✅ Нет'}\n"
+                
+                # Get linked user account
+                if bot_user.linked_user_id:
+                    linked_user = await sync_to_async(User.objects.get)(id=bot_user.linked_user_id)
+                    message += f"\n🔗 **Привязанный аккаунт:**\n"
+                    message += f"• Email: {linked_user.email}\n"
+                    message += f"• Баланс: {linked_user.balance_neon} NC\n"
+            except BotUser.DoesNotExist:
+                message += f"\n⚠️ Пользователь не найден в базе данных бота."
+            
+            await update.message.reply_text(message, parse_mode='Markdown')
+            
+        except Exception as e:
+            await update.message.reply_text(f"❌ Ошибка: {str(e)}\n\nПроверьте правильность username.")
+    
+    async def list_bot_users_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """List all bot users (admins and managers)"""
+        user = update.effective_user
+        
+        # Check if admin chat - no permissions needed
+        if str(update.message.chat.id) == str(self.bot_settings.admin_chat_id):
+            pass  # Allow in admin chat
+        elif not await self.check_admin_permissions(user.id):
+            await update.message.reply_text("❌ Только администраторы могут просматривать список пользователей бота.")
+            return
+        
+        try:
+            # Get all bot users
+            bot_users = await sync_to_async(list)(BotUser.objects.order_by('-created_at'))
+            
+            message = "👥 **Список пользователей бота:**\n\n"
+            
+            if bot_users:
+                for bot_user in bot_users:
+                    status = "✅" if bot_user.is_active else "❌"
+                    banned = "🚫" if bot_user.is_banned else ""
+                    message += f"{status} **{bot_user.first_name}** (@{bot_user.username})\n"
+                    message += f"   🆔 ID: `{bot_user.user_id}`\n"
+                    message += f"   📊 Уровень: {bot_user.get_level_display()}\n"
+                    message += f"   🚫 Забанен: {'Да' if bot_user.is_banned else 'Нет'}\n\n"
+            else:
+                message += "Пользователи не найдены"
+            
+            await update.message.reply_text(message, parse_mode='Markdown')
+            
+        except Exception as e:
+            logger.error(f"Error listing bot users: {e}")
+            await update.message.reply_text(f"❌ Ошибка: {str(e)}")
+    
+    async def user_detail_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Get detailed information about a user"""
+        user = update.effective_user
+        
+        # Check if admin chat
+        if str(update.message.chat.id) != str(self.bot_settings.admin_chat_id):
+            if not await self.check_admin_permissions(user.id):
+                await update.message.reply_text("❌ Только администраторы могут просматривать детали пользователя.")
+                return
+        
+        if not context.args:
+            await update.message.reply_text(
+                "📋 **Информация о пользователе**\n\n"
+                "Использование: /user_detail <user_id>\n\n"
+                "Пример: /user_detail 123456789"
+            )
+            return
+        
+        try:
+            user_id = context.args[0]
+            
+            # Get site user
+            site_user = await sync_to_async(User.objects.get)(id=user_id)
+            
+            # Get bot user if exists
+            try:
+                bot_user = await sync_to_async(BotUser.objects.get)(user_id=site_user.telegram_id)
+                bot_status = f"📱 Telegram: @{bot_user.username}\nУровень: {bot_user.get_level_display()}\nАктивен: {'Да' if bot_user.is_active else 'Нет'}"
+            except BotUser.DoesNotExist:
+                bot_status = "📱 Telegram: не привязан"
+            
+            # Get user stats
+            from payments_new.models import Payment
+            from django.db.models import Sum, Count
+            
+            total_deposits = await sync_to_async(
+                Payment.objects.filter(user=site_user, type='DEPOSIT', status='COMPLETED').aggregate(total=Sum('amount'))
+            )()
+            total_withdrawals = await sync_to_async(
+                Payment.objects.filter(user=site_user, type='WITHDRAWAL', status='COMPLETED').aggregate(total=Sum('amount'))
+            )()
+            
+            deposit_count = await sync_to_async(Payment.objects.filter(user=site_user, type='DEPOSIT').count)()
+            withdrawal_count = await sync_to_async(Payment.objects.filter(user=site_user, type='WITHDRAWAL').count)()
+            
+            message = f"""
+📊 **Детальная информация о пользователе**
+
+**👤 Основная информация:**
+• Имя: {site_user.username or 'Не указано'}
+• Email: {site_user.email}
+• ID: {site_user.id}
+• Регистрация: {site_user.date_joined.strftime('%d.%m.%Y %H:%M')}
+
+**💰 Финансы:**
+• Баланс: {site_user.balance_neon} NC
+• Всего пополнено: {total_deposits.get('total', 0) or 0:.2f} NC
+• Всего выведено: {total_withdrawals.get('total', 0) or 0:.2f} NC
+
+**💳 Сделки:**
+• Пополнений: {deposit_count}
+• Выводов: {withdrawal_count}
+
+**📱 {bot_status}**
+
+**🔐 Статус:**
+• KYC: {site_user.kyc_status if hasattr(site_user, 'kyc_status') else 'N/A'}
+• Активен: {'Да' if site_user.is_active else 'Нет'}
+"""
+            
+            await update.message.reply_text(message, parse_mode='Markdown')
+            
+        except User.DoesNotExist:
+            await update.message.reply_text(f"❌ Пользователь с ID {context.args[0]} не найден.")
+        except Exception as e:
+            logger.error(f"Error getting user detail: {e}")
+            await update.message.reply_text(f"❌ Ошибка: {str(e)}")
+    
+    async def delete_promo_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """Delete a promo code"""
+        user = update.effective_user
+        
+        # Check if admin chat
+        if str(update.message.chat.id) != str(self.bot_settings.admin_chat_id):
+            if not await self.check_admin_permissions(user.id):
+                await update.message.reply_text("❌ Только администраторы могут удалять промокоды.")
+                return
+        
+        if not context.args:
+            await update.message.reply_text(
+                "🗑️ **Удаление промокода**\n\n"
+                "Использование: /delete_promo <код>\n\n"
+                "Пример: /delete_promo WELCOME2024"
+            )
+            return
+        
+        try:
+            promo_code = context.args[0].upper()
+            
+            # Get and delete promo code
+            promo = await sync_to_async(PromoCode.objects.get)(code=promo_code)
+            promo.delete()
+            
+            await update.message.reply_text(f"✅ Промокод '{promo_code}' успешно удален!")
+            
+        except PromoCode.DoesNotExist:
+            await update.message.reply_text(f"❌ Промокод '{context.args[0]}' не найден.")
+        except Exception as e:
+            logger.error(f"Error deleting promo: {e}")
+            await update.message.reply_text(f"❌ Ошибка: {str(e)}")
+    
+    async def view_promo_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        """View detailed information about a promo code"""
+        user = update.effective_user
+        
+        # Check if admin chat
+        if str(update.message.chat.id) != str(self.bot_settings.admin_chat_id):
+            if not await self.check_admin_permissions(user.id):
+                await update.message.reply_text("❌ Только администраторы могут просматривать промокоды.")
+                return
+        
+        if not context.args:
+            await update.message.reply_text(
+                "🔍 **Информация о промокоде**\n\n"
+                "Использование: /view_promo <код>\n\n"
+                "Пример: /view_promo WELCOME2024"
+            )
+            return
+        
+        try:
+            promo_code = context.args[0].upper()
+            
+            # Get promo code
+            promo = await sync_to_async(PromoCode.objects.get)(code=promo_code)
+            
+            # Get redemption stats
+            from promo.models import PromoRedemption
+            redemption_count = await sync_to_async(PromoRedemption.objects.filter(promo_code=promo).count)()
+            
+            message = f"""
+🔍 **Информация о промокоде**
+
+**📝 Основная информация:**
+• Код: {promo.code}
+• Название: {promo.name}
+• Описание: {promo.description}
+• Тип: {promo.get_promo_type_display()}
+
+**💰 Финансы:**
+• Бонус: {promo.bonus_amount} NC
+• Всего использований: {redemption_count}/{promo.max_uses or '∞'}
+
+**📊 Статус:**
+• Статус: {promo.get_status_display()}
+• Действителен до: {promo.expires_at.strftime('%d.%m.%Y %H:%M') if promo.expires_at else 'Бессрочно'}
+
+**👤 Создатель:**
+• {promo.created_by.username if promo.created_by else 'Система'}
+• {promo.created_at.strftime('%d.%m.%Y %H:%M')}
+"""
+            
+            await update.message.reply_text(message, parse_mode='Markdown')
+            
+        except PromoCode.DoesNotExist:
+            await update.message.reply_text(f"❌ Промокод '{context.args[0]}' не найден.")
+        except Exception as e:
+            logger.error(f"Error viewing promo: {e}")
+            await update.message.reply_text(f"❌ Ошибка: {str(e)}")
     
     def run(self):
         """Run the bot with optimized settings"""

@@ -6,17 +6,18 @@ import { API_URL } from '../../http';
 import './PlinkoPage.css';
 
 const PlinkoPage = ({ onRegisterModalOpen }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, updateUserData } = useAuth();
   const { t } = useTranslation();
   const [betAmount, setBetAmount] = useState(0);
-  const [rows, setRows] = useState(10);
+  const [rows, setRows] = useState(14); // Default to 14 rows for better gameplay
   const [difficulty, setDifficulty] = useState('normal');
   const [mode, setMode] = useState('manual');
   const [isPlaying, setIsPlaying] = useState(false);
   const [multipliers, setMultipliers] = useState([]);
   const [gameHistory, setGameHistory] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [ballPosition, setBallPosition] = useState({ row: 0, column: 5 });
+  const [ballPosition, setBallPosition] = useState({ row: 0, column: 5, x: 0, y: 0 });
+  const [winningSlot, setWinningSlot] = useState(null); // Store winning slot from backend
 
   // Multipliers for different difficulty levels
   const getMultipliers = (rows, difficulty) => {
@@ -34,23 +35,114 @@ const PlinkoPage = ({ onRegisterModalOpen }) => {
 
   const animateBall = () => {
     setIsAnimating(true);
-    setBallPosition({ row: 0, column: 5 });
     
-    // Simulate ball falling
+    // Board dimensions
+    const boardWidth = 500; // Match CSS width
+    const rowHeight = 28; // Vertical distance between rows
+    const startX = boardWidth / 2;
+    
+    // Initial position (top center)
     let currentRow = 0;
-    let currentCol = 5;
-    const interval = setInterval(() => {
+    let currentCol = Math.floor(rows / 2) + 1; // Center column based on rows
+    let x = startX;
+    let y = 30; // Starting y position
+    
+    // Track for momentum
+    let velocityX = 0;
+    let lastDirection = 0;
+    
+    // Calculate column width dynamically based on rows
+    const maxCols = rows + 1; // One more peg per row
+    const columnWidth = boardWidth / (maxCols - 1);
+    
+    const animate = () => {
+      // Move to next row
       currentRow++;
-      if (currentRow < rows) {
-        // Random left or right movement
-        currentCol += Math.random() > 0.5 ? -1 : 1;
-        currentCol = Math.max(0, Math.min(10, currentCol));
-        setBallPosition({ row: currentRow, column: currentCol });
+      y += rowHeight;
+      
+      // Determine bounce direction with momentum physics
+      const randomValue = Math.random();
+      let directionChange = 0;
+      
+      if (lastDirection === 0) {
+        // First bounce - completely random
+        directionChange = randomValue > 0.5 ? 1 : -1;
       } else {
-        clearInterval(interval);
-        setIsAnimating(false);
+        // Use momentum: 70% chance to continue, 30% to reverse
+        if (randomValue < 0.70) {
+          directionChange = lastDirection;
+        } else {
+          directionChange = -lastDirection;
+        }
       }
-    }, 100);
+      
+      currentCol += directionChange;
+      lastDirection = directionChange;
+      
+      // Keep within bounds (0 to maxCols-1)
+      const minCol = 0;
+      const maxCol = maxCols - 1;
+      
+      if (currentCol < minCol) {
+        currentCol = minCol;
+        lastDirection = -lastDirection; // Bounce off wall
+      } else if (currentCol > maxCol) {
+        currentCol = maxCol;
+        lastDirection = -lastDirection; // Bounce off wall
+      }
+      
+      // Calculate x position
+      x = startX + (currentCol - (maxCols / 2)) * columnWidth;
+      
+      // Update position
+      setBallPosition({ row: currentRow, column: currentCol, x, y, velocityX: 0 });
+      
+      // Check if reached bottom
+      if (currentRow >= rows) {
+        // Use winning slot from backend to determine final position
+        let finalSlotToUse = currentCol;
+        let finalX = x;
+        
+        if (winningSlot !== null) {
+          // Backend provides winning_slot (0-10) for the 11 multiplier slots
+          // We need to map this to the actual column position on the board
+          
+          // Calculate the center of the multiplier slots area
+          const slotWidth = boardWidth / 11; // 11 multiplier slots
+          finalX = (winningSlot * slotWidth) + (slotWidth / 2); // Center of the winning slot
+          
+          // Calculate which peg column this corresponds to
+          finalSlotToUse = Math.round(((finalX / boardWidth) * maxCols) - (maxCols / 2));
+          finalSlotToUse = Math.max(0, Math.min(maxCols - 1, finalSlotToUse));
+          
+          console.log('Final position calc:', {
+            winningSlot,
+            finalX: finalX.toFixed(1),
+            finalSlotToUse,
+            slotWidth: slotWidth.toFixed(1)
+          });
+        }
+        
+        // Move ball to bottom position - make it more visible
+        // y position should be at the bottom of the board but visible above multipliers
+        setBallPosition({ row: rows, column: finalSlotToUse, x: finalX, y: 530, velocityX: 0 }); // y: 530 visible above slots
+        
+        // Keep ball visible at bottom for a moment (1 second)
+        setTimeout(() => {
+          setIsAnimating(false);
+        }, 1000);
+        
+        return;
+      }
+      
+      // Continue animation
+      requestAnimationFrame(() => {
+        setTimeout(animate, 120); // Smooth timing
+      });
+    };
+    
+    // Start animation
+    animate();
   };
 
   const handleBet = async () => {
@@ -69,9 +161,6 @@ const PlinkoPage = ({ onRegisterModalOpen }) => {
     setIsPlaying(true);
     setIsAnimating(true);
     
-    // Start animation
-    animateBall();
-    
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(`${API_URL}/games/plinko/play/`, {
@@ -82,6 +171,24 @@ const PlinkoPage = ({ onRegisterModalOpen }) => {
       });
       
       if (response.data) {
+        // Store winning slot from backend
+        setWinningSlot(response.data.winning_slot);
+        
+        // Calculate final column position based on winning slot (0-10)
+        const finalSlot = response.data.winning_slot;
+        const maxCols = rows + 1;
+        const boardWidth = 500;
+        const columnWidth = boardWidth / (maxCols - 1);
+        const centerOffset = Math.floor((maxCols - 11) / 2);
+        const finalCol = finalSlot + centerOffset + 2; // Offset to match visual slots
+        
+        console.log('Plinko Debug:', {
+          winningSlot: finalSlot,
+          finalCol,
+          maxCols,
+          centerOffset
+        });
+        
         const gameResult = {
           id: Date.now(),
           user: 'Player',
@@ -99,11 +206,18 @@ const PlinkoPage = ({ onRegisterModalOpen }) => {
           localStorage.setItem('userBalance', response.data.newBalance.toString());
         }
         
+        // Start animation with determined final position
+        animateBall();
+        
         // Show result after animation
         setTimeout(() => {
           alert(response.data.payout > 0 ? `🎉 You won ${response.data.payout}! Multiplier: ${response.data.multiplier}x` : 'You lost this round');
-          setIsAnimating(false);
-        }, rows * 100 + 500);
+          
+          // Update balance after animation completes
+          if (updateUserData) {
+            updateUserData();
+          }
+        }, rows * 120 + 500 + 500); // Timing: rows * interval + bottom delay + extra
       }
     } catch (error) {
       console.error('Error playing Plinko:', error);
@@ -115,7 +229,7 @@ const PlinkoPage = ({ onRegisterModalOpen }) => {
   };
 
   const quickBetAmounts = [100, 500, 1000, 5000];
-  const rowOptions = [8, 10, 12, 14, 16];
+  const rowOptions = [12, 14, 16, 18, 20]; // More rows for better gameplay
 
   return (
     <div className="plinko-page">
@@ -249,9 +363,11 @@ const PlinkoPage = ({ onRegisterModalOpen }) => {
                 className="plinko-ball"
                 style={{
                   position: 'absolute',
-                  top: `${ballPosition.row * 40}px`,
-                  left: `${ballPosition.column * 40}px`,
-                  transition: 'all 0.1s ease-out'
+                  left: `${ballPosition.x}px`,
+                  top: `${ballPosition.y}px`,
+                  transform: 'translate(-50%, -50%)',
+                  transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+                  willChange: 'transform'
                 }}
               >
                 ⚽

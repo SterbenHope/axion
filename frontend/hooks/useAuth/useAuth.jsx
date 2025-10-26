@@ -75,12 +75,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (email, password, referralCode = null) => {
+  const register = async (email, password, promoCode = null) => {
     setLoading(true);
     setError(null);
     
     try {
-      const response = await AuthService.registration(email, password, referralCode);
+      const response = await AuthService.registration(email, password, promoCode);
       localStorage.setItem('token', response.data.access);
       localStorage.setItem('refreshToken', response.data.refresh);
       localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -130,16 +130,8 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
 
-    // Auto-refresh user data (including balance) every 10 seconds (silent)
-    const interval = setInterval(() => {
-      const token = localStorage.getItem('token');
-      const savedUser = localStorage.getItem('user');
-      if (token && savedUser) {
-        updateUserData(); // Silent update - no loading state
-      }
-    }, 10000);
-
-    return () => clearInterval(interval);
+    // Balance updates are now handled by games after completion
+    // No automatic polling to avoid balance showing before animations complete
   }, []);
 
   const value = {
@@ -151,6 +143,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     clearError: () => setError(null),
+    updateUserData,
   };
 
   return (

@@ -6,7 +6,7 @@ import { API_URL } from '../../http';
 import './WheelPage.css';
 
 const WheelPage = ({ onRegisterModalOpen }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, updateUserData } = useAuth();
   const { t } = useTranslation();
   const [betAmount, setBetAmount] = useState(100);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -74,54 +74,34 @@ const WheelPage = ({ onRegisterModalOpen }) => {
       });
 
       if (response.data) {
-        // Calculate rotation based on winning segment
+        // SERVER IS THE SINGLE SOURCE OF TRUTH
+        // Frontend doesn't calculate anything, just applies server's parameters
+        
         const winningSegment = response.data.winning_segment || 0;
+        const targetAngleDeg = response.data.target_angle_deg || 0;
+        const extraRotations = response.data.extra_rotations || 5;
+        const durationMs = response.data.duration_ms || 5000;
+        const totalRotationDeg = response.data.total_rotation_deg || 0;
         
-        // Each segment is 15 degrees (360/24)
-        const segmentAngle = 15;
-        
-        // Calculate random offset within the segment (±3 degrees from center)
-        const maxOffset = 3;
-        const randomOffset = (Math.random() - 0.5) * 2 * maxOffset;
-        
-        // SVG starts from -90 degrees
-        // Segment 0 starts at -90 degrees, segment 1 starts at -75, etc.
-        // Each segment center is at: start + 7.5 degrees
-        const segmentCenterAngle = -90 + (winningSegment * segmentAngle) + 7.5 + randomOffset;
-        
-        // We want to rotate the wheel so this center aligns with the pointer at 0 degrees (top)
-        // So we rotate by negative of this angle
-        const targetAngle = -segmentCenterAngle;
-        
-        // Add full rotations for dramatic effect (always positive/forward)
-        const rotations = 5 + Math.random() * 3; // 5-8 full rotations
-        const totalRotation = rotations * 360 + targetAngle;
-        
-        console.log('Wheel Spin Debug:', {
+        console.log('Wheel Spin Debug (Server Params):', {
           winningSegment,
           multiplier: WHEEL_SEGMENTS[winningSegment].multiplier,
-          segmentCenterAngle: segmentCenterAngle.toFixed(2),
-          randomOffset: randomOffset.toFixed(2),
-          targetAngle: targetAngle.toFixed(2),
-          rotations: rotations.toFixed(2),
-          totalRotation: totalRotation.toFixed(2)
+          targetAngleDeg: targetAngleDeg.toFixed(2),
+          extraRotations,
+          durationMs,
+          totalRotationDeg: totalRotationDeg.toFixed(2)
         });
         
-        // Reset to 0 first (force reflow), then apply rotation
-        // This prevents rotation from accumulating incorrectly
+        // Apply the rotation with server-provided parameters
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'none';
           wheelRef.current.style.transform = `rotate(0deg)`;
-          
-          // Force a reflow
           void wheelRef.current.offsetWidth;
-          
-          // Now apply the rotation with transition
-          wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.23, 1, 0.32, 1)';
-          wheelRef.current.style.transform = `rotate(${totalRotation}deg)`;
+          wheelRef.current.style.transition = `transform ${durationMs / 1000}s cubic-bezier(0.15, 0.85, 0.1, 1)`;
+          wheelRef.current.style.transform = `rotate(${totalRotationDeg}deg)`;
         }
 
-        setWheelRotation(totalRotation);
+        setWheelRotation(totalRotationDeg);
 
                   // Wait for animation to complete
           setTimeout(() => {
@@ -158,7 +138,12 @@ const WheelPage = ({ onRegisterModalOpen }) => {
             }
 
             setIsSpinning(false);
-          }, 5000);
+            
+            // Update balance after animation completes
+            if (updateUserData) {
+              updateUserData();
+            }
+          }, durationMs);
       }
     } catch (error) {
       console.error('Error spinning wheel:', error);
@@ -316,7 +301,13 @@ const WheelPage = ({ onRegisterModalOpen }) => {
                 // Sweep flag: 1 for clockwise
                 const sweep = 1;
                 
-                return (
+                                 // Calculate label position - center of segment at distance from center
+                 const labelAngle = (startAngle + segmentAngle / 2) * Math.PI / 180;
+                 const labelDistance = 35; // Distance from center in percentage (35%)
+                 const labelX = 50 + labelDistance * Math.cos(labelAngle - Math.PI / 2);
+                 const labelY = 50 + labelDistance * Math.sin(labelAngle - Math.PI / 2);
+                 
+                 return (
                   <div
                     key={segment.id}
                     className="wheel-segment"
@@ -332,7 +323,9 @@ const WheelPage = ({ onRegisterModalOpen }) => {
                     <div 
                       className="segment-label"
                       style={{
-                        transform: `translate(-50%, -50%) rotate(${startAngle + segmentAngle / 2}deg) translateY(-140px) rotate(${-(startAngle + segmentAngle / 2)}deg)`,
+                        left: `${labelX}%`,
+                        top: `${labelY}%`,
+                        transform: `translate(-50%, -50%) rotate(${startAngle + segmentAngle / 2}deg)`,
                       }}
                     >
                       {segment.label}

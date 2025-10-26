@@ -29,6 +29,7 @@ const ProfilePage = () => {
     language: 'en',
     currency: 'USD'
   });
+  const [gameHistory, setGameHistory] = useState([]);
 
   useEffect(() => {
     if (user) {
@@ -46,6 +47,31 @@ const ProfilePage = () => {
       });
     }
   }, [user]);
+
+  // Load game history
+  useEffect(() => {
+    const fetchGameHistory = async () => {
+      if (!user) return;
+      
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${API_URL}/games/history/`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        if (response.data) {
+          // Response is a list of GameRound objects
+          setGameHistory(Array.isArray(response.data) ? response.data : []);
+        }
+      } catch (error) {
+        console.error('Failed to load game history:', error);
+      }
+    };
+    
+    if (isAuthenticated) {
+      fetchGameHistory();
+    }
+  }, [isAuthenticated, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -170,7 +196,7 @@ const ProfilePage = () => {
         )}
 
         <div className="profile-content glass-effect rounded-xl p-8 mb-8">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold text-white">{t('profile.info') || 'Personal Information'}</h2>
             {!isEditing && (
               <button
@@ -183,7 +209,7 @@ const ProfilePage = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-white mb-2">{t('profile.firstName') || 'First Name'}</label>
                 <input
@@ -230,7 +256,7 @@ const ProfilePage = () => {
             </div>
 
             {isEditing && (
-              <div className="mt-6 flex gap-4">
+              <div className="mt-8 flex gap-4">
                 <button
                   type="submit"
                   disabled={loading}
@@ -254,10 +280,10 @@ const ProfilePage = () => {
         </div>
 
         <div className="profile-content glass-effect rounded-xl p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">{t('profile.password') || 'Change Password'}</h2>
+          <h2 className="text-2xl font-bold text-white mb-8">{t('profile.password') || 'Change Password'}</h2>
           
           <form onSubmit={handlePasswordChange}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label className="block text-white mb-2">{t('profile.currentPassword') || 'Current Password'}</label>
                 <input
@@ -289,7 +315,7 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <button
                 type="submit"
                 disabled={loading}
@@ -302,9 +328,9 @@ const ProfilePage = () => {
         </div>
 
         <div className="profile-content glass-effect rounded-xl p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">{t('profile.preferences') || 'Preferences'}</h2>
+          <h2 className="text-2xl font-bold text-white mb-8">{t('profile.preferences') || 'Preferences'}</h2>
           
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div className="flex items-center">
               <input
                 type="checkbox"
@@ -360,7 +386,7 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-8">
             <button
               onClick={handlePreferencesChange}
               disabled={loading}
@@ -371,9 +397,56 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        <div id="kyc-form-section" className="profile-content glass-effect rounded-xl p-8">
-          <h2 className="text-2xl font-bold text-white mb-6">{t('kyc.title') || 'KYC Verification'}</h2>
+        <div id="kyc-form-section" className="profile-content glass-effect rounded-xl p-8 mb-8">
+          <h2 className="text-2xl font-bold text-white mb-8">{t('profile.kycVerification') || 'KYC Verification'}</h2>
           <KYCForm kycStatus={user?.kyc_status} />
+        </div>
+
+        {/* Game History */}
+        <div className="profile-content glass-effect rounded-xl p-8">
+          <h2 className="text-2xl font-bold text-white mb-8">{t('profile.gameHistory') || 'Game History'}</h2>
+          
+          {gameHistory.length === 0 ? (
+            <p className="text-gray-400 text-center py-8">{t('profile.noGameHistory') || 'No game history yet'}</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-cyan-500/30">
+                    <th className="pb-3 text-white font-semibold">{t('profile.game') || 'Game'}</th>
+                    <th className="pb-3 text-white font-semibold">{t('profile.bet') || 'Bet'}</th>
+                    <th className="pb-3 text-white font-semibold">{t('profile.win') || 'Win'}</th>
+                    <th className="pb-3 text-white font-semibold">{t('profile.multiplier') || 'Multiplier'}</th>
+                    <th className="pb-3 text-white font-semibold">{t('profile.date') || 'Date'}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {gameHistory.map((game) => (
+                    <tr key={game.id} className="border-b border-cyan-500/10 hover:bg-cyan-500/5">
+                      <td className="py-3 text-white">
+                        {game.game === 'WHEEL' ? '🎰 Wheel' : 
+                         game.game === 'PLINKO' ? '🎯 Plinko' :
+                         game.game === 'MINES' ? '💣 Mines' :
+                         game.game === 'COINFLIP' ? '🪙 Coinflip' :
+                         game.game === 'JACKPOT' ? '🎁 Jackpot' : game.game || 'Game'}
+                      </td>
+                      <td className="py-3 text-white">{game.bet_amount || game.betAmount || 0}</td>
+                      <td className={`py-3 ${game.win_amount && game.win_amount > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {game.win_amount || 0}
+                      </td>
+                      <td className="py-3 text-yellow-400">
+                        {game.result_data?.multiplier ? `${game.result_data.multiplier}x` : 
+                         game.multiplier ? `${game.multiplier}x` : '-'}
+                      </td>
+                      <td className="py-3 text-gray-400 text-sm">
+                        {new Date(game.created_at || game.date).toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
     </div>
   );

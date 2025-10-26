@@ -291,6 +291,58 @@
   font-size: 16px;
 }
 
+.player-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.player-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.player-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FF922E, #FFC239);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.player-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.player-name {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.player-amount {
+  color: #FFC701;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.player-time {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .jackpot-game-area {

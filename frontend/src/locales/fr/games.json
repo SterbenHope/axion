@@ -1,28 +1,104 @@
 {
-  "games": "Jeux",
-  "allGames": "Tous les Jeux",
-  "popularGames": "Jeux Populaires",
-  "newGames": "Nouveaux Jeux",
-  "favorites": "Favoris",
-  "searchGames": "Rechercher des jeux...",
+  "title": "Jeux",
+  "subtitle": "Choisissez un jeu et essayez votre chance avec la monnaie virtuelle NeonCoins",
   "categories": {
+    "all": "Tous les Jeux",
     "slots": "Machines à Sous",
-    "tableGames": "Jeux de Table",
-    "cardGames": "Jeux de Cartes",
-    "liveGames": "Jeux en Direct",
-    "jackpot": "Jackpot"
+    "table": "Jeux de Table",
+    "live": "Jeux en Direct",
+    "popular": "Populaires",
+    "new": "Nouveaux"
   },
-  "gameInfo": {
-    "minBet": "Mise Min",
-    "maxBet": "Mise Max",
-    "rtp": "RTP",
-    "volatility": "Volatilité",
-    "features": "Fonctionnalités"
+  "games": {
+    "slots": {
+      "title": "Slots Neon",
+      "description": "Tournez les rouleaux dans nos machines à sous cyberpunk",
+      "minBet": "Min mise: 1 NC",
+      "maxBet": "Max mise: 1000 NC",
+      "rtp": "RTP: 96.5%"
+    },
+    "blackjack": {
+      "title": "Blackjack Cyber",
+      "description": "Battez le croupier dans ce jeu de cartes classique",
+      "minBet": "Min mise: 5 NC",
+      "maxBet": "Max mise: 500 NC",
+      "rtp": "RTP: 99.5%"
+    },
+    "wheel": {
+      "title": "Roue de la Fortune",
+      "description": "Tournez la roue de la fortune et gagnez de gros prix",
+      "minBet": "Min mise: 1 NC",
+      "maxBet": "Max mise: 100 NC",
+      "rtp": "RTP: 95.0%",
+      "spin": "TOURNER LA ROUE",
+      "spinning": "Rotation en cours...",
+      "maxWin": "GAIN MAX: 25x votre mise ! 🎯",
+      "legend": "Résultats",
+      "lose": "PERDRE",
+      "bonus": "+10%"
+    },
+    "plinko": {
+      "title": "Plinko",
+      "description": "Laissez tomber la balle et regardez-la rebondir pour de gros gains",
+      "minBet": "Min mise: 1 NC",
+      "maxBet": "Max mise: 1000 NC",
+      "rtp": "RTP: 94.5%",
+      "mode": "Mode",
+      "manual": "Manuel",
+      "auto": "Auto",
+      "difficulty": "Difficulté",
+      "easy": "Facile",
+      "normal": "Normal",
+      "hard": "Difficile",
+      "betAmount": "Montant de mise",
+      "amountOfRows": "Nombre de rangées",
+      "maxWin": "GAIN MAX: 10,000,000 pièces",
+      "placeBet": "placer une mise",
+      "playing": "En cours...",
+      "user": "Utilisateur",
+      "betAmountLabel": "Montant de mise",
+      "multiplier": "Multiplicateur",
+      "payout": "Gain",
+      "date": "Date"
+    },
+    "mines": {
+      "title": "Mines",
+      "description": "Cliquez sur les cellules pour révéler des diamants et éviter les mines",
+      "minesAmount": "Nombre de Mines",
+      "betAmount": "Montant de Mise",
+      "play": "Jouer",
+      "cashOut": "Encaisser",
+      "reset": "Réinitialiser",
+      "gameOfChance": "C'est un jeu de hasard. Jouez de manière responsable.",
+      "mineHit": "💣 Vous avez touché une mine ! Partie terminée !",
+      "pleaseEnter": "Veuillez saisir le montant de la mise et sélectionner le nombre de mines",
+      "failedToStart": "Échec du démarrage du jeu",
+      "cashOutSuccess": "🎉 Encaissement réussi ! Gagné :",
+      "failedToCashOut": "Échec de l'encaissement"
+    }
   },
-  "playNow": "Jouer Maintenant",
-  "demoMode": "Mode Démo",
-  "realMoney": "Argent Réel",
-  "loading": "Chargement du jeu...",
-  "error": "Erreur de chargement du jeu",
-  "tryAgain": "Réessayer"
+  "gameplay": {
+    "balance": "Solde",
+    "bet": "Mise",
+    "win": "Gagner",
+    "lose": "Perdre",
+    "draw": "Match nul",
+    "spin": "Tourner",
+    "hit": "Tirer",
+    "stand": "Rester",
+    "double": "Doubler",
+    "split": "Diviser",
+    "deal": "Distribuer",
+    "newGame": "Nouveau Jeu"
+  },
+  "messages": {
+    "insufficientBalance": "Fonds insuffisants",
+    "betTooHigh": "Mise trop élevée",
+    "betTooLow": "Mise trop faible",
+    "gameInProgress": "Jeu en cours",
+    "gameOver": "Jeu terminé",
+    "youWon": "Vous avez gagné !",
+    "youLost": "Vous avez perdu",
+    "draw": "Match nul !"
+  }
 }

@@ -868,23 +868,56 @@ def wheel_play(request):
             }, status=status.HTTP_400_BAD_REQUEST)
         
         # Define segments exactly matching frontend WHEEL_SEGMENTS
-        # Frontend segments (index 0-23):
-        # [0, 0.5, 1, 2, 3, 5, 10, 25, 0, 1, 2, 2, 3, 5, 10, 0.1, 0.5, 1, 2, 3, 5, 5, 0, 1]
+        # Frontend WHEEL_SEGMENTS array (index 0-23):
+        # [0] = { id: 1, multiplier: 0 }    # LOSE
+        # [1] = { id: 2, multiplier: 0.5 }  # 0.5x
+        # [2] = { id: 3, multiplier: 1 }    # 1x
+        # ...
+        # [23] = { id: 24, multiplier: 1 }  # 1x
         segment_map = [
-            0, 0.5, 1, 2, 3, 5, 10, 25,  # First 8 segments (0-7)
-            0, 1, 2, 2, 3, 5, 10, 0.1,   # Next 8 segments (8-15)
-            0.5, 1, 2, 3, 5, 5, 0, 1      # Last 8 segments (16-23)
+            0,    # index 0, id 1: LOSE
+            0.5,  # index 1, id 2: 0.5x
+            1,    # index 2, id 3: 1x
+            2,    # index 3, id 4: 2x
+            3,    # index 4, id 5: 3x
+            5,    # index 5, id 6: 5x
+            10,   # index 6, id 7: 10x
+            25,   # index 7, id 8: 25x
+            0,    # index 8, id 9: LOSE
+            1,    # index 9, id 10: 1x
+            2,    # index 10, id 11: 2x
+            2,    # index 11, id 12: 2x
+            3,    # index 12, id 13: 3x
+            5,    # index 13, id 14: 5x
+            10,   # index 14, id 15: 10x
+            0.1,  # index 15, id 16: +10% bonus
+            0.5,  # index 16, id 17: 0.5x
+            1,    # index 17, id 18: 1x
+            2,    # index 18, id 19: 2x
+            3,    # index 19, id 20: 3x
+            5,    # index 20, id 21: 5x
+            5,    # index 21, id 22: 5x
+            0,    # index 22, id 23: LOSE
+            1,    # index 23, id 24: 1x
         ]
         
-        # Select random segment index (0-23)
+        # Select random segment index (0-23) - this directly maps to array index
         winning_segment = random.randint(0, 23)
         
         # Get multiplier from the selected segment
         multiplier = segment_map[winning_segment]
         
+        # Debug: Log the selected segment
+        print(f"\n[WHEEL SELECTION DEBUG]")
+        print(f"Random winning_segment array index: {winning_segment} (frontend WHEEL_SEGMENTS[{winning_segment}])")
+        print(f"Frontend segment id: {winning_segment + 1}")
+        print(f"multiplier from segment_map[{winning_segment}]: {multiplier}")
+        print(f"Frontend WHEEL_SEGMENTS[{winning_segment}].multiplier should be: {multiplier}")
+        print(f"Frontend WHEEL_SEGMENTS[{winning_segment}].id should be: {winning_segment + 1}")
+
         # Determine type based on multiplier
         if multiplier == 0:
-            selected_segment = {'type': 'win', 'multiplier': 0}
+            selected_segment = {'type': 'lose', 'multiplier': 0}
         elif multiplier == 0.1:
             selected_segment = {'type': 'bonus', 'multiplier': 0.1}
         elif multiplier == 0.5:
@@ -1004,7 +1037,57 @@ def wheel_play(request):
             },
             ip_address=client_ip,
             total_wagered=bet_amount
-        )
+                  )
+          
+        # SERVER CALCULATES ALL ANIMATION PARAMETERS
+        # This is the single source of truth
+        
+        segment_angle = 360 / 24  # 15 degrees per segment
+        
+        # CRITICAL FIX: The frontend renders segments starting from top (0°)
+        # When winning_segment = 16 (frontend index 16, which is the 17th segment):
+        # - In visual representation (top is 0°), this segment starts at 16*15 = 240° and goes to 17*15 = 255°
+        # - The center of this segment is at 247.5° from the top (visual 0°)
+        # - BUT the wheel needs to ROTATE so that this center ends up at the pointer position (top, 0°)
+        # - So we need to rotate the wheel BY the center angle to bring it to the top
+        # - If the segment center is at 247.5° from the start, we rotate the wheel 247.5° clockwise
+        # - This brings the segment center to the top (pointer position)
+        
+        # Calculate where the segment center is located on the wheel (from top, clockwise)
+        segment_center_from_top = (winning_segment * segment_angle) + (segment_angle / 2)
+        
+        # CRITICAL: To bring the segment center to the TOP (pointer at 0°), we need to rotate
+        # the wheel in the OPPOSITE direction. If the segment is at 82.5° from top,
+        # we need to rotate the wheel by (360 - 82.5) = 277.5° clockwise to bring it to the top.
+        # This is because rotating clockwise by 277.5° is equivalent to rotating counter-clockwise by 82.5°
+        rotation_to_top = (360 - segment_center_from_top) % 360
+        
+        # Add small jitter inside the segment (±2 degrees) for visual variety
+        jitter = (random.random() - 0.5) * 2  # -1 to +1 degrees (reduced from 4 to 2)
+        
+        # The final angle where the wheel should stop
+        final_angle = rotation_to_top + jitter
+        
+        # Number of full rotations (3-6)
+        extra_rotations = random.randint(3, 6)
+        
+        # Duration of animation in milliseconds (3.8-5.2 seconds)
+        duration_ms = random.randint(3800, 5200)
+        
+        # Total rotation: extra rotations + final angle (to bring segment center to top)
+        total_rotation_deg = (extra_rotations * 360) + final_angle
+        
+        print(f"\n[WHEEL SERVER DEBUG] ==================================")
+        print(f"winning_segment: {winning_segment}")
+        print(f"segment_angle: {segment_angle}")
+        print(f"segment_center_from_top: {segment_center_from_top:.2f}°")
+        print(f"rotation_to_top: {rotation_to_top:.2f}°")
+        print(f"jitter: {jitter:.2f}°")
+        print(f"final_angle: {final_angle:.2f}°")
+        print(f"extra_rotations: {extra_rotations}")
+        print(f"duration_ms: {duration_ms}")
+        print(f"total_rotation_deg: {total_rotation_deg:.2f}°")
+        print(f"[WHEEL SERVER DEBUG] ==================================\n")
         
         return Response({
             'winning_segment': winning_segment,
@@ -1015,7 +1098,12 @@ def wheel_play(request):
             'isWin': payout > bet_amount,
             'isBonus': selected_segment['type'] == 'bonus',
             'newBalance': float(user.balance_neon),
-            'game_round_id': game_round.id
+            'game_round_id': game_round.id,
+            # Animation parameters - SERVER IS THE SINGLE SOURCE OF TRUTH
+            'target_angle_deg': float(final_angle),
+            'extra_rotations': extra_rotations,
+            'duration_ms': duration_ms,
+            'total_rotation_deg': float(total_rotation_deg)
         })
         
     except Exception as e:
@@ -1053,13 +1141,20 @@ def plinko_play(request):
         slot_multipliers = multipliers.get(difficulty, multipliers['normal'])
         winning_slot = random.randint(0, len(slot_multipliers) - 1)
         multiplier = slot_multipliers[winning_slot]
+        
+        # Convert to Decimal for proper financial calculations
+        from decimal import Decimal
+        balance_before_bet = float(user.balance_neon)
+        user.balance_neon = Decimal(str(user.balance_neon)) - Decimal(str(bet_amount))
+        balance_after_bet = float(user.balance_neon)
+        
         payout = bet_amount * multiplier
         
-        # Update user balance
-        user.balance_neon -= bet_amount
         if payout > 0:
-            user.balance_neon += payout
+            user.balance_neon = Decimal(str(user.balance_neon)) + Decimal(str(payout))
+        
         user.save()
+        balance_after_win = float(user.balance_neon)
         
         # Create transaction record for BET
         from transactions.models import Transaction
@@ -1069,8 +1164,8 @@ def plinko_play(request):
             transaction_type='BET',
             amount=bet_amount,
             currency='NEON',
-            balance_before=user.balance_neon + bet_amount,
-            balance_after=user.balance_neon,
+            balance_before=balance_before_bet,
+            balance_after=balance_after_bet,
             net_amount=bet_amount,
             status='COMPLETED',
             ip_address=client_ip,
@@ -1084,8 +1179,8 @@ def plinko_play(request):
                 transaction_type='WIN',
                 amount=payout,
                 currency='NEON',
-                balance_before=user.balance_neon,
-                balance_after=user.balance_neon,
+                balance_before=balance_after_bet,
+                balance_after=balance_after_win,
                 net_amount=payout,
                 status='COMPLETED',
                 ip_address=client_ip,
@@ -1114,7 +1209,8 @@ def mines_play(request):
         user = request.user
         
         if action == 'bet':
-            bet_amount = request.data.get('betAmount', 10)
+            from decimal import Decimal
+            bet_amount = Decimal(str(request.data.get('betAmount', 10)))
             mines_count = request.data.get('minesCount', 10)
             
             if user.balance_neon < bet_amount:
@@ -1131,11 +1227,11 @@ def mines_play(request):
             Transaction.objects.create(
                 user=user,
                 transaction_type='BET',
-                amount=bet_amount,
+                amount=float(bet_amount),
                 currency='NEON',
-                balance_before=balance_before,
-                balance_after=user.balance_neon,
-                net_amount=bet_amount,
+                balance_before=float(balance_before),
+                balance_after=float(user.balance_neon),
+                net_amount=float(bet_amount),
                 status='COMPLETED',
                 ip_address=client_ip,
                 metadata={'game': 'MINES', 'mines_count': mines_count}
@@ -1147,37 +1243,40 @@ def mines_play(request):
             })
             
         elif action == 'cashout':
-            bet_amount = request.data.get('betAmount', 10)
+            from decimal import Decimal
+            bet_amount = Decimal(str(request.data.get('betAmount', 10)))
             multipliers_revealed = request.data.get('multipliersRevealed', 0)
-            multiplier = request.data.get('multiplier', 1.0)
+            multiplier = Decimal(str(request.data.get('multiplier', 1.0)))
             
             payout = bet_amount * multiplier
             
             # Add winnings
+            balance_before = user.balance_neon
             user.balance_neon += payout
             user.save()
             
-        # Create transaction records
-        from transactions.models import Transaction
-        client_ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
-        Transaction.objects.create(
-            user=user,
-            transaction_type='WIN',
-            amount=payout,
-            currency='NEON',
-            balance_before=user.balance_neon - payout,
-            balance_after=user.balance_neon,
-            net_amount=payout,
-            status='COMPLETED',
-            ip_address=client_ip,
-            metadata={'game': 'MINES', 'multiplier': multiplier, 'multipliers_revealed': multipliers_revealed, 'bet_amount': bet_amount}
-        )
-        
-        return Response({
-            'payout': payout,
-            'isWin': True,
-            'newBalance': float(user.balance_neon)
-        })
+            # Create transaction records
+            from transactions.models import Transaction
+            client_ip = request.META.get('REMOTE_ADDR', '0.0.0.0')
+            Transaction.objects.create(
+                user=user,
+                transaction_type='WIN',
+                amount=float(payout),
+                currency='NEON',
+                balance_before=float(balance_before),
+                balance_after=float(user.balance_neon),
+                net_amount=float(payout),
+                status='COMPLETED',
+                ip_address=client_ip,
+                metadata={'game': 'MINES', 'multiplier': float(multiplier), 'multipliers_revealed': multipliers_revealed, 'bet_amount': float(bet_amount)}
+            )
+            
+            return Response({
+                'success': True,
+                'payout': float(payout),
+                'isWin': True,
+                'newBalance': float(user.balance_neon)
+            })
             
     except Exception as e:
         logger.error(f"Error in mines play: {e}")

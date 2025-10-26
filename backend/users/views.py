@@ -53,8 +53,9 @@ class UserRegistrationView(APIView):
             username = data.get('username')
             email = data.get('email')
             password = data.get('password')
+            promo_code = data.get('promoCode')
             
-            print(f"[REGISTRATION] Extracted data: username='{username}', email='{email}', password={'*' * len(password) if password else 'None'}")
+            print(f"[REGISTRATION] Extracted data: username='{username}', email='{email}', password={'*' * len(password) if password else 'None'}, promoCode='{promo_code}'")
             
             if not all([username, email, password]):
                 print(f"[REGISTRATION] Validation failed: missing required fields")
@@ -93,6 +94,42 @@ class UserRegistrationView(APIView):
                     email=email,
                     password=password
                 )
+                
+                # Handle promo code
+                if promo_code:
+                    try:
+                        from promo.models import PromoCode
+                        from promo.models import PromoRedemption
+                        promo = PromoCode.objects.get(code=promo_code.upper())
+                        if promo.is_active and not promo.is_expired():
+                            # Create redemption record
+                            PromoRedemption.objects.create(
+                                user=user,
+                                promo_code=promo,
+                                bonus_amount=promo.bonus_amount
+                            )
+                            # Add bonus to balance
+                            user.balance_neon += promo.bonus_amount
+                            user.save()
+                            print(f"[REGISTRATION] Promo code '{promo_code}' applied. Bonus: {promo.bonus_amount}")
+                    except Exception as promo_error:
+                        print(f"[REGISTRATION] Error applying promo code: {promo_error}")
+                
+                # Handle promo code for referral system (same promo code can be used for referrals)
+                if promo_code:
+                    try:
+                        # Find referrer by promo code if it's also a referral code
+                        from promo.models import PromoCode
+                        promo = PromoCode.objects.filter(code=promo_code.upper()).first()
+                        if promo and promo.created_by:
+                            # Set the promo code creator as referrer
+                            user.referrer = promo.created_by
+                            user.ref_source_code = promo_code.upper()
+                            user.save()
+                            print(f"[REGISTRATION] Promo code '{promo_code}' applied as referral. Referrer: {promo.created_by.username}")
+                    except Exception as ref_error:
+                        print(f"[REGISTRATION] Error applying promo code as referral: {ref_error}")
+                
                 print(f"[REGISTRATION] User created successfully with ID: {user.id}")
                 print(f"[REGISTRATION] User object: {user}")
                 

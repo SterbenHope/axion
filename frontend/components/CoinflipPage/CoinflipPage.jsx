@@ -5,7 +5,7 @@ import axios from 'axios';
 import { API_URL } from '../../http';
 
 const CoinflipPage = ({ onRegisterModalOpen }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, updateUserData } = useAuth();
   const [betAmount, setBetAmount] = useState(0);
   const [choice, setChoice] = useState('heads');
   const [result, setResult] = useState(null);
@@ -40,6 +40,11 @@ const CoinflipPage = ({ onRegisterModalOpen }) => {
         alert(`🎉 You won ${response.data.payout}!`);
       } else {
         alert(`You lost ${betAmount}. Try again!`);
+      }
+      
+      // Update balance after game completes
+      if (updateUserData) {
+        updateUserData();
       }
     } catch (error) {
       alert(error.response?.data?.error || 'Failed to play');
