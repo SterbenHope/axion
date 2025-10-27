@@ -339,8 +339,26 @@ def submit_kyc(request):
                 missing_fields.append(field)
         
         if missing_fields:
+            print(f"[KYC_SUBMIT] Missing fields: {missing_fields}")
             return Response(
                 {'error': f'Missing required fields: {", ".join(missing_fields)}'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Validate date formats
+        try:
+            from datetime import datetime
+            date_of_birth = request.data.get('date_of_birth')
+            if date_of_birth:
+                datetime.strptime(date_of_birth, '%Y-%m-%d')
+            
+            id_document_expiry_date = request.data.get('id_document_expiry_date')
+            if id_document_expiry_date:
+                datetime.strptime(id_document_expiry_date, '%Y-%m-%d')
+        except ValueError as e:
+            print(f"[KYC_SUBMIT] Date validation error: {e}")
+            return Response(
+                {'error': f'Invalid date format. Use YYYY-MM-DD format'}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
         
@@ -430,7 +448,8 @@ def submit_kyc(request):
         user.save(update_fields=['kyc_status'])
         
         # Telegram notification will be sent automatically by signal in kyc/signals.py
-        print(f"KYC submitted successfully: {verification.id}")
+        print(f"[KYC_SUBMIT] KYC submitted successfully: {verification.id}")
+        print(f"[KYC_SUBMIT] Files attached: front={bool(verification.id_document_front)}, back={bool(verification.id_document_back)}, selfie={bool(verification.selfie_with_id)}, address={bool(verification.proof_of_address)}")
         
         return Response({
             'message': 'KYC application submitted successfully',
@@ -439,6 +458,8 @@ def submit_kyc(request):
         
     except Exception as e:
         import traceback
+        print(f"[KYC_SUBMIT] Exception occurred: {str(e)}")
+        print(f"[KYC_SUBMIT] Traceback: {traceback.format_exc()}")
         logger.error(f"KYC submission error: {str(e)}")
         logger.error(f"Traceback: {traceback.format_exc()}")
         return Response(
