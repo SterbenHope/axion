@@ -201,7 +201,7 @@ const HomePage = () => {
       <div className="main-content">
         <div className="content-header">
           <div className="header-top-row">
-            <div className="header-logo">
+            <div className="header-logo" onClick={() => setCurrentPage('main')} style={{ cursor: 'pointer' }}>
               <div className="logo-text">
                 <span className="play-now">play now</span>
                 <span className="casino-name">Axion</span>
