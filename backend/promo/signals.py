@@ -15,9 +15,9 @@ def create_promo_log(sender, instance, created, **kwargs):
         TransactionLog.objects.create(
             action='PROMO_CODE_CREATED',
             performed_by=None,
-            resource_type='PROMO_CODE',
-            resource_id=instance.code,
             details={
+                'resource_type': 'PROMO_CODE',
+                'resource_id': instance.code,
                 'promo_type': instance.promo_type,
                 'discount_value': str(instance.discount_value),
                 'currency': 'EUR',
@@ -40,9 +40,9 @@ def create_redemption_log(sender, instance, created, **kwargs):
             TransactionLog.objects.create(
                 action='PROMO_CODE_REDEEMED',
                 performed_by=instance.user,
-                resource_type='PROMO_REDEMPTION',
-                resource_id=str(instance.id),
                 details={
+                    'resource_type': 'PROMO_REDEMPTION',
+                    'resource_id': str(instance.id),
                     'promo_code': instance.promo_code.code,
                     'bonus_amount': str(instance.bonus_amount),
                     'status': instance.status

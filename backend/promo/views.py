@@ -61,11 +61,22 @@ class PromoCodeValidationView(APIView):
             # Apply promo code
             try:
                 with transaction.atomic():
-                    redemption = promo_code.apply_bonus(request.user)
+                    # Get IP address and user agent
+                    ip_address = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR'))
+                    if ip_address and ',' in ip_address:
+                        ip_address = ip_address.split(',')[0].strip()
+                    user_agent = request.META.get('HTTP_USER_AGENT', '')
+                    
+                    redemption = promo_code.apply_bonus(
+                        request.user,
+                        deposit_amount=0,
+                        ip_address=ip_address,
+                        user_agent=user_agent
+                    )
                     
                     return Response({
                         'success': True,
-                        'message': f'Promo code activated! You received {redemption.bonus_amount} NeonCoins',
+                        'message': f'Promo code activated! You received {redemption.bonus_amount} AXION',
                         'redemption': PromoRedemptionSerializer(redemption).data
                     }, status=status.HTTP_200_OK)
                     
