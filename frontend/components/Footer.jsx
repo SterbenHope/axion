@@ -51,27 +51,6 @@ const Footer = ({ onPageChange }) => {
             </li>
           </ul>
         </div>
-
-        <div className="footer-section">
-          <h3 className="footer-title">{t('footer.games')}</h3>
-          <ul className="footer-links">
-            <li>
-              <a href="#plinko">Plinko</a>
-            </li>
-            <li>
-              <a href="#wheel">Wheel</a>
-            </li>
-            <li>
-              <a href="#jackpot">Jackpot</a>
-            </li>
-            <li>
-              <a href="#mines">Mines</a>
-            </li>
-            <li>
-              <a href="#coinflip">Coinflip</a>
-            </li>
-          </ul>
-        </div>
       </div>
 
       <div className="footer-bottom">

@@ -1,9 +1,10 @@
 .site-footer {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
   border-top: 1px solid rgba(102, 110, 151, 0.2);
-  padding: 60px 40px 30px;
+  padding: 40px 40px 20px;
   margin-top: auto;
   color: #8C98A9;
+  width: 100%;
 }
 
 .footer-content {

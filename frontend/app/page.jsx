@@ -594,6 +594,9 @@ const HomePage = () => {
               />
             )}
           </div>
+          
+          {/* Footer */}
+          <Footer onPageChange={(page) => setCurrentPage(page)} />
         </div>
       </div>
 
@@ -815,9 +818,6 @@ const HomePage = () => {
           💬
         </button>
       )}
-
-      {/* Footer */}
-      <Footer onPageChange={(page) => setCurrentPage(page)} />
 
       {/* Auth Modals */}
       {isLoginModalOpen && (
