@@ -4,6 +4,7 @@ User Data URL patterns for NeonCasino.
 
 from django.urls import path
 from . import views
+from . import email_verification
 
 app_name = 'users'
 
@@ -21,6 +22,10 @@ urlpatterns = [
     path('user-profile/', views.user_profile, name='user-profile-detail'),
     path('update-profile/', views.update_profile, name='update-profile'),
     path('preferences/', views.user_preferences, name='user-preferences'),
+    
+    # Email verification endpoints
+    path('send-verification-code/', email_verification.send_email_verification_code, name='send-verification-code'),
+    path('verify-email-code/', email_verification.verify_email_code_view, name='verify-email-code'),
 ]
 
 

@@ -113,6 +113,27 @@ class User(AbstractUser):
             return True
         return False
 
+class EmailVerification(models.Model):
+    """Model for storing email verification codes."""
+    
+    email = models.EmailField()
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
+    attempts = models.PositiveIntegerField(default=0, help_text='Number of verification attempts')
+    
+    class Meta:
+        verbose_name = 'Email Verification'
+        verbose_name_plural = 'Email Verifications'
+        db_table = 'email_verifications'
+        indexes = [
+            models.Index(fields=['email', 'code']),
+            models.Index(fields=['created_at']),
+        ]
+    
+    def __str__(self):
+        return f"{self.email} - {self.code} - {'Verified' if self.is_verified else 'Pending'}"
+
 class UserProfile(models.Model):
     """Extended user profile information."""
     
