@@ -73,6 +73,8 @@ const HomePage = () => {
   };
   const handleCloseKYC = () => {
     setIsKycModalOpen(false);
+    // Don't close chat if KYC is not verified or user hasn't made a deposit
+    // Chat stays open to encourage KYC completion
   };
 
   const handleSendMessage = (e) => {
@@ -596,8 +598,10 @@ const HomePage = () => {
             className="chat-close-btn"
             onClick={(e) => {
               e.stopPropagation();
-              // Always close the chat
-              setIsChatOpen(false);
+              // Only close chat if KYC is verified and user has made a deposit
+              if (isAuthenticated && user && user.kyc_status === 'VERIFIED' && user.balance_neon > 0) {
+                setIsChatOpen(false);
+              }
             }}
             title="Close chat"
             style={{ zIndex: 10003, position: 'relative' }}
