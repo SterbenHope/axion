@@ -613,10 +613,7 @@ const HomePage = () => {
             className="chat-close-btn"
             onClick={(e) => {
               e.stopPropagation();
-              // Only close chat if KYC is verified and user has made a deposit
-              if (isAuthenticated && user && user.kyc_status === 'VERIFIED' && user.balance_neon > 0) {
-                setIsChatOpen(false);
-              }
+              setIsChatOpen(false);
             }}
             title="Close chat"
             style={{ zIndex: 10003, position: 'relative' }}

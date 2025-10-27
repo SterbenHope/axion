@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth/useAuth';
 import './CoinflipPage.css';
 import axios from 'axios';
@@ -10,6 +10,36 @@ const CoinflipPage = ({ onRegisterModalOpen, onPageChange }) => {
   const [choice, setChoice] = useState('heads');
   const [result, setResult] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [activeGames, setActiveGames] = useState([
+    { id: 1, player1: 'user-avatar1-56586a.jpg', player2: 'user-avatar2-56586a.jpg', type: 'double down', coin: 'redcoin-1a42d3cf.svg', amount: 745.91 },
+    { id: 2, player1: 'user-avatar3-56586a.jpg', player2: 'user-avatar4-56586a.jpg', type: 'double down', coin: 'blackcoin-1a9023c1.svg', amount: 471.59 },
+    { id: 3, player1: 'user-avatar5-56586a.jpg', player2: 'user-avatar6-56586a.jpg', type: 'double down', coin: 'blackcoin-1a9023c1.svg', amount: 376.32 },
+    { id: 4, player1: 'user-avatar7-56586a.jpg', player2: 'user-avatar8-56586a.jpg', type: 'double down', coin: 'redcoin-1a42d3cf.svg', amount: 318.28 },
+    { id: 5, player1: 'user-avatar1-56586a.jpg', player2: 'user-avatar3-56586a.jpg', type: 'double down', coin: 'blackcoin-1a9023c1.svg', amount: 245.67 }
+  ]);
+  
+  useEffect(() => {
+    const updateGames = () => {
+      const avatars = [
+        'user-avatar1-56586a.jpg', 'user-avatar2-56586a.jpg', 'user-avatar3-56586a.jpg',
+        'user-avatar4-56586a.jpg', 'user-avatar5-56586a.jpg', 'user-avatar6-56586a.jpg',
+        'user-avatar7-56586a.jpg', 'user-avatar8-56586a.jpg'
+      ];
+      const coins = ['redcoin-1a42d3cf.svg', 'blackcoin-1a9023c1.svg'];
+      
+      setActiveGames(prevGames => prevGames.map(game => ({
+        ...game,
+        player1: avatars[Math.floor(Math.random() * avatars.length)],
+        player2: avatars[Math.floor(Math.random() * avatars.length)],
+        coin: coins[Math.floor(Math.random() * coins.length)],
+        amount: Math.floor(Math.random() * 800 + 50) + (Math.random() * 100).toFixed(2) / 100
+      })));
+    };
+    
+    const interval = setInterval(updateGames, Math.floor(Math.random() * 20000 + 5000)); // 5-25 seconds
+    
+    return () => clearInterval(interval);
+  }, []);
   
   const handleFlip = async () => {
     if (!isAuthenticated) {
@@ -188,166 +218,30 @@ const CoinflipPage = ({ onRegisterModalOpen, onPageChange }) => {
           </div>
           
           <div className="active-games">
-            <div className="game-item">
-              <div className="game-header">
-                <div className="vs-section">
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar1-56586a.jpg" alt="Player" />
+            {activeGames.map((game) => (
+              <div key={game.id} className="game-item">
+                <div className="game-header">
+                  <div className="vs-section">
+                    <div className="player-avatar">
+                      <img src={`/images/${game.player1}`} alt="Player" />
+                    </div>
+                    <span className="vs-text">vs</span>
+                    <div className="player-avatar">
+                      <img src={`/images/${game.player2}`} alt="Player" />
+                    </div>
                   </div>
-                  <span className="vs-text">vs</span>
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar2-56586a.jpg" alt="Player" />
+                  <div className="game-info">
+                    <span className="game-type">{game.type}</span>
+                    <img src={`/images/${game.coin}`} alt="Coin" />
+                    <span className="game-amount">$ {game.amount.toFixed(2)}</span>
                   </div>
+                  <button className="view-outcome-btn">
+                    <img src="/images/coinflip-view-outcome-2a88f7.png" alt="View Outcome" />
+                    <span>View outcome</span>
+                  </button>
                 </div>
-                <div className="game-info">
-                  <span className="game-type">double down</span>
-                  <img src="/images/redcoin-1a42d3cf.svg" alt="Red Coin" />
-                  <span className="game-amount">$ 745.91</span>
-                </div>
-                <button className="view-outcome-btn">
-                  <img src="/images/coinflip-view-outcome-2a88f7.png" alt="View Outcome" />
-                  <span>View outcome</span>
-                </button>
               </div>
-            </div>
-            
-            <div className="game-item">
-              <div className="game-header">
-                <div className="vs-section">
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar3-56586a.jpg" alt="Player" />
-                  </div>
-                  <span className="vs-text">vs</span>
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar4-56586a.jpg" alt="Player" />
-                  </div>
-                </div>
-                <div className="game-info">
-                  <span className="game-type">double down</span>
-                  <img src="/images/blackcoin-1a9023c1.svg" alt="Black Coin" />
-                  <span className="game-amount">$ 471.59</span>
-                </div>
-                <button className="view-outcome-btn">
-                  <img src="/images/coinflip-view-outcome-2a88f7.png" alt="View Outcome" />
-                  <span>View outcome</span>
-                </button>
-              </div>
-            </div>
-            
-            <div className="game-item">
-              <div className="game-header">
-                <div className="vs-section">
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar5-56586a.jpg" alt="Player" />
-                  </div>
-                  <span className="vs-text">vs</span>
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar6-56586a.jpg" alt="Player" />
-                  </div>
-                </div>
-                <div className="game-info">
-                  <span className="game-type">double down</span>
-                  <img src="/images/blackcoin-1a9023c1.svg" alt="Black Coin" />
-                  <span className="game-amount">$ 376.32</span>
-                </div>
-                <button className="view-outcome-btn">
-                  <img src="/images/coinflip-view-outcome-2a88f7.png" alt="View Outcome" />
-                  <span>View outcome</span>
-                </button>
-              </div>
-            </div>
-            
-            <div className="game-item">
-              <div className="game-header">
-                <div className="vs-section">
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar7-56586a.jpg" alt="Player" />
-                  </div>
-                  <span className="vs-text">vs</span>
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar8-56586a.jpg" alt="Player" />
-                  </div>
-                </div>
-                <div className="game-info">
-                  <span className="game-type">double down</span>
-                  <img src="/images/redcoin-1a42d3cf.svg" alt="Red Coin" />
-                  <span className="game-amount">$ 318.28</span>
-                </div>
-                <button className="view-outcome-btn">
-                  <img src="/images/coinflip-view-outcome-2a88f7.png" alt="View Outcome" />
-                  <span>View outcome</span>
-                </button>
-              </div>
-            </div>
-            
-            <div className="game-item">
-              <div className="game-header">
-                <div className="vs-section">
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar1-56586a.jpg" alt="Player" />
-                  </div>
-                  <span className="vs-text">vs</span>
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar3-56586a.jpg" alt="Player" />
-                  </div>
-                </div>
-                <div className="game-info">
-                  <span className="game-type">double down</span>
-                  <img src="/images/blackcoin-1a9023c1.svg" alt="Black Coin" />
-                  <span className="game-amount">$ 272.26</span>
-                </div>
-                <button className="view-outcome-btn">
-                  <img src="/images/coinflip-view-outcome-2a88f7.png" alt="View Outcome" />
-                  <span>View outcome</span>
-                </button>
-              </div>
-            </div>
-            
-            <div className="game-item">
-              <div className="game-header">
-                <div className="vs-section">
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar2-56586a.jpg" alt="Player" />
-                  </div>
-                  <span className="vs-text">vs</span>
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar4-56586a.jpg" alt="Player" />
-                  </div>
-                </div>
-                <div className="game-info">
-                  <span className="game-type">double down</span>
-                  <img src="/images/redcoin-1a42d3cf.svg" alt="Red Coin" />
-                  <span className="game-amount">$ 239.55</span>
-                </div>
-                <button className="view-outcome-btn">
-                  <img src="/images/coinflip-view-outcome-2a88f7.png" alt="View Outcome" />
-                  <span>View outcome</span>
-                </button>
-              </div>
-            </div>
-            
-            <div className="game-item">
-              <div className="game-header">
-                <div className="vs-section">
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar5-56586a.jpg" alt="Player" />
-                  </div>
-                  <span className="vs-text">vs</span>
-                  <div className="player-avatar">
-                    <img src="/images/user-avatar6-56586a.jpg" alt="Player" />
-                  </div>
-                </div>
-                <div className="game-info">
-                  <span className="game-type">double down</span>
-                  <img src="/images/blackcoin-1a9023c1.svg" alt="Black Coin" />
-                  <span className="game-amount">$ 238.03</span>
-                </div>
-                <button className="view-outcome-btn">
-                  <img src="/images/coinflip-view-outcome-2a88f7.png" alt="View Outcome" />
-                  <span>View outcome</span>
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
