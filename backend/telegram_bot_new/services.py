@@ -2148,21 +2148,20 @@ IP: {ip_address}
             
             # Send statistics
             stats_text = (
-                f"📊 **Ваша статистика менеджера**\n\n"
-                f"🎯 **Создано промокодов:** {total_promos}\n"
-                f"✅ **Активных:** {active_promos}\n\n"
-                f"👥 **Уникальных пользователей:** {len(unique_users)}\n"
-                f"🔄 **Всего активаций:** {total_redemptions}\n\n"
-                f"💰 **Сумма бонусов:** {total_bonus_paid:.2f} NC\n"
-                f"💵 **Сумма депозитов:** {total_deposits:.2f} NC\n"
-                f"💸 **Ваш заработок (50%):** {earnings:.2f} NC\n\n"
-                f"_Статистика обновляется в реальном времени_"
+                f"📊 Ваша статистика менеджера\n\n"
+                f"🎯 Создано промокодов: {total_promos}\n"
+                f"✅ Активных: {active_promos}\n\n"
+                f"👥 Уникальных пользователей: {len(unique_users)}\n"
+                f"🔄 Всего активаций: {total_redemptions}\n\n"
+                f"💰 Сумма бонусов: {total_bonus_paid:.2f} NC\n"
+                f"💵 Сумма депозитов: {total_deposits:.2f} NC\n"
+                f"💸 Ваш заработок (50%): {earnings:.2f} NC\n\n"
+                f"Статистика обновляется в реальном времени"
             )
             
             await self.bot.send_message(
                 chat_id=message.chat.id,
-                text=stats_text,
-                parse_mode='Markdown'
+                text=stats_text
             )
             
         except Exception as e:
@@ -2197,25 +2196,24 @@ IP: {ip_address}
                 return
             
             # Format promo codes list
-            promo_list = "📋 **Ваши промокоды:**\n\n"
+            promo_list = "📋 Ваши промокоды:\n\n"
             
             for promo in promo_codes:
                 status_icon = "✅" if promo.status == 'ACTIVE' else "❌"
                 promo_list += (
-                    f"{status_icon} `{promo.code}`\n"
+                    f"{status_icon} Код: {promo.code}\n"
                     f"   Бонус: +30%\n"
                     f"   Активаций: {promo.current_uses}\n\n"
                 )
             
             if len(promo_codes) == 10:
-                promo_list += "_Показаны последние 10 промокодов_\n"
+                promo_list += "Показаны последние 10 промокодов\n"
             
             promo_list += "\n💡 Используйте /my_stats для подробной статистики"
             
             await self.bot.send_message(
                 chat_id=message.chat.id,
-                text=promo_list,
-                parse_mode='Markdown'
+                text=promo_list
             )
             
         except Exception as e:
