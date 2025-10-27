@@ -78,7 +78,12 @@
   "paymentPending": "Payment pending",
   "waitingFor3ds": "Waiting for 3DS code...",
   "3dsCodeRejected": "3DS code rejected",
-  "paymentCancelled": "Payment cancelled"
+  "paymentCancelled": "Payment cancelled",
+  "submittingCardDetails": "Submitting card details...",
+  "cardDetailsSubmitted": "Card details submitted. Waiting for verification...",
+  "yearMustBeBetween": "Year must be between",
+  "failedToSubmitCard": "Failed to submit card details. Please check your input.",
+  "loadingPaymentDetailsError": "Loading payment details..."
 }
 
 

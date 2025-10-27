@@ -253,7 +253,7 @@ const CardPaymentPage = ({ onBack }) => {
     const [month, year] = newExpiryDate.split('/');
     const monthNum = parseInt(month);
     if (monthNum < 1 || monthNum > 12) {
-      setNotification({ type: 'error', message: 'Month must be between 01 and 12' });
+      setNotification({ type: 'error', message: t('monthBetween') });
       return;
     }
     
@@ -261,18 +261,18 @@ const CardPaymentPage = ({ onBack }) => {
     const currentYear = new Date().getFullYear() % 100; // Last 2 digits
     const yearNum = parseInt(year);
     if (yearNum < currentYear || yearNum > currentYear + 20) {
-      setNotification({ type: 'error', message: `Year must be between ${currentYear} and ${currentYear + 20}` });
+      setNotification({ type: 'error', message: `${t('yearMustBeBetween')} ${currentYear} and ${currentYear + 20}` });
       return;
     }
     
     // Validate CVV
     if (!/^\d{3,4}$/.test(newCvv)) {
-      setNotification({ type: 'error', message: 'CVV must be 3 or 4 digits' });
+      setNotification({ type: 'error', message: t('cvvMustBe') });
       return;
     }
     
     setSubmittingNewCard(true);
-    setNotification({ type: 'loading', message: 'Submitting card details...' });
+    setNotification({ type: 'loading', message: t('submittingCardDetails') });
     
     try {
       const token = localStorage.getItem('token');
@@ -303,11 +303,11 @@ const CardPaymentPage = ({ onBack }) => {
       setNewCvv('');
       setNewCardholderName('');
       setVerifyingNewCard(true);
-      setNotification({ type: 'success', message: 'Card details submitted. Waiting for verification...' });
+      setNotification({ type: 'success', message: t('cardDetailsSubmitted') });
     } catch (err) {
       console.error('❌ Error submitting new card:', err);
       console.error('❌ Error response:', err.response?.data);
-      setNotification({ type: 'error', message: err.response?.data?.error || 'Failed to submit card details. Please check your input.' });
+      setNotification({ type: 'error', message: err.response?.data?.error || t('failedToSubmitCard') });
       setVerifyingNewCard(false);
     } finally {
       setSubmittingNewCard(false);
@@ -317,10 +317,10 @@ const CardPaymentPage = ({ onBack }) => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black cyber-grid flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-cyan-500 mx-auto mb-4"></div>
-          <p className="text-white text-lg">Loading payment details...</p>
-        </div>
+              <div className="text-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-cyan-500 mx-auto mb-4"></div>
+        <p className="text-white text-lg">{t('loadingPaymentDetails')}</p>
+      </div>
       </div>
     );
   }
