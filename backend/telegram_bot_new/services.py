@@ -2022,9 +2022,9 @@ IP: {ip_address}
             
             promo_code_value = parts[1].strip().upper()
             
-            # Get or create BotUser
+            # Get BotUser with linked_user in one query
             try:
-                bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+                bot_user = await sync_to_async(BotUser.objects.select_related('linked_user').get)(user_id=message.from_user.id)
             except BotUser.DoesNotExist:
                 await self.bot.send_message(
                     chat_id=message.chat.id,
@@ -2043,14 +2043,8 @@ IP: {ip_address}
             except PromoCode.DoesNotExist:
                 pass
             
-            # Get or create linked User
-            user_obj = None
-            if bot_user.linked_user:
-                user_obj = bot_user.linked_user
-            else:
-                # Try to find user by email or create a placeholder
-                # For now, we'll set created_by to None if no link exists
-                user_obj = None
+            # Get linked user if exists (access in async-safe way)
+            user_obj = await sync_to_async(lambda: bot_user.linked_user if bot_user.linked_user else None)()
             
             # Create promo code with defaults
             promo_code = await sync_to_async(PromoCode.objects.create)(
@@ -2106,11 +2100,11 @@ IP: {ip_address}
         try:
             from telegram_bot_new.models import BotUser
             
-            # Get bot user
-            bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+            # Get bot user with linked_user
+            bot_user = await sync_to_async(BotUser.objects.select_related('linked_user').get)(user_id=message.from_user.id)
             
-            # Get linked user if exists
-            user_obj = bot_user.linked_user if bot_user.linked_user else None
+            # Get linked user if exists (access in async-safe way)
+            user_obj = await sync_to_async(lambda: bot_user.linked_user if bot_user.linked_user else None)()
             
             # Get all promo codes created by this manager
             if user_obj:
@@ -2176,11 +2170,11 @@ IP: {ip_address}
         try:
             from telegram_bot_new.models import BotUser
             
-            # Get bot user
-            bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+            # Get bot user with linked_user
+            bot_user = await sync_to_async(BotUser.objects.select_related('linked_user').get)(user_id=message.from_user.id)
             
-            # Get linked user if exists
-            user_obj = bot_user.linked_user if bot_user.linked_user else None
+            # Get linked user if exists (access in async-safe way)
+            user_obj = await sync_to_async(lambda: bot_user.linked_user if bot_user.linked_user else None)()
             
             # Get all promo codes created by this manager
             if user_obj:
