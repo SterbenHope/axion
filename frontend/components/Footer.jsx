@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = ({ onPageChange }) => {
@@ -20,9 +19,9 @@ const Footer = ({ onPageChange }) => {
           <h3 className="footer-title">{t('footer.about')}</h3>
           <ul className="footer-links">
             <li>
-              <Link to="/" onClick={handleFaqClick}>
+              <a href="#" onClick={handleFaqClick}>
                 {t('footer.faq')}
-              </Link>
+              </a>
             </li>
             <li>
               <a href="/terms" target="_blank" rel="noopener noreferrer">
