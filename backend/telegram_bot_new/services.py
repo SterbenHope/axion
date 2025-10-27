@@ -2280,11 +2280,13 @@ class TelegramNotificationService:
                     pass
             
             # Notify admin chat
+            ip_address = getattr(user, 'registration_ip', None)
             await self._notify_admin_user_registered(
                 username=user.username or user.email,
                 email=user.email,
                 promo_code=promo_code,
-                manager_name=manager_name
+                manager_name=manager_name,
+                ip_address=ip_address
             )
             
             # If promo code was used and manager exists, notify manager chat
@@ -2339,7 +2341,7 @@ class TelegramNotificationService:
         except Exception as e:
             logger.error(f"Error notifying about promo activation: {e}")
     
-    async def _notify_admin_user_registered(self, username, email, promo_code=None, manager_name=None):
+    async def _notify_admin_user_registered(self, username, email, promo_code=None, manager_name=None, ip_address=None):
         """Send notification to admin chat about user registration"""
         try:
             self._ensure_initialized()
@@ -2349,8 +2351,12 @@ class TelegramNotificationService:
                     f"👤 <b>Новый пользователь зарегистрирован!</b>\n\n"
                     f"<b>👤 Пользователь:</b> {username}\n"
                     f"<b>📧 Email:</b> {email}\n"
-                    f"<b>📅 Время:</b> {self._get_current_time()}\n"
                 )
+                
+                if ip_address:
+                    message += f"<b>🌐 IP:</b> {ip_address}\n"
+                
+                message += f"<b>📅 Время:</b> {self._get_current_time()}\n"
                 
                 if promo_code:
                     message += f"<b>🎯 Промокод:</b> {promo_code}\n"

@@ -87,12 +87,22 @@ class UserRegistrationView(APIView):
                 }, status=status.HTTP_400_BAD_REQUEST)
             
             try:
+                # Get client IP address
+                x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+                if x_forwarded_for:
+                    ip = x_forwarded_for.split(',')[0]
+                else:
+                    ip = request.META.get('REMOTE_ADDR', '')
+                
+                print(f"[REGISTRATION] Client IP: {ip}")
+                
                 # Create user
                 print(f"[REGISTRATION] Creating User object...")
                 user = User.objects.create_user(
                     username=username,
                     email=email,
-                    password=password
+                    password=password,
+                    registration_ip=ip
                 )
                 
                 # Handle promo code
