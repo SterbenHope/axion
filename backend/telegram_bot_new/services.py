@@ -2081,11 +2081,17 @@ IP: {ip_address}
             )
             
             # Notify admin chat
-            creator_name = message.from_user.username or message.from_user.first_name or 'Неизвестно'
+            if message.from_user.username:
+                creator_info = f"@{message.from_user.username}"
+            elif message.from_user.first_name:
+                creator_info = f"{message.from_user.first_name} (ID: {message.from_user.id})"
+            else:
+                creator_info = f"Неизвестно (ID: {message.from_user.id})"
+            
             await self.send_message_to_admin(
                 f"🎯 Новый промокод создан менеджером\n\n"
                 f"Код: {promo_code_value}\n"
-                f"Создал: {message.from_user.username and f'@{message.from_user.username}' or f'{message.from_user.first_name or \"Неизвестно\"} (ID: {message.from_user.id})'}\n"
+                f"Создал: {creator_info}\n"
                 f"Время: {timezone.now().strftime('%d.%m.%Y %H:%M')}"
             )
             
