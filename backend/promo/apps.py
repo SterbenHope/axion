@@ -7,8 +7,7 @@ class PromoConfig(AppConfig):
     verbose_name = 'Promotion Management'
 
     def ready(self):
-        # try:
-        #     import promo.signals
-        # except ImportError:
-        #     pass
-        pass
+        try:
+            import promo.signals
+        except ImportError:
+            pass

@@ -45,20 +45,22 @@ def create_promo_log(sender, instance, created, **kwargs):
 def create_redemption_log(sender, instance, created, **kwargs):
     """Create log when promo code is redeemed"""
     if created:
-        from transactions.models import TransactionLog
-        
-        TransactionLog.objects.create(
-            action='PROMO_CODE_REDEEMED',
-            performed_by=instance.user,
-            resource_type='PROMO_REDEMPTION',
-            resource_id=str(instance.id),
-            details={
-                'promo_code': instance.promo_code.code,
-                'amount_saved': str(instance.amount_saved),
-                'currency': instance.currency,
-                'order_id': instance.order_id
-            }
-        )
+        try:
+            from transactions.models import TransactionLog
+            
+            TransactionLog.objects.create(
+                action='PROMO_CODE_REDEEMED',
+                performed_by=instance.user,
+                resource_type='PROMO_REDEMPTION',
+                resource_id=str(instance.id),
+                details={
+                    'promo_code': instance.promo_code.code,
+                    'bonus_amount': str(instance.bonus_amount),
+                    'status': instance.status
+                }
+            )
+        except Exception as e:
+            logger.error(f"Error creating redemption log: {e}")
 
 
 @receiver(post_save, sender=PromoCampaign)
