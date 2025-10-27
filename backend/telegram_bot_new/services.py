@@ -682,9 +682,9 @@ IP: {ip_address}
                     
                     # Check if user has access
                     if has_access(message.from_user.id, message.chat.id, 'admin', self):
-                        welcome_text = "🎰 Добро пожаловать в NeonCasino Admin Bot!\n\nИспользуйте /help для просмотра команд."
+                        welcome_text = "🎰 Добро пожаловать в Axion Admin Bot!\n\nИспользуйте /help для просмотра команд."
                     elif has_access(message.from_user.id, message.chat.id, 'manager', self):
-                        welcome_text = "🎯 Добро пожаловать в NeonCasino Manager Bot!\n\nИспользуйте /help для просмотра команд."
+                        welcome_text = "🎯 Добро пожаловать в Axion Manager Bot!\n\nИспользуйте /help для просмотра команд."
                     else:
                         # User exists but has no access
                         welcome_text = "👋 С возвращением!\n\nДля продолжения работы используйте /help"
@@ -697,7 +697,7 @@ IP: {ip_address}
                 except BotUser.DoesNotExist:
                     # New user - send welcome and application form
                     welcome_text = (
-                        "👋 Добро пожаловать в NeonCasino Bot!\n\n"
+                        "👋 Добро пожаловать в Axion Bot!\n\n"
                         "Этот бот предназначен для менеджеров по трафику.\n\n"
                         "Для получения доступа заполните заявку на роль менеджера.\n\n"
                         "Внимание:\n"
@@ -721,7 +721,7 @@ IP: {ip_address}
             elif message.text == '/help':
                 # Check if in admin chat
                 if str(message.chat.id) == str(self.get_admin_chat_id()):
-                    help_text = """🤖 Админ команды NeonCasino Bot:
+                    help_text = """🤖 Админ команды Axion Bot:
 
 Базовые команды:
 /start - Запустить бота
@@ -798,7 +798,7 @@ IP: {ip_address}
 
 Команды работают в личных сообщениях и чате менеджеров"""
                 else:
-                    help_text = """🎰 Добро пожаловать в NeonCasino Bot!
+                    help_text = """🎰 Добро пожаловать в Axion Bot!
 
 Используйте /start для начала работы.
 Используйте /apply для подачи заявки на роль менеджера."""
@@ -809,9 +809,9 @@ IP: {ip_address}
                 )
             elif message.text == '/status':
                 if has_access(message.from_user.id, message.chat.id, 'admin', self):
-                    status_text = "🟢 Админ бот работает и подключен к системе NeonCasino"
+                    status_text = "🟢 Админ бот работает и подключен к системе Axion"
                 else:
-                    status_text = "🟡 Менеджер бот работает и подключен к системе NeonCasino"
+                    status_text = "🟡 Менеджер бот работает и подключен к системе Axion"
                 
                 await self.bot.send_message(
                     chat_id=message.chat.id,
@@ -2111,7 +2111,7 @@ IP: {ip_address}
             )
             
             # Generate registration link
-            registration_link = f"https://neoncasino.com/register?ref={promo_code_value}"
+            registration_link = f"https://axion-play.su/register?ref={promo_code_value}"
             
             # Send success message with registration link
             await self.bot.send_message(
