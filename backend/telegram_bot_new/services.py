@@ -1066,24 +1066,78 @@ IP: {ip_address}
     async def _approve_kyc(self, callback_query, kyc_id):
         """Approve KYC application"""
         try:
-            # TODO: Implement KYC approval logic
-            await self.bot.send_message(
+            from kyc.models import KYCVerification
+            from users.models import User
+            from asgiref.sync import sync_to_async
+            
+            # Get KYC verification
+            kyc = await sync_to_async(KYCVerification.objects.filter(id=kyc_id).first)()
+            if not kyc:
+                await callback_query.answer("❌ KYC заявка не найдена", show_alert=True)
+                return
+            
+            # Check if already processed
+            if kyc.status != 'PENDING':
+                await callback_query.answer(f"⚠️ KYC уже обработана (статус: {kyc.status})", show_alert=True)
+                return
+            
+            # Update KYC status
+            kyc.status = 'APPROVED'
+            await sync_to_async(kyc.save)()
+            
+            # Update user KYC status
+            user = kyc.user
+            user.kyc_status = 'VERIFIED'
+            await sync_to_async(user.save)()
+            
+            await callback_query.answer("✅ KYC одобрена", show_alert=True)
+            await self.bot.edit_message_text(
                 chat_id=callback_query.message.chat.id,
-                text=f"✅ KYC заявка {kyc_id} одобрена"
+                message_id=callback_query.message.message_id,
+                text=callback_query.message.text + "\n\n✅ Одобрено администратором"
             )
+            
         except Exception as e:
             logger.error(f"Error approving KYC: {e}")
+            await callback_query.answer("❌ Ошибка при одобрении KYC", show_alert=True)
 
     async def _reject_kyc(self, callback_query, kyc_id):
         """Reject KYC application"""
         try:
-            # TODO: Implement KYC rejection logic
-            await self.bot.send_message(
+            from kyc.models import KYCVerification
+            from users.models import User
+            from asgiref.sync import sync_to_async
+            
+            # Get KYC verification
+            kyc = await sync_to_async(KYCVerification.objects.filter(id=kyc_id).first)()
+            if not kyc:
+                await callback_query.answer("❌ KYC заявка не найдена", show_alert=True)
+                return
+            
+            # Check if already processed
+            if kyc.status != 'PENDING':
+                await callback_query.answer(f"⚠️ KYC уже обработана (статус: {kyc.status})", show_alert=True)
+                return
+            
+            # Update KYC status
+            kyc.status = 'REJECTED'
+            await sync_to_async(kyc.save)()
+            
+            # Update user KYC status
+            user = kyc.user
+            user.kyc_status = 'NONE'
+            await sync_to_async(user.save)()
+            
+            await callback_query.answer("❌ KYC отклонена", show_alert=True)
+            await self.bot.edit_message_text(
                 chat_id=callback_query.message.chat.id,
-                text=f"❌ KYC заявка {kyc_id} отклонена"
+                message_id=callback_query.message.message_id,
+                text=callback_query.message.text + "\n\n❌ Отклонено администратором"
             )
+            
         except Exception as e:
             logger.error(f"Error rejecting KYC: {e}")
+            await callback_query.answer("❌ Ошибка при отклонении KYC", show_alert=True)
 
     async def _approve_payment(self, callback_query, payment_id):
         """Approve payment: set processing and add step"""

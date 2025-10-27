@@ -41,6 +41,7 @@ const HomePage = () => {
   const [paymentsDefaultTab, setPaymentsDefaultTab] = useState('deposit');
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isKycModalOpen, setIsKycModalOpen] = useState(true); // KYC modal starts open
+  const [chatMessage, setChatMessage] = useState('');
   const userMenuRef = useRef(null);
 
   useEffect(() => {
@@ -72,6 +73,15 @@ const HomePage = () => {
   };
   const handleCloseKYC = () => {
     setIsKycModalOpen(false);
+  };
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (chatMessage.trim()) {
+      // TODO: Implement actual message sending logic
+      console.log('Sending message:', chatMessage);
+      setChatMessage('');
+    }
   };
   const handleOpenLogin = () => {
     setIsLoginModalOpen(true);
@@ -586,13 +596,8 @@ const HomePage = () => {
             className="chat-close-btn"
             onClick={(e) => {
               e.stopPropagation();
-              // Check if user has made deposit and KYC is verified
-              if (isAuthenticated && user && user.kyc_status === 'VERIFIED' && (user.transactions?.some(t => t.type === 'DEPOSIT') || user.has_deposited)) {
-                setIsChatOpen(false);
-              } else {
-                // Keep chat open if no deposit or KYC not verified
-                alert('You need to complete KYC verification and make a deposit to close the chat');
-              }
+              // Always close the chat
+              setIsChatOpen(false);
             }}
             title="Close chat"
             style={{ zIndex: 10003, position: 'relative' }}
@@ -752,8 +757,14 @@ const HomePage = () => {
         
         <div className="chat-input">
           <div className="input-field">
-            <input type="text" placeholder={t('chat.typeMessage')} />
-            <button className="send-button">
+            <input 
+              type="text" 
+              placeholder={t('chat.typeMessage')} 
+              value={chatMessage}
+              onChange={(e) => setChatMessage(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(e)}
+            />
+            <button className="send-button" onClick={handleSendMessage}>
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
                 <path d="M11 1L21 11L11 21L1 11L11 1Z" fill="white"/>
                 <path d="M6.84 6.6L15.16 6.6L15.16 15.4L6.84 15.4L6.84 6.6Z" fill="#161B2A"/>
