@@ -2688,16 +2688,16 @@ class TelegramNotificationService:
         """Helper method to get manager name from promo code"""
         try:
             from telegram_bot_new.models import BotUser
-                                promo_obj = PromoCode.objects.get(code=promo_code)
-                    if promo_obj.created_by:
-                        # Try to get BotUser to get Telegram username
-                        bot_user = BotUser.objects.filter(linked_user=promo_obj.created_by).first()
-                        if bot_user and bot_user.username:
-                            return f"@{bot_user.username}"
-                        elif promo_obj.created_by.username and not promo_obj.created_by.username.startswith('bot_'):
-                            return f"@{promo_obj.created_by.username}"
-                        else:
-                            return promo_obj.created_by.first_name or promo_obj.created_by.email or f"ID: {promo_obj.created_by.id}"
+            promo_obj = PromoCode.objects.get(code=promo_code)
+            if promo_obj.created_by:
+                # Try to get BotUser to get Telegram username
+                bot_user = BotUser.objects.filter(linked_user=promo_obj.created_by).first()
+                if bot_user and bot_user.username:
+                    return f"@{bot_user.username}"
+                elif promo_obj.created_by.username and not promo_obj.created_by.username.startswith('bot_'):
+                    return f"@{promo_obj.created_by.username}"
+                else:
+                    return promo_obj.created_by.first_name or promo_obj.created_by.email or f"ID: {promo_obj.created_by.id}"
         except PromoCode.DoesNotExist:
             pass
         return None
