@@ -190,7 +190,6 @@ const PromoPage = () => {
               </button>
             </form>
 
-            prompt
             {error && (
               <div className="mt-4 p-4 bg-red-500/20 border border-red-500/30 rounded-lg">
                 <div className="flex items-center space-x-2">
