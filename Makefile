@@ -32,7 +32,7 @@ frontend: ## Start frontend development server
 
 backend: ## Start backend development server
 	@echo "⚙️ Starting backend dev server..."
-	cd backend && python manage.py runserver
+	cd backend && python manage.py runserver 0.0.0.0:8000
 
 bot: ## Start Telegram bot
 	@echo "🤖 Starting Telegram bot..."
