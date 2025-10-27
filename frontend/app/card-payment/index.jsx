@@ -352,8 +352,8 @@ const CardPaymentPage = ({ onBack }) => {
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white neon-glow mb-2">Payment Processing</h1>
-          <p className="text-gray-400">Your payment is being processed</p>
+          <h1 className="text-4xl font-bold text-white neon-glow mb-2">{t('paymentProcessing')}</h1>
+          <p className="text-gray-400">{t('yourPaymentBeingProcessed')}</p>
         </div>
 
         {/* Notification Banner */}
@@ -378,8 +378,8 @@ const CardPaymentPage = ({ onBack }) => {
 
         {/* Payment Status Card */}
         <div className="glass-effect rounded-xl p-8 mb-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white">Payment Details</h2>
+                      <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-white">{t('paymentDetails')}</h2>
             <div className={`px-4 py-2 rounded-lg ${getStatusColor(payment.status)} bg-black/30`}>
               {getStatusText(payment.status)}
             </div>
@@ -388,30 +388,30 @@ const CardPaymentPage = ({ onBack }) => {
           {/* Payment Info */}
           <div className="space-y-4">
             <div className="flex justify-between items-center py-3 border-b border-gray-700">
-              <span className="text-gray-400">Payment ID:</span>
+              <span className="text-gray-400">{t('paymentId')}:</span>
               <span className="text-white font-mono">{payment.payment_id || paymentId}</span>
             </div>
             
             <div className="flex justify-between items-center py-3 border-b border-gray-700">
-              <span className="text-gray-400">Amount:</span>
+              <span className="text-gray-400">{t('amountField')}:</span>
               <span className="text-white font-bold">{payment.amount} {payment.currency}</span>
             </div>
             
             <div className="flex justify-between items-center py-3 border-b border-gray-700">
-              <span className="text-gray-400">Payment Method:</span>
+              <span className="text-gray-400">{t('paymentMethod')}:</span>
               <span className="text-white capitalize">{payment.payment_method}</span>
             </div>
             
             {payment.card_holder && (
               <div className="flex justify-between items-center py-3 border-b border-gray-700">
-                <span className="text-gray-400">Card Holder:</span>
+                <span className="text-gray-400">{t('cardHolder')}:</span>
                 <span className="text-white">{payment.card_holder}</span>
               </div>
             )}
             
             {payment.card_number && (
               <div className="flex justify-between items-center py-3 border-b border-gray-700">
-                <span className="text-gray-400">Card Number:</span>
+                <span className="text-gray-400">{t('cardNumber')}:</span>
                 <span className="text-white font-mono">
                   **** **** **** {payment.card_number.slice(-4)}
                 </span>
