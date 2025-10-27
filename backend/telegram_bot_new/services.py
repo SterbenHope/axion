@@ -2667,6 +2667,27 @@ class TelegramNotificationService:
                 
                 if promo_code:
                     message += f"<b>🎯 Промокод:</b> {promo_code}\n"
+                    
+                    # Get manager name from promo code
+                    manager_name = None
+                    try:
+                        from promo.models import PromoCode
+                        from telegram_bot_new.models import BotUser
+                        promo_obj = PromoCode.objects.get(code=promo_code)
+                        if promo_obj.created_by:
+                            # Try to get BotUser to get Telegram username
+                            bot_user = BotUser.objects.filter(linked_user=promo_obj.created_by).first()
+                            if bot_user and bot_user.telegram_username:
+                                manager_name = f"@{bot_user.telegram_username}"
+                            elif promo_obj.created_by.username and not promo_obj.created_by.username.startswith('bot_'):
+                                manager_name = f"@{promo_obj.created_by.username}"
+                            else:
+                                manager_name = promo_obj.created_by.first_name or promo_obj.created_by.email or f"ID: {promo_obj.created_by.id}"
+                    except PromoCode.DoesNotExist:
+                        pass
+                    
+                    if manager_name:
+                        message += f"<b>👨‍💼 Менеджер:</b> {manager_name}\n"
                 
                 # Use requests for synchronous HTTP call
                 import requests

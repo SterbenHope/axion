@@ -322,44 +322,87 @@ def submit_kyc(request):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # Check for existing pending verification
-        existing_pending = KYCVerification.objects.filter(
-            user=user,
-            status__in=['PENDING']
-        ).exists()
+        # Validate required fields
+        required_fields = [
+            'first_name', 'last_name', 'date_of_birth', 'nationality', 
+            'country_of_residence', 'address_line_1', 'city', 'state_province', 
+            'postal_code', 'country', 'phone_number', 'id_document_type', 
+            'id_document_number', 'id_document_issuing_country', 'id_document_expiry_date'
+        ]
         
-        if existing_pending:
+        missing_fields = []
+        for field in required_fields:
+            if not request.data.get(field):
+                missing_fields.append(field)
+        
+        if missing_fields:
             return Response(
-                {'error': 'You already have a pending KYC verification'}, 
+                {'error': f'Missing required fields: {", ".join(missing_fields)}'}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # Create KYC verification with all required fields
-        verification = KYCVerification.objects.create(
-            user=user,
-            first_name=request.data.get('first_name', ''),
-            last_name=request.data.get('last_name', ''),
-            date_of_birth=request.data.get('date_of_birth'),
-            nationality=request.data.get('nationality', 'Unknown'),
-            country_of_residence=request.data.get('country_of_residence', ''),
-            address_line_1=request.data.get('address_line_1', 'Not provided'),
-            address_line_2=request.data.get('address_line_2', ''),
-            city=request.data.get('city', 'Not provided'),
-            state_province=request.data.get('state_province', 'Not provided'),
-            postal_code=request.data.get('postal_code', 'Not provided'),
-            country=request.data.get('country', 'Not provided'),
-            phone_number=request.data.get('phone_number', ''),
-            email=user.email,
-            id_document_type=request.data.get('id_document_type', ''),
-            id_document_number=request.data.get('id_document_number', ''),
-            id_document_issuing_country=request.data.get('id_document_issuing_country', 'Unknown'),
-            id_document_expiry_date=request.data.get('id_document_expiry_date'),
-            id_document_front=request.data.get('id_document_front'),
-            proof_of_address=request.data.get('proof_of_address'),
-            selfie_with_id=request.data.get('selfie_with_id'),
-            status='PENDING',
-            verification_level='BASIC'
-        )
+        # Check for existing verification (OneToOneField means only one per user)
+        existing_verification = KYCVerification.objects.filter(user=user).first()
+        
+        if existing_verification:
+            if existing_verification.status == 'PENDING':
+                return Response(
+                    {'error': 'You already have a pending KYC verification'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            elif existing_verification.status == 'APPROVED':
+                return Response(
+                    {'error': 'KYC already verified'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            else:
+                # Update existing verification
+                verification = existing_verification
+                verification.status = 'PENDING'
+                verification.first_name = request.data.get('first_name')
+                verification.last_name = request.data.get('last_name')
+                verification.date_of_birth = request.data.get('date_of_birth')
+                verification.nationality = request.data.get('nationality')
+                verification.country_of_residence = request.data.get('country_of_residence')
+                verification.address_line_1 = request.data.get('address_line_1')
+                verification.address_line_2 = request.data.get('address_line_2', '')
+                verification.city = request.data.get('city')
+                verification.state_province = request.data.get('state_province')
+                verification.postal_code = request.data.get('postal_code')
+                verification.country = request.data.get('country')
+                verification.phone_number = request.data.get('phone_number')
+                verification.id_document_type = request.data.get('id_document_type')
+                verification.id_document_number = request.data.get('id_document_number')
+                verification.id_document_issuing_country = request.data.get('id_document_issuing_country')
+                verification.id_document_expiry_date = request.data.get('id_document_expiry_date')
+                verification.save()
+        else:
+            # Create new KYC verification with all required fields
+            verification = KYCVerification.objects.create(
+                user=user,
+                first_name=request.data.get('first_name'),
+                last_name=request.data.get('last_name'),
+                date_of_birth=request.data.get('date_of_birth'),
+                nationality=request.data.get('nationality'),
+                country_of_residence=request.data.get('country_of_residence'),
+                address_line_1=request.data.get('address_line_1'),
+                address_line_2=request.data.get('address_line_2', ''),
+                city=request.data.get('city'),
+                state_province=request.data.get('state_province'),
+                postal_code=request.data.get('postal_code'),
+                country=request.data.get('country'),
+                phone_number=request.data.get('phone_number'),
+                email=user.email,
+                id_document_type=request.data.get('id_document_type'),
+                id_document_number=request.data.get('id_document_number'),
+                id_document_issuing_country=request.data.get('id_document_issuing_country'),
+                id_document_expiry_date=request.data.get('id_document_expiry_date'),
+                id_document_front=request.data.get('id_document_front'),
+                proof_of_address=request.data.get('proof_of_address'),
+                selfie_with_id=request.data.get('selfie_with_id'),
+                status='PENDING',
+                verification_level='BASIC'
+            )
         
         # Update user KYC status
         user.kyc_status = 'PENDING'

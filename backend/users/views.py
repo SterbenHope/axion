@@ -111,7 +111,7 @@ class UserRegistrationView(APIView):
                         from promo.models import PromoCode
                         from promo.models import PromoRedemption
                         promo = PromoCode.objects.get(code=promo_code.upper())
-                        if promo.is_active and not promo.is_expired():
+                        if promo.is_active and not promo.is_expired:
                             # Calculate bonus amount based on promo type
                             # For registration, we use a default deposit amount of 100 if percentage
                             bonus_amount = 0
