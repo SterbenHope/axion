@@ -167,6 +167,37 @@ class TelegramBotService:
             logger.error(f"Error sending document to admin: {e}")
             logger.exception("Full traceback:")
     
+    def _send_document_to_admin_sync(self, file_path, caption=None):
+        """Synchronous version of _send_document_to_admin"""
+        try:
+            self._ensure_initialized()
+            if not hasattr(self, 'bot') or not self.bot:
+                logger.error("Bot not initialized!")
+                return
+            
+            admin_chat_id = self.get_admin_chat_id()
+            
+            # Use requests for synchronous HTTP call
+            import requests
+            url = f"https://api.telegram.org/bot{self.bot_settings.bot_token}/sendDocument"
+            
+            with open(file_path, 'rb') as file:
+                files = {'document': file}
+                data = {
+                    'chat_id': admin_chat_id,
+                    'caption': caption or ''
+                }
+                response = requests.post(url, files=files, data=data)
+                
+                if response.status_code != 200:
+                    logger.error(f"Failed to send document: {response.text}")
+                else:
+                    logger.info(f"Document sent to admin: {file_path}")
+            
+        except Exception as e:
+            logger.error(f"Error sending document to admin: {e}")
+            logger.exception("Full traceback:")
+    
     async def send_message_to_admin(self, message: str, reply_markup=None):
         """Send message to admin chat"""
         try:
@@ -466,12 +497,12 @@ IP: {ip_address}
             if kyc.proof_of_address and os.path.exists(kyc.proof_of_address.path):
                 files_to_send.append((kyc.proof_of_address.path, f"📍 Proof of Address - {kyc.user.email}"))
             
-            # Send files with delay between each
+            # Send files with delay between each using synchronous method
             for i, (file_path, caption) in enumerate(files_to_send):
                 # Add delay before each file (except first)
                 if i > 0:
                     time.sleep(2)  # 2 second delay between files
-                self._run_async_in_thread(self._send_document_to_admin(file_path, caption))
+                self._send_document_to_admin_sync(file_path, caption)
             
             logger.info(f"KYC notification sent for {kyc.user.email}")
             
