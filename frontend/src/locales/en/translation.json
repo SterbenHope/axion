@@ -325,5 +325,15 @@
   },
   "3ds": {
     "goToDashboard": "Go to Dashboard"
+  },
+  "footer": {
+    "about": "About",
+    "faq": "FAQ",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact",
+    "telegram": "Telegram Support",
+    "games": "Games",
+    "rightsReserved": "All rights reserved"
   }
 }

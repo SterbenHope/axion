@@ -20,6 +20,7 @@ import PromoPage from './promo';
 import ProfilePage from './profile';
 import AdminPage from './admin';
 import CardPaymentPage from './card-payment';
+import Footer from '../components/Footer';
 
 const HomePage = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -811,6 +812,9 @@ const HomePage = () => {
           💬
         </button>
       )}
+
+      {/* Footer */}
+      <Footer onPageChange={(page) => setCurrentPage(page)} />
 
       {/* Auth Modals */}
       {isLoginModalOpen && (
