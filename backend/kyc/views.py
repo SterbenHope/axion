@@ -365,20 +365,7 @@ def submit_kyc(request):
         user.kyc_status = 'PENDING'
         user.save(update_fields=['kyc_status'])
         
-        # Send Telegram notification
-        try:
-            bot_service = TelegramBotService()
-            print(f"Bot service initialized: {bot_service.bot is not None}")
-            if bot_service.bot:
-                bot_service.notify_admin_kyc_submitted_sync(verification)
-                print(f"Telegram notification sent for KYC {verification.id}")
-            else:
-                print("Bot not initialized, skipping notification")
-        except Exception as e:
-            print(f"Failed to send Telegram notification: {e}")
-            import traceback
-            traceback.print_exc()
-        
+        # Telegram notification will be sent automatically by signal in kyc/signals.py
         print(f"KYC submitted successfully: {verification.id}")
         
         return Response({
