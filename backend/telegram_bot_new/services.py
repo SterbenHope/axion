@@ -723,17 +723,28 @@ IP: {ip_address}
                 if str(message.chat.id) == str(self.get_admin_chat_id()):
                     help_text = """🤖 Админ команды NeonCasino Bot:
 
+Базовые команды:
 /start - Запустить бота
 /help - Показать справку
 /status - Статус системы
 /admins - Список админов
 /managers - Список менеджеров
 
+Управление:
+/list_bot_users - Список пользователей бота
+/list_promos - Список промокодов
+/my_stats - Статистика
+
+Промокоды:
+/create_promo <код> - Создать промокод
+  • Пример: /create_promo WELCOME2024
+
 Действия админа:
+• Одобрение/отклонение заявок менеджеров
 • Одобрение/отклонение KYC
 • Одобрение/отклонение платежей
-• Просмотр статистики
-• Управление менеджерами
+• Просмотр статистики пользователей
+• Управление промокодами
 
 Команды работают в админском чате"""
                 elif has_access(message.from_user.id, message.chat.id, 'manager', self):
@@ -920,7 +931,8 @@ IP: {ip_address}
                     bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
                     
                     # Check if user has a pending application and is sending answers
-                    if bot_user.level == 'user' and not bot_user.is_banned:
+                    # ONLY in private messages (not in admin or manager chats)
+                    if bot_user.level == 'user' and not bot_user.is_banned and message.chat.type == 'private':
                         # Check if there's a pending application
                         pending_app = await sync_to_async(
                             ManagerApplication.objects.filter(user=bot_user, status='PENDING').first
@@ -937,7 +949,8 @@ IP: {ip_address}
                             pass
                 except BotUser.DoesNotExist:
                     # New user - could be sending application
-                    if message.text and message.text not in ['/start', '/apply', '/help']:
+                    # ONLY in private messages (not in admin or manager chats)
+                    if message.chat.type == 'private' and message.text and message.text not in ['/start', '/apply', '/help']:
                         # Create bot user first
                         bot_user = await sync_to_async(BotUser.objects.create)(
                             user_id=message.from_user.id,
@@ -1877,17 +1890,23 @@ IP: {ip_address}
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
             
+            # Format application text (only unique answers)
+            app_text = f"{app.q1_source}"
+            if app.q2_experience != app.q1_source:
+                app_text += f"\n\n{app.q2_experience}"
+            if app.q3_ubt_knowledge not in [app.q1_source, app.q2_experience]:
+                app_text += f"\n\n{app.q3_ubt_knowledge}"
+            if app.q4_projects not in [app.q1_source, app.q2_experience, app.q3_ubt_knowledge]:
+                app_text += f"\n\n{app.q4_projects}"
+            if app.q5_hours not in [app.q1_source, app.q2_experience, app.q3_ubt_knowledge, app.q4_projects]:
+                app_text += f"\n\n{app.q5_hours}"
+            
             admin_message = (
-                f"📝 **Новая заявка на роль менеджера**\n\n"
-                f"👤 **Пользователь:** {bot_user.first_name} (@{bot_user.username})\n"
-                f"🆔 **ID:** `{bot_user.user_id}`\n"
-                f"📅 **Дата:** {app.created_at.strftime('%d.%m.%Y %H:%M')}\n\n"
-                f"**1. Откуда про нас узнали?**\n{app.q1_source}\n\n"
-                f"**2. Как давно занимаетесь трафиком?**\n{app.q2_experience}\n\n"
-                f"**3. Что знаете про УБТ?**\n{app.q3_ubt_knowledge}\n\n"
-                f"**4. На какие проекты проливали?**\n{app.q4_projects}\n\n"
-                f"**5. Сколько часов в неделю готовы работать?**\n{app.q5_hours}\n\n"
-                f"_Заявка будет рассмотрена в ближайшее время_"
+                f"📝 Новая заявка на роль менеджера\n\n"
+                f"👤 {bot_user.first_name} (@{bot_user.username})\n"
+                f"🆔 ID: {bot_user.user_id}\n"
+                f"📅 {app.created_at.strftime('%d.%m.%Y %H:%M')}\n\n"
+                f"Заявка:\n{app_text[:500]}{'...' if len(app_text) > 500 else ''}"
             )
             
             await self.send_message_to_admin(admin_message, reply_markup)
