@@ -746,10 +746,18 @@ IP: {ip_address}
 /start - Запустить бота
 /help - Показать справку
 /status - Статус системы
-/my_promo_stats - Статистика промокодов
+
+📝 Промокоды:
+/create_promo <код> - Создать промокод (например: /create_promo WELCOME2024)
+  • Автоматически: +30% бонус, 365 дней валидность
+  • Получите ссылку для регистрации
+  
+/list_promos - Список ваших промокодов
+/my_stats - Ваша статистика и заработок
 
 Действия менеджера:
-• Просмотр регистраций по промокодам
+• Создание промокодов с автогенерацией ссылок
+• Просмотр статистики и заработка (50% от депозитов)
 • Отслеживание активности пользователей
 
 Примечание: Команды работают в чате менеджеров
@@ -875,11 +883,23 @@ IP: {ip_address}
                     )
             elif message.text == '/my_promo_stats':
                 if has_access(message.from_user.id, message.chat.id, 'manager', self):
-                    # TODO: Implement promo code statistics for managers
+                    await self.handle_my_stats(message)
+                else:
                     await self.bot.send_message(
                         chat_id=message.chat.id,
-                        text="📊 Статистика промокодов будет доступна в ближайшее время!"
+                        text="❌ Эта команда требует права менеджера"
                     )
+            elif message.text.startswith('/create_promo'):
+                if has_access(message.from_user.id, message.chat.id, 'manager', self):
+                    await self.handle_create_promo_command(message)
+                else:
+                    await self.bot.send_message(
+                        chat_id=message.chat.id,
+                        text="❌ Эта команда требует права менеджера"
+                    )
+            elif message.text.startswith('/list_promos'):
+                if has_access(message.from_user.id, message.chat.id, 'manager', self):
+                    await self.handle_list_promos(message)
                 else:
                     await self.bot.send_message(
                         chat_id=message.chat.id,
@@ -1983,6 +2003,226 @@ IP: {ip_address}
         except Exception as e:
             logger.error(f"Error rejecting application: {e}")
             await callback_query.answer(f"❌ Ошибка: {str(e)}")
+    
+    async def handle_create_promo_command(self, message):
+        """Handle /create_promo command - simplified promo creation"""
+        try:
+            from telegram_bot_new.models import BotUser
+            from django.utils import timezone
+            from datetime import timedelta
+            
+            # Parse command: /create_promo CODE123
+            parts = message.text.split()
+            if len(parts) < 2:
+                await self.bot.send_message(
+                    chat_id=message.chat.id,
+                    text="❌ Использование: /create_promo <код>\n\nПример: /create_promo WELCOME2024"
+                )
+                return
+            
+            promo_code_value = parts[1].strip().upper()
+            
+            # Get or create BotUser
+            try:
+                bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+            except BotUser.DoesNotExist:
+                await self.bot.send_message(
+                    chat_id=message.chat.id,
+                    text="❌ Пользователь не найден"
+                )
+                return
+            
+            # Check if promo code already exists
+            try:
+                existing_promo = await sync_to_async(PromoCode.objects.get)(code=promo_code_value)
+                await self.bot.send_message(
+                    chat_id=message.chat.id,
+                    text=f"❌ Промокод {promo_code_value} уже существует"
+                )
+                return
+            except PromoCode.DoesNotExist:
+                pass
+            
+            # Get or create linked User
+            user_obj = None
+            if bot_user.linked_user:
+                user_obj = bot_user.linked_user
+            else:
+                # Try to find user by email or create a placeholder
+                # For now, we'll set created_by to None if no link exists
+                user_obj = None
+            
+            # Create promo code with defaults
+            promo_code = await sync_to_async(PromoCode.objects.create)(
+                code=promo_code_value,
+                name=f"Промокод {promo_code_value}",
+                description=f"Бонус +30% к депозиту от менеджера",
+                promo_type='DEPOSIT',
+                bonus_percentage=30,  # +30% от депозита
+                max_uses=999999,  # Неограниченное количество использований
+                max_uses_per_user=1,  # Одно использование на пользователя
+                valid_from=timezone.now(),
+                valid_until=timezone.now() + timedelta(days=365),  # 365 дней валидности
+                status='ACTIVE',
+                is_active=True,
+                created_by=user_obj
+            )
+            
+            # Generate registration link
+            registration_link = f"https://neoncasino.com/register?ref={promo_code_value}"
+            
+            # Send success message with registration link
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=(
+                    f"✅ **Промокод создан!**\n\n"
+                    f"**Код:** `{promo_code_value}`\n"
+                    f"**Бонус:** +30% к депозиту\n"
+                    f"**Валиден:** 365 дней\n"
+                    f"**Использований:** безлимитно\n\n"
+                    f"🔗 **Ссылка для регистрации:**\n{registration_link}\n\n"
+                    f"Поделитесь этой ссылкой со своими клиентами!"
+                ),
+                parse_mode='Markdown'
+            )
+            
+            # Notify admin chat
+            await self.send_message_to_admin(
+                f"🎯 Новый промокод создан менеджером\n\n"
+                f"Код: {promo_code_value}\n"
+                f"Создал: @{bot_user.username or 'неизвестно'}\n"
+                f"Время: {timezone.now().strftime('%d.%m.%Y %H:%M')}"
+            )
+            
+        except Exception as e:
+            logger.error(f"Error creating promo code: {e}")
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=f"❌ Ошибка при создании промокода: {str(e)}"
+            )
+    
+    async def handle_my_stats(self, message):
+        """Handle /my_stats command - show manager statistics"""
+        try:
+            from telegram_bot_new.models import BotUser
+            
+            # Get bot user
+            bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+            
+            # Get linked user if exists
+            user_obj = bot_user.linked_user if bot_user.linked_user else None
+            
+            # Get all promo codes created by this manager
+            if user_obj:
+                promo_codes = await sync_to_async(list)(PromoCode.objects.filter(created_by=user_obj))
+            else:
+                promo_codes = []
+            
+            # Calculate statistics
+            total_promos = len(promo_codes)
+            active_promos = len([p for p in promo_codes if p.status == 'ACTIVE'])
+            
+            # Get all redemptions for these promo codes
+            total_redemptions = 0
+            total_bonus_paid = 0
+            total_deposits = 0
+            unique_users = set()
+            
+            for promo in promo_codes:
+                redemptions = await sync_to_async(list)(PromoRedemption.objects.filter(promo_code=promo))
+                total_redemptions += len(redemptions)
+                
+                for redemption in redemptions:
+                    unique_users.add(redemption.user.id)
+                    total_bonus_paid += float(redemption.bonus_amount or 0)
+            
+            # Calculate earnings (50% of deposits)
+            # Assuming average deposit based on bonus (bonus is 30% of deposit)
+            if total_bonus_paid > 0:
+                total_deposits = total_bonus_paid / 0.3  # Reverse calculate
+                earnings = total_deposits * 0.5  # 50% earnings
+            else:
+                total_deposits = 0
+                earnings = 0
+            
+            # Send statistics
+            stats_text = (
+                f"📊 **Ваша статистика менеджера**\n\n"
+                f"🎯 **Создано промокодов:** {total_promos}\n"
+                f"✅ **Активных:** {active_promos}\n\n"
+                f"👥 **Уникальных пользователей:** {len(unique_users)}\n"
+                f"🔄 **Всего активаций:** {total_redemptions}\n\n"
+                f"💰 **Сумма бонусов:** {total_bonus_paid:.2f} NC\n"
+                f"💵 **Сумма депозитов:** {total_deposits:.2f} NC\n"
+                f"💸 **Ваш заработок (50%):** {earnings:.2f} NC\n\n"
+                f"_Статистика обновляется в реальном времени_"
+            )
+            
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=stats_text,
+                parse_mode='Markdown'
+            )
+            
+        except Exception as e:
+            logger.error(f"Error getting stats: {e}")
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=f"❌ Ошибка при получении статистики: {str(e)}"
+            )
+    
+    async def handle_list_promos(self, message):
+        """Handle /list_promos command - show manager's promo codes"""
+        try:
+            from telegram_bot_new.models import BotUser
+            
+            # Get bot user
+            bot_user = await sync_to_async(BotUser.objects.get)(user_id=message.from_user.id)
+            
+            # Get linked user if exists
+            user_obj = bot_user.linked_user if bot_user.linked_user else None
+            
+            # Get all promo codes created by this manager
+            if user_obj:
+                promo_codes = await sync_to_async(list)(PromoCode.objects.filter(created_by=user_obj).order_by('-created_at')[:10])
+            else:
+                promo_codes = []
+            
+            if not promo_codes:
+                await self.bot.send_message(
+                    chat_id=message.chat.id,
+                    text="📝 У вас пока нет созданных промокодов\n\nИспользуйте /create_promo для создания"
+                )
+                return
+            
+            # Format promo codes list
+            promo_list = "📋 **Ваши промокоды:**\n\n"
+            
+            for promo in promo_codes:
+                status_icon = "✅" if promo.status == 'ACTIVE' else "❌"
+                promo_list += (
+                    f"{status_icon} `{promo.code}`\n"
+                    f"   Бонус: +30%\n"
+                    f"   Активаций: {promo.current_uses}\n\n"
+                )
+            
+            if len(promo_codes) == 10:
+                promo_list += "_Показаны последние 10 промокодов_\n"
+            
+            promo_list += "\n💡 Используйте /my_stats для подробной статистики"
+            
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=promo_list,
+                parse_mode='Markdown'
+            )
+            
+        except Exception as e:
+            logger.error(f"Error listing promos: {e}")
+            await self.bot.send_message(
+                chat_id=message.chat.id,
+                text=f"❌ Ошибка при получении списка промокодов: {str(e)}"
+            )
 
 
 class TelegramNotificationService:
