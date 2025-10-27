@@ -41,12 +41,14 @@ const Footer = ({ onPageChange }) => {
           <ul className="footer-links">
             <li>
               <a href="mailto:support@axion-play.su">
-                <span className="footer-icon">📧</span> support@axion-play.su
+                <span className="footer-icon">📧</span> 
+                <span>support@axion-play.su</span>
               </a>
             </li>
             <li>
               <a href="https://t.me/axionsupport" target="_blank" rel="noopener noreferrer">
-                <span className="footer-icon">💬</span> {t('footer.telegram')}
+                <span className="footer-icon">💬</span> 
+                <span>{t('footer.telegram')}</span>
               </a>
             </li>
           </ul>
