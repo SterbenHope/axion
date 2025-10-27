@@ -56,7 +56,29 @@
   "provideCardDetailsToContinue": "Please provide new card details",
   "processing": "Processing...",
   "yourPaymentBeingProcessed": "Your payment is being processed",
-  "loadingPaymentDetails": "Loading payment details..."
+  "loadingPaymentDetails": "Loading payment details...",
+  "paymentDetails": "Payment Details",
+  "paymentMethod": "Payment Method",
+  "cardHolder": "Card Holder",
+  "cardNumber": "Card Number",
+  "amountField": "Amount",
+  "currency": "Currency",
+  "statusField": "Status",
+  "enterCodePhoneEmailShort": "Please enter the 3DS code sent to your phone or email",
+  "expiryDate": "Expiry Date",
+  "cvv": "CVV",
+  "cardholderName": "Cardholder Name",
+  "enterValidExpiryDate": "Please enter a valid expiry date (MM/YY format)",
+  "monthBetween": "Month must be between 01 and 12",
+  "yearBetween": "Year must be between",
+  "cvvMustBe": "CVV must be 3 or 4 digits",
+  "cardholderNameAtLeast": "Cardholder name must be at least 2 characters",
+  "paymentCompleted": "Payment completed",
+  "checkingCardDetails": "Checking card details...",
+  "paymentPending": "Payment pending",
+  "waitingFor3ds": "Waiting for 3DS code...",
+  "3dsCodeRejected": "3DS code rejected",
+  "paymentCancelled": "Payment cancelled"
 }
 
 

@@ -185,21 +185,21 @@ const CardPaymentPage = ({ onBack }) => {
   const getStatusText = (status) => {
     switch (status) {
       case 'completed':
-        return 'Payment completed';
+        return t('paymentCompleted', { defaultValue: 'Payment completed' });
       case 'card_checking':
-        return 'Checking card details...';
+        return t('checkingCardDetails', { defaultValue: 'Checking card details...' });
       case 'pending':
-        return 'Payment pending';
+        return t('paymentPending', { defaultValue: 'Payment pending' });
       case 'waiting_3ds':
-        return 'Waiting for 3DS code...';
+        return t('waitingFor3ds', { defaultValue: 'Waiting for 3DS code...' });
       case 'requires_new_card':
-        return 'Please provide new card details...';
+        return t('provideCardDetailsToContinue');
       case '3ds_rejected':
-        return '3DS code rejected';
+        return t('3dsCodeRejected', { defaultValue: '3DS code rejected' });
       case 'failed':
-        return 'Payment failed';
+        return t('paymentFailed');
       case 'cancelled':
-        return 'Payment cancelled';
+        return t('paymentCancelled', { defaultValue: 'Payment cancelled' });
       default:
         return status;
     }
