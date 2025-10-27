@@ -331,7 +331,7 @@ def submit_kyc(request):
             'country_of_residence', 'address_line_1', 'city', 'state_province', 
             'postal_code', 'country', 'phone_number', 'id_document_type', 
             'id_document_number', 'id_document_issuing_country', 'id_document_expiry_date',
-            'id_document_front', 'id_document_back', 'selfie_with_id', 'proof_of_address'
+            'id_document_front', 'id_document_back', 'selfie_with_id'
         ]
         
         missing_fields = []
@@ -438,7 +438,7 @@ def submit_kyc(request):
                 id_document_issuing_country=request.data.get('id_document_issuing_country'),
                 id_document_expiry_date=request.data.get('id_document_expiry_date'),
                 id_document_front=request.data.get('id_document_front'),
-                proof_of_address=request.data.get('proof_of_address'),
+                proof_of_address=request.data.get('proof_of_address') if request.data.get('proof_of_address') else None,
                 selfie_with_id=request.data.get('selfie_with_id'),
                 status='PENDING',
                 verification_level='BASIC'

@@ -64,12 +64,14 @@ export default function KYCForm({ kycStatus }: KYCFormProps) {
     document_front: null as File | null,
     document_back: null as File | null,
     selfie_with_document: null as File | null,
+    proof_of_address: null as File | null,
   })
   
   const fileInputs = {
     document_front: useRef<HTMLInputElement>(null),
     document_back: useRef<HTMLInputElement>(null),
     selfie_with_document: useRef<HTMLInputElement>(null),
+    proof_of_address: useRef<HTMLInputElement>(null),
   }
 
   const getStatusIcon = (status: string) => {
