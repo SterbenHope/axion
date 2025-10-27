@@ -791,20 +791,6 @@ const HomePage = () => {
         </div>
       </div>
       
-      {/* Mobile Footer */}
-      <div className="mobile-footer">
-        <div className="footer-content">
-          <div className="footer-links">
-            <a href="#" className="footer-link">Terms</a>
-            <a href="#" className="footer-link">Privacy</a>
-            <a href="#" className="footer-link">Support</a>
-          </div>
-          <div className="footer-copyright">
-            <span>{t('footer.copyright')}</span>
-          </div>
-        </div>
-      </div>
-      
       {/* Chat Toggle Button */}
       {!isChatOpen && (
         <button 
