@@ -1,0 +1,19 @@
+{
+  "emailVerification": {
+    "title": "E-Mail-Verifizierung",
+    "message": "Wir haben einen Bestätigungscode an gesendet",
+    "instruction": "Bitte geben Sie den 6-stelligen Code unten ein",
+    "codeLabel": "Bestätigungscode",
+    "verify": "Bestätigen",
+    "verifying": "Bestätigung...",
+    "resend": "Code erneut senden",
+    "resendIn": "Erneut senden in",
+    "sending": "Senden...",
+    "backToRegister": "Zurück zur Registrierung",
+    "success": "E-Mail erfolgreich bestätigt!",
+    "error": "Bestätigungsfehler. Bitte versuchen Sie es erneut.",
+    "invalidCode": "Ungültiger Bestätigungscode",
+    "expiredCode": "Der Bestätigungscode ist abgelaufen",
+    "maxAttempts": "Maximale Anzahl der Bestätigungsversuche überschritten"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "emailVerification": {
+    "title": "Email Verification",
+    "message": "We sent a verification code to",
+    "instruction": "Please enter the 6-digit code below",
+    "codeLabel": "Verification Code",
+    "verify": "Verify",
+    "verifying": "Verifying...",
+    "resend": "Resend Code",
+    "resendIn": "Resend in",
+    "sending": "Sending...",
+    "backToRegister": "Back to Registration",
+    "success": "Email verified successfully!",
+    "error": "Verification failed. Please try again.",
+    "invalidCode": "Invalid verification code",
+    "expiredCode": "Verification code has expired",
+    "maxAttempts": "Maximum verification attempts exceeded"
+  }
+}

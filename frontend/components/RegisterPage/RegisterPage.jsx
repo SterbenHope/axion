@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
+import EmailVerification from '../EmailVerification/EmailVerification';
+import { API_URL } from '../../http';
 import './RegisterPage.css';
 
 const RegisterPage = ({ onClose }) => {
@@ -9,6 +11,8 @@ const RegisterPage = ({ onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [promoCode, setPromoCode] = useState('');
+  const [showEmailVerification, setShowEmailVerification] = useState(false);
+  const [emailVerificationRequired, setEmailVerificationRequired] = useState(false);
   const { register, loading, error } = useAuth();
 
   useEffect(() => {
@@ -31,6 +35,30 @@ const RegisterPage = ({ onClose }) => {
 
   const handleRegister = async () => {
     if (email.trim() && password.trim()) {
+      // First check if email verification is required
+      try {
+        const response = await fetch(`${API_URL}/users/send-verification-code/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: email.trim() })
+        });
+        
+        const data = await response.json();
+        
+        if (data.verification_required) {
+          // Email verification is enabled and required
+          setEmailVerificationRequired(true);
+          setShowEmailVerification(true);
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking email verification:', error);
+        // Continue with registration if verification check fails
+      }
+      
+      // Proceed with registration if verification is not required
       const result = await register(email, password, promoCode || null);
       if (result.success) {
         // Clear promo code after successful registration
@@ -44,6 +72,33 @@ const RegisterPage = ({ onClose }) => {
     console.log('Opening daily case');
     // Logic for opening daily case will be here
   };
+
+  const handleEmailVerified = async () => {
+    // Email is verified, proceed with registration
+    const result = await register(email, password, promoCode || null);
+    if (result.success) {
+      // Clear promo code after successful registration
+      localStorage.removeItem('promoCode');
+      onClose();
+    }
+  };
+
+  const handleBackToRegister = () => {
+    setShowEmailVerification(false);
+    setEmailVerificationRequired(false);
+  };
+
+  // Show email verification modal if required
+  if (showEmailVerification) {
+    return (
+      <EmailVerification
+        email={email}
+        onVerified={handleEmailVerified}
+        onBack={handleBackToRegister}
+        onClose={onClose}
+      />
+    );
+  }
 
   return (
     <div className="register-modal-overlay" onClick={onClose}>

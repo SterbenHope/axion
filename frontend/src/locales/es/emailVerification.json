@@ -1,0 +1,19 @@
+{
+  "emailVerification": {
+    "title": "Verificación de Email",
+    "message": "Enviamos un código de verificación a",
+    "instruction": "Por favor, ingrese el código de 6 dígitos a continuación",
+    "codeLabel": "Código de Verificación",
+    "verify": "Verificar",
+    "verifying": "Verificando...",
+    "resend": "Reenviar Código",
+    "resendIn": "Reenviar en",
+    "sending": "Enviando...",
+    "backToRegister": "Volver al Registro",
+    "success": "¡Email verificado exitosamente!",
+    "error": "Error de verificación. Inténtelo de nuevo.",
+    "invalidCode": "Código de verificación inválido",
+    "expiredCode": "El código de verificación ha expirado",
+    "maxAttempts": "Se excedió el máximo de intentos de verificación"
+  }
+}

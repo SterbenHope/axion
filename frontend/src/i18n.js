@@ -14,22 +14,31 @@ import frGames from './locales/fr/games.json';
 import deGames from './locales/de/games.json';
 import itGames from './locales/it/games.json';
 
+import enEmailVerification from './locales/en/emailVerification.json';
+import esEmailVerification from './locales/es/emailVerification.json';
+import frEmailVerification from './locales/fr/emailVerification.json';
+import deEmailVerification from './locales/de/emailVerification.json';
+
 const resources = {
   en: {
     translation: enTranslation,
-    games: enGames
+    games: enGames,
+    emailVerification: enEmailVerification
   },
   es: {
     translation: esTranslation,
-    games: esGames
+    games: esGames,
+    emailVerification: esEmailVerification
   },
   fr: {
     translation: frTranslation,
-    games: frGames
+    games: frGames,
+    emailVerification: frEmailVerification
   },
   de: {
     translation: deTranslation,
-    games: deGames
+    games: deGames,
+    emailVerification: deEmailVerification
   },
   it: {
     translation: itTranslation,
@@ -44,7 +53,7 @@ i18n
     lng: localStorage.getItem('i18nextLng') || 'en',
     fallbackLng: 'en',
     defaultNS: 'translation',
-    ns: ['translation', 'games'],
+    ns: ['translation', 'games', 'emailVerification'],
     interpolation: {
       escapeValue: false
     }
