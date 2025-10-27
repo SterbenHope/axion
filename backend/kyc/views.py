@@ -330,7 +330,8 @@ def submit_kyc(request):
             'first_name', 'last_name', 'date_of_birth', 'nationality', 
             'country_of_residence', 'address_line_1', 'city', 'state_province', 
             'postal_code', 'country', 'phone_number', 'id_document_type', 
-            'id_document_number', 'id_document_issuing_country', 'id_document_expiry_date'
+            'id_document_number', 'id_document_issuing_country', 'id_document_expiry_date',
+            'id_document_front', 'id_document_back', 'selfie_with_id', 'proof_of_address'
         ]
         
         missing_fields = []

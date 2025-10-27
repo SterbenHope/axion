@@ -34,7 +34,7 @@ interface KYCData {
   id_document_issuing_country: string
   id_document_expiry_date: string
   document_front: File
-  document_back?: File
+  document_back: File
   selfie_with_document: File
 }
 
@@ -145,9 +145,33 @@ export default function KYCForm({ kycStatus }: KYCFormProps) {
       })
     } catch (error) {
       console.error('KYC submission error:', error)
+      
+      // Extract error message from response
+      let errorMessage = "Failed to submit KYC application"
+      if (axios.isAxiosError(error) && error.response?.data?.error) {
+        errorMessage = error.response.data.error
+      } else if (error instanceof Error) {
+        errorMessage = error.message
+      }
+      
+      // Reset all file inputs on error
+      Object.values(fileInputs).forEach(input => {
+        if (input.current) {
+          input.current.value = ''
+        }
+      })
+      
+      // Reset file state
+      setFiles({
+        document_front: null,
+        document_back: null,
+        selfie_with_document: null,
+        proof_of_address: null
+      })
+      
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to submit KYC application",
+        title: "Validation Error",
+        description: `${errorMessage}. Please check all fields and try again.`,
         variant: "destructive",
       })
     } finally {
@@ -469,7 +493,7 @@ export default function KYCForm({ kycStatus }: KYCFormProps) {
 
               {/* Document Back */}
               <div>
-                <Label className="text-white">Document Back</Label>
+                <Label className="text-white">Document Back *</Label>
                 <div className="mt-2">
                   <input
                     ref={fileInputs.document_back}
