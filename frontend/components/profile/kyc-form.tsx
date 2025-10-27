@@ -323,14 +323,19 @@ export default function KYCForm({ kycStatus }: KYCFormProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="id_document_type" className="text-white">Document Type *</Label>
-              <Input
+              <select
                 id="id_document_type"
                 value={formData.id_document_type}
                 onChange={(e) => setFormData(prev => ({ ...prev, id_document_type: e.target.value }))}
                 required
-                className="bg-black/50 border-purple-500/30 text-white"
-                placeholder="e.g., Passport, Driver's License, National ID"
-              />
+                className="w-full px-3 py-2 bg-black/50 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-purple-500"
+              >
+                <option value="">Select document type</option>
+                <option value="PASSPORT">Passport</option>
+                <option value="NATIONAL_ID">National ID</option>
+                <option value="DRIVERS_LICENSE">Driver's License</option>
+                <option value="RESIDENCE_PERMIT">Residence Permit</option>
+              </select>
             </div>
             <div>
               <Label htmlFor="id_document_number" className="text-white">Document Number *</Label>
