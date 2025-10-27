@@ -203,14 +203,22 @@ class PromoCode(models.Model):
         else:
             return 1
     
-    def apply_bonus(self, user, deposit_amount=0):
+    def apply_bonus(self, user, deposit_amount=0, ip_address=None, user_agent=''):
         """Apply bonus to user account"""
         if not self.can_be_used_by_user(user)[0]:
             raise ValueError("User cannot use this promo code")
         
+        # Check minimum deposit requirement
+        if self.min_deposit > 0 and deposit_amount < self.min_deposit:
+            raise ValueError(f"Minimum deposit of {self.min_deposit} required for this promo code")
+        
         # Calculate bonus amount
         if self.bonus_percentage > 0:
             bonus = (deposit_amount * self.bonus_percentage) / 100
+            # Apply max_discount for percentage bonuses
+            if self.max_discount > 0:
+                bonus = min(bonus, self.max_discount)
+            # Also check max_bonus
             if self.max_bonus > 0:
                 bonus = min(bonus, self.max_bonus)
         else:
@@ -219,13 +227,15 @@ class PromoCode(models.Model):
         # Add bonus to user account
         user.add_neoncoins(bonus)
         
-        # Create redemption record
+        # Create redemption record with IP and user agent
         redemption = PromoRedemption.objects.create(
             promo_code=self,
             user=user,
             bonus_amount=bonus,
             free_spins_awarded=self.free_spins,
-            wagering_requirement=bonus * self.wagering_multiplier
+            wagering_requirement=bonus * self.wagering_multiplier,
+            ip_address=ip_address or '0.0.0.0',
+            user_agent=user_agent
         )
         
         # Increment usage counter
