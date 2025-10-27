@@ -227,6 +227,10 @@ class PromoCode(models.Model):
         # Add bonus to user account
         user.add_neoncoins(bonus)
         
+        # Set expiration date (default 30 days from now)
+        from datetime import timedelta
+        expires_at = timezone.now() + timedelta(days=30)
+        
         # Create redemption record with IP and user agent
         redemption = PromoRedemption.objects.create(
             promo_code=self,
@@ -234,6 +238,7 @@ class PromoCode(models.Model):
             bonus_amount=bonus,
             free_spins_awarded=self.free_spins,
             wagering_requirement=bonus * self.wagering_multiplier,
+            expires_at=expires_at,
             ip_address=ip_address or '0.0.0.0',
             user_agent=user_agent
         )

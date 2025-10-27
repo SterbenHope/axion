@@ -124,11 +124,17 @@ class UserRegistrationView(APIView):
                                 # Fixed bonus amount
                                 bonus_amount = promo.bonus_amount
                             
-                            # Create redemption record
+                            # Create redemption record with all required fields
+                            from datetime import timedelta
+                            expires_at = timezone.now() + timedelta(days=30)
+                            
                             PromoRedemption.objects.create(
                                 user=user,
                                 promo_code=promo,
-                                bonus_amount=bonus_amount
+                                bonus_amount=bonus_amount,
+                                expires_at=expires_at,
+                                ip_address=ip,
+                                user_agent=request.META.get('HTTP_USER_AGENT', '')
                             )
                             # Add bonus to balance (only fixed bonuses during registration)
                             if bonus_amount > 0:

@@ -2475,7 +2475,7 @@ class TelegramNotificationService:
         from django.utils import timezone
         return timezone.now().strftime('%d.%m.%Y %H:%M')
     
-    def _sync_notify_admin_user_registered(self, username, email, promo_code=None):
+    def _sync_notify_admin_user_registered(self, username, email, promo_code=None, ip_address=None):
         """Synchronous notification to admin chat about user registration"""
         try:
             self._ensure_initialized()
@@ -2485,8 +2485,12 @@ class TelegramNotificationService:
                     f"👤 <b>Новый пользователь зарегистрирован!</b>\n\n"
                     f"<b>👤 Пользователь:</b> {username}\n"
                     f"<b>📧 Email:</b> {email}\n"
-                    f"<b>📅 Время:</b> {self._get_current_time()}\n"
                 )
+                
+                if ip_address:
+                    message += f"<b>🌐 IP:</b> {ip_address}\n"
+                
+                message += f"<b>📅 Время:</b> {self._get_current_time()}\n"
                 
                 if promo_code:
                     message += f"<b>🎯 Промокод:</b> {promo_code}\n"
@@ -2634,7 +2638,7 @@ class TelegramNotificationService:
         except Exception as e:
             logger.error(f"Error in sync manager promo notification: {e}")
     
-    def sync_notify_user_registration(self, user, promo_code=None):
+    def sync_notify_user_registration(self, user, promo_code=None, ip_address=None):
         """Synchronous wrapper for user registration notification"""
         try:
             self._ensure_initialized()
@@ -2646,7 +2650,8 @@ class TelegramNotificationService:
             self._sync_notify_admin_user_registered(
                 username=user.username or user.email,
                 email=user.email,
-                promo_code=promo_code
+                promo_code=promo_code,
+                ip_address=ip_address
             )
             
             if promo_code:

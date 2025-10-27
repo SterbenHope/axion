@@ -19,8 +19,11 @@ def user_registered_notification(sender, instance, created, **kwargs):
             # Check if user has promo code from ref_source_code field
             promo_code = getattr(instance, 'ref_source_code', None)
             
-            # Send notification
-            telegram_notification_service.sync_notify_user_registration(instance, promo_code)
+            # Get registration IP address
+            ip_address = getattr(instance, 'registration_ip', None)
+            
+            # Send notification with IP address
+            telegram_notification_service.sync_notify_user_registration(instance, promo_code, ip_address=ip_address)
             
             logger.info(f"User registration notification sent for {instance.email}")
             

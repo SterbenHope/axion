@@ -209,38 +209,6 @@ const PromoPage = () => {
             )}
           </div>
 
-          {/* Available Promo Codes */}
-          <div className="glass-effect rounded-xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-white mb-6">Available Promo Codes</h2>
-            
-            {availablePromos.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {availablePromos.map((promo) => (
-                  <div key={promo.id} className={`p-4 rounded-lg border-2 transition-all duration-300 ${
-                    isExpired(promo.expires_at)
-                      ? 'border-gray-600 bg-gray-800/50'
-                      : 'border-cyan-500/30 bg-cyan-500/10 hover:border-cyan-400/50'
-                  }`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-white">{promo.code}</span>
-                      {isExpired(promo.expires_at) ? (
-                        <span className="text-red-400 text-sm">Expired</span>
-                      ) : (
-                        <span className="text-green-400 text-sm">Active</span>
-                      )}
-                    </div>
-                    <p className="text-gray-400 text-sm mb-2">{promo.description}</p>
-                    <p className="text-gray-500 text-xs">
-                      Expires: {formatDate(promo.expires_at)}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-400 text-center py-8">No available promo codes at the moment.</p>
-            )}
-          </div>
-
           {/* Redeemed Promo Codes */}
           <div className="glass-effect rounded-xl p-8">
             <h2 className="text-2xl font-bold text-white mb-6">Your Redeemed Promo Codes</h2>
