@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth/useAuth';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import './card-payment.css';
 
 const CardPaymentPage = ({ onBack }) => {
   const { isAuthenticated } = useAuth();

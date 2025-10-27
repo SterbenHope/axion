@@ -5,6 +5,7 @@ import Header from '../../components/layout/header';
 import Footer from '../../components/layout/footer';
 import axios from 'axios';
 import { API_URL } from '../../http';
+import './promo.css';
 
 const PromoPage = () => {
   const { isAuthenticated } = useAuth();

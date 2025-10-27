@@ -1,0 +1,229 @@
+/* Dashboard Page Mobile Responsiveness */
+
+.dashboard-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-content {
+    padding: 16px;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dashboard-header p {
+    font-size: 14px;
+  }
+  
+  /* Stats Grid */
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 {
+    padding: 16px;
+  }
+  
+  .glass-effect.rounded-xl.p-6 p.text-3xl {
+    font-size: 1.5rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 .text-4xl {
+    font-size: 2rem;
+  }
+  
+  /* Quick Actions */
+  .grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 button {
+    padding: 12px 8px;
+    font-size: 14px;
+  }
+  
+  /* Recent Activity */
+  .grid.grid-cols-1.lg\\:grid-cols-2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Game/Transaction Lists */
+  .space-y-3 > * + * {
+    margin-top: 8px;
+  }
+  
+  .space-y-3 li {
+    padding: 8px 0;
+  }
+  
+  .space-y-3 li .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  .space-y-3 li .text-sm {
+    font-size: 12px;
+  }
+  
+  .space-y-3 li .text-xs {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-content {
+    padding: 12px;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .dashboard-header p {
+    font-size: 13px;
+  }
+  
+  /* Stats Grid - Single Column */
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 {
+    padding: 12px;
+  }
+  
+  .glass-effect.rounded-xl.p-6 p.text-3xl {
+    font-size: 1.25rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 .text-4xl {
+    font-size: 1.5rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 p.text-xs {
+    font-size: 10px;
+  }
+  
+  /* Quick Actions - Single Column */
+  .grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  
+  .grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 button {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  /* Compact Lists */
+  .space-y-3 li {
+    padding: 6px 0;
+  }
+  
+  .space-y-3 li .flex.items-center.space-x-3 {
+    gap: 8px;
+  }
+  
+  .space-y-3 li .text-2xl {
+    font-size: 1.25rem;
+  }
+  
+  /* Hide some details on very small screens */
+  .space-y-3 li .text-xs.text-gray-500 {
+    display: none;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .dashboard-content {
+    padding: 12px;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 {
+    padding: 12px;
+  }
+  
+  /* Stats Grid - 2 columns in landscape */
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+}
+
+/* Loading and Error States */
+.dashboard-content .animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Error Message */
+.dashboard-content .glass-effect.border.border-red-500\\/30 {
+  margin-top: 1rem;
+  padding: 12px;
+}
+
+.dashboard-content .glass-effect.border.border-red-500\\/30 .flex.items-center.space-x-2 {
+  gap: 8px;
+}
+
+/* Focus states for accessibility */
+.dashboard-content button:focus {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+}
+
+/* Hover effects */
+.dashboard-content .glass-effect:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Text truncation for long content */
+.dashboard-content .space-y-3 li .font-medium {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+@media (max-width: 480px) {
+  .dashboard-content .space-y-3 li .font-medium {
+    max-width: 120px;
+  }
+}

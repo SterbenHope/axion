@@ -5,6 +5,7 @@ import Header from '../../components/layout/header';
 import Footer from '../../components/layout/footer';
 import axios from 'axios';
 import { API_URL } from '../../http';
+import './payments.css';
 
 const PaymentsPage = ({ defaultTab = 'deposit', initialAmount = '', onNavigateToCardPayment }) => {
   const { isAuthenticated } = useAuth();

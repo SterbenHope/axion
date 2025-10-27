@@ -1,0 +1,293 @@
+/* Card Payment (3DS) Page Mobile Responsiveness */
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .min-h-screen.bg-gradient-to-br.from-black.via-gray-900.to-black.cyber-grid {
+    padding: 16px 12px;
+  }
+  
+  .max-w-3xl.mx-auto {
+    max-width: 100%;
+  }
+  
+  /* Header */
+  .text-center.mb-8 h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .text-center.mb-8 p {
+    font-size: 14px;
+  }
+  
+  /* Notification Banner */
+  .glass-effect.rounded-xl.p-4.mb-6 {
+    padding: 12px;
+    margin-bottom: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-4.mb-6 .flex.items-center.gap-3 {
+    gap: 8px;
+  }
+  
+  .glass-effect.rounded-xl.p-4.mb-6 p {
+    font-size: 14px;
+  }
+  
+  /* Payment Status Card */
+  .glass-effect.rounded-xl.p-8.mb-6 {
+    padding: 16px;
+    margin-bottom: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8.mb-6 h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8.mb-6 .flex.items-center.justify-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .glass-effect.rounded-xl.p-8.mb-6 .px-4.py-2 {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  /* Payment Info */
+  .space-y-4 > * + * {
+    margin-top: 8px;
+  }
+  
+  .space-y-4 .flex.justify-between.items-center {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 0;
+  }
+  
+  .space-y-4 .text-gray-400 {
+    font-size: 14px;
+  }
+  
+  .space-y-4 .text-white {
+    font-size: 14px;
+  }
+  
+  /* Forms */
+  .glass-effect.rounded-xl.p-6 {
+    padding: 16px;
+    margin-bottom: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 p {
+    font-size: 13px;
+  }
+  
+  .glass-effect.rounded-xl.p-6 .flex.items-start.gap-3 {
+    gap: 8px;
+  }
+  
+  .glass-effect.rounded-xl.p-6 .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  /* Form Inputs */
+  .glass-effect.rounded-xl.p-6 input {
+    font-size: 16px; /* Prevent zoom on iOS */
+    padding: 12px;
+  }
+  
+  .glass-effect.rounded-xl.p-6 button {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  /* Grid Layout */
+  .grid.grid-cols-2.gap-4 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  /* Instructions */
+  .glass-effect.rounded-xl.p-6 .space-y-4 {
+    gap: 12px;
+  }
+  
+  /* Back Button */
+  .text-center.mt-8 button {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .min-h-screen.bg-gradient-to-br.from-black.via-gray-900.to-black.cyber-grid {
+    padding: 12px 8px;
+  }
+  
+  /* Header */
+  .text-center.mb-8 h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .text-center.mb-8 p {
+    font-size: 13px;
+  }
+  
+  /* Cards */
+  .glass-effect.rounded-xl.p-8.mb-6,
+  .glass-effect.rounded-xl.p-6 {
+    padding: 12px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8.mb-6 h2 {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .glass-effect.rounded-xl.p-6 p {
+    font-size: 12px;
+  }
+  
+  /* Smaller buttons */
+  .glass-effect.rounded-xl.p-6 button {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  /* Compact form */
+  .glass-effect.rounded-xl.p-6 input {
+    padding: 10px 12px;
+  }
+  
+  /* Payment Info - Hide some details on very small screens */
+  .space-y-4 .flex.justify-between.items-center:last-child {
+    display: none;
+  }
+  
+  /* Back Button */
+  .text-center.mt-8 button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .min-h-screen.bg-gradient-to-br.from-black.via-gray-900.to-black.cyber-grid {
+    padding: 12px 8px;
+  }
+  
+  .text-center.mb-8 h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8.mb-6,
+  .glass-effect.rounded-xl.p-6 {
+    padding: 12px;
+  }
+}
+
+/* Loading States */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Focus states for accessibility */
+.glass-effect input:focus,
+.glass-effect button:focus {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+}
+
+/* Button states */
+.glass-effect button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Text truncation for long content */
+.glass-effect .text-white.font-mono {
+  word-break: break-all;
+  max-width: 200px;
+}
+
+@media (max-width: 480px) {
+  .glass-effect .text-white.font-mono {
+    max-width: 150px;
+  }
+}
+
+/* Error Page */
+.glass-effect.rounded-xl.p-8.max-w-md {
+  padding: 16px;
+  margin: 0 16px;
+}
+
+.glass-effect.rounded-xl.p-8.max-w-md .text-6xl {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.glass-effect.rounded-xl.p-8.max-w-md h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.glass-effect.rounded-xl.p-8.max-w-md p {
+  font-size: 14px;
+  margin-bottom: 1.5rem;
+}
+
+.glass-effect.rounded-xl.p-8.max-w-md button {
+  padding: 12px 24px;
+  font-size: 14px;
+}
+
+@media (max-width: 480px) {
+  .glass-effect.rounded-xl.p-8.max-w-md {
+    padding: 12px;
+    margin: 0 8px;
+  }
+  
+  .glass-effect.rounded-xl.p-8.max-w-md .text-6xl {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8.max-w-md h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8.max-w-md p {
+    font-size: 13px;
+    margin-bottom: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8.max-w-md button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}

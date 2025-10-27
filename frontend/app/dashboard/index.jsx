@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/useAuth/useAuth';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { API_URL } from '../../http';
+import './dashboard.css';
 
 const DashboardPage = ({ onPageChange }) => {
   const { user, isAuthenticated } = useAuth();

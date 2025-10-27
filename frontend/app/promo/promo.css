@@ -1,0 +1,200 @@
+/* Promo Page Mobile Responsiveness */
+
+.promo-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .promo-content {
+    padding: 16px;
+  }
+  
+  .promo-content h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8 {
+    padding: 16px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8 h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Form Inputs */
+  .promo-content input {
+    font-size: 16px; /* Prevent zoom on iOS */
+    padding: 12px;
+  }
+  
+  .promo-content button {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  /* Promo Cards */
+  .space-y-4 > * + * {
+    margin-top: 12px;
+  }
+  
+  .space-y-4 .flex.items-center.justify-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px;
+  }
+  
+  .space-y-4 .flex.items-center.space-x-4 {
+    gap: 8px;
+  }
+  
+  .space-y-4 .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  .space-y-4 .text-right {
+    text-align: left;
+    width: 100%;
+  }
+  
+  /* Notifications */
+  .mt-4.p-4 {
+    margin-top: 12px;
+    padding: 12px;
+  }
+  
+  .mt-4.p-4 .flex.items-center.space-x-2 {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .promo-content {
+    padding: 12px;
+  }
+  
+  .promo-content h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8 {
+    padding: 12px;
+    margin-bottom: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8 h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Smaller buttons */
+  .promo-content button {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  /* Compact form */
+  .promo-content input {
+    padding: 10px 12px;
+  }
+  
+  /* Promo Cards */
+  .space-y-4 .flex.items-center.justify-between {
+    padding: 10px;
+  }
+  
+  .space-y-4 .text-2xl {
+    font-size: 1.25rem;
+  }
+  
+  .space-y-4 .text-sm {
+    font-size: 12px;
+  }
+  
+  /* Hide some details on very small screens */
+  .space-y-4 .text-gray-400.text-sm {
+    display: none;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .promo-content {
+    padding: 12px;
+  }
+  
+  .promo-content h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .glass-effect.rounded-xl.p-8 {
+    padding: 12px;
+  }
+}
+
+/* Loading States */
+.promo-content .animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Error and Success Messages */
+.promo-content .bg-red-500\\/20,
+.promo-content .bg-green-500\\/20 {
+  border-radius: 8px;
+}
+
+.promo-content .bg-red-500\\/20 .text-red-400,
+.promo-content .bg-green-500\\/20 .text-green-400 {
+  font-size: 14px;
+}
+
+/* Focus states for accessibility */
+.promo-content input:focus,
+.promo-content button:focus {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+}
+
+/* Button states */
+.promo-content button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Text truncation for long promo codes */
+.promo-content .font-bold.text-white {
+  word-break: break-all;
+  max-width: 200px;
+}
+
+@media (max-width: 480px) {
+  .promo-content .font-bold.text-white {
+    max-width: 150px;
+  }
+}
+
+/* Empty state */
+.promo-content .text-gray-400.text-center.py-8 {
+  padding: 2rem 1rem;
+  font-size: 14px;
+}
+
+@media (max-width: 480px) {
+  .promo-content .text-gray-400.text-center.py-8 {
+    padding: 1.5rem 0.5rem;
+    font-size: 13px;
+  }
+}

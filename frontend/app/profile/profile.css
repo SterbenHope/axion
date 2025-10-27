@@ -1,0 +1,171 @@
+/* Profile Page Mobile Responsiveness */
+
+.profile-content {
+  margin-bottom: 2rem;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .container.mx-auto.px-4.py-8 {
+    padding: 16px;
+  }
+  
+  .container h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .profile-content {
+    padding: 16px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .profile-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Form Grid */
+  .grid.grid-cols-1.md\\:grid-cols-2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .grid.grid-cols-1.md\\:grid-cols-3 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Form Inputs */
+  .profile-content input,
+  .profile-content select {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  /* Button Layout */
+  .flex.gap-4 {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .flex.gap-4 button {
+    width: 100%;
+  }
+  
+  /* Preferences */
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
+  
+  .flex.items-center {
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .flex.items-center input[type="checkbox"] {
+    margin-top: 2px;
+  }
+  
+  /* Game History Table */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .overflow-x-auto table {
+    min-width: 600px;
+  }
+  
+  .overflow-x-auto th,
+  .overflow-x-auto td {
+    padding: 8px 4px;
+    font-size: 14px;
+  }
+  
+  /* KYC Form */
+  #kyc-form-section {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container.mx-auto.px-4.py-8 {
+    padding: 12px;
+  }
+  
+  .container h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-content {
+    padding: 12px;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-content h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Smaller buttons */
+  .profile-content button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  
+  /* Compact form */
+  .profile-content input,
+  .profile-content select {
+    padding: 10px 12px;
+  }
+  
+  /* Game History */
+  .overflow-x-auto th,
+  .overflow-x-auto td {
+    padding: 6px 2px;
+    font-size: 12px;
+  }
+  
+  /* Hide some columns on very small screens */
+  .overflow-x-auto th:nth-child(4),
+  .overflow-x-auto td:nth-child(4) {
+    display: none;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .container.mx-auto.px-4.py-8 {
+    padding: 12px;
+  }
+  
+  .profile-content {
+    padding: 12px;
+  }
+  
+  .container h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Form validation messages */
+.profile-content .mb-4.p-4 {
+  margin-bottom: 1rem;
+  padding: 12px;
+  font-size: 14px;
+}
+
+/* Loading states */
+.profile-content button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Focus states for accessibility */
+.profile-content input:focus,
+.profile-content select:focus,
+.profile-content button:focus {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+}

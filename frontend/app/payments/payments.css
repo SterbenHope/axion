@@ -1,0 +1,130 @@
+/* Payments Page Mobile Responsiveness */
+
+.payments-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .payments-content {
+    padding: 16px;
+  }
+  
+  .payments-content h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Tab Navigation */
+  .payments-content .flex.justify-center.mb-8 {
+    margin-bottom: 1rem;
+  }
+  
+  .payments-content .glass-effect.rounded-lg.p-1 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .payments-content button.px-6.py-3 {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  /* Payment Method Grid */
+  .payments-content .grid.grid-cols-1.md\\:grid-cols-3 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .payments-content .grid.grid-cols-1.md\\:grid-cols-2 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  /* Form Inputs */
+  .payments-content input,
+  .payments-content select {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  /* Crypto Payment Details */
+  .payments-content .glass-effect.rounded-xl.p-6 {
+    padding: 16px;
+  }
+  
+  .payments-content .flex.gap-2 {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .payments-content .flex.gap-2 button {
+    width: 100%;
+  }
+  
+  /* Action Buttons */
+  .payments-content .grid.grid-cols-2.gap-3 {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  /* Notification */
+  .payments-content .mt-4.p-4 {
+    margin-top: 12px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payments-content {
+    padding: 12px;
+  }
+  
+  .payments-content h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Smaller buttons */
+  .payments-content button.px-6.py-3 {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  
+  /* Compact form */
+  .payments-content .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
+  
+  /* Smaller payment method cards */
+  .payments-content .p-4 {
+    padding: 12px;
+  }
+  
+  .payments-content .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .payments-content .text-sm {
+    font-size: 12px;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .payments-content {
+    padding: 12px;
+  }
+  
+  .payments-content h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .payments-content .glass-effect.rounded-xl.p-8 {
+    padding: 16px;
+  }
+}

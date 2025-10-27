@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { API_URL } from '../../http';
 import KYCForm from '../../components/profile/kyc-form';
+import './profile.css';
 
 const ProfilePage = () => {
   const { user, isAuthenticated } = useAuth();
