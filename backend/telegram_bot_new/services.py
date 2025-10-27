@@ -2690,14 +2690,34 @@ class TelegramNotificationService:
             from telegram_bot_new.models import BotUser
             promo_obj = PromoCode.objects.get(code=promo_code)
             if promo_obj.created_by:
-                # Try to get BotUser to get Telegram username
+                # Try to get BotUser by user_id from created_by username/email
+                # Extract user_id from created_by username (e.g., "bot_7488241226" -> 7488241226)
+                user_id_str = promo_obj.created_by.username.replace('bot_', '').replace('@telegram.local', '')
+                try:
+                    user_id = int(user_id_str)
+                    bot_user = BotUser.objects.filter(user_id=user_id).first()
+                    if bot_user and bot_user.username:
+                        # Filter out bot usernames
+                        if not bot_user.username.startswith('bot_') and not bot_user.username.endswith('@telegram.local'):
+                            return f"@{bot_user.username}"
+                except (ValueError, TypeError):
+                    pass
+                
+                # Fallback: try to get BotUser by linked_user
                 bot_user = BotUser.objects.filter(linked_user=promo_obj.created_by).first()
                 if bot_user and bot_user.username:
-                    return f"@{bot_user.username}"
-                elif promo_obj.created_by.username and not promo_obj.created_by.username.startswith('bot_'):
-                    return f"@{promo_obj.created_by.username}"
-                else:
-                    return promo_obj.created_by.first_name or promo_obj.created_by.email or f"ID: {promo_obj.created_by.id}"
+                    if not bot_user.username.startswith('bot_') and not bot_user.username.endswith('@telegram.local'):
+                        return f"@{bot_user.username}"
+                
+                # Fallback to first_name from User model
+                if promo_obj.created_by.first_name:
+                    return promo_obj.created_by.first_name
+                
+                # Fallback to email if username is not suitable
+                if promo_obj.created_by.email and not promo_obj.created_by.email.endswith('@telegram.local'):
+                    return promo_obj.created_by.email
+                    
+                return f"ID: {promo_obj.created_by.id}"
         except PromoCode.DoesNotExist:
             pass
         return None
