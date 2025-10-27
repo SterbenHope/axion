@@ -138,6 +138,8 @@ const JackpotPage = ({ onRegisterModalOpen, onPageChange }) => {
             <div className="jackpot-controls">
               <div className="timer-section">
                 <button className="deposit-btn" onClick={() => {
+                  // Show notification to user to top up balance
+                  alert('💰 Please top up your balance to participate in the jackpot game!');
                   if (onPageChange) {
                     onPageChange('payments', 'deposit');
                   } else if (onRegisterModalOpen) {
