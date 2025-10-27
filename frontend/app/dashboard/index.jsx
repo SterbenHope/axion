@@ -143,8 +143,8 @@ const DashboardPage = ({ onPageChange }) => {
   return (
     <div className="dashboard-content">
             <div className="dashboard-header">
-              <h1 className="text-4xl font-bold text-white mb-2">{t('dashboard.welcomeBack')}, {user?.username || user?.email}</h1>
-              <p className="text-gray-400">Here's your gaming overview</p>
+              <h1 className="text-4xl font-bold text-white mb-2">Welcome, {user?.username || user?.email}</h1>
+              <p className="text-gray-400">{t('dashboard.hereYourGamingOverview')}</p>
             </div>
 
             {/* Stats Grid */}

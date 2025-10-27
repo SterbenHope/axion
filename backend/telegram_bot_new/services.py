@@ -921,6 +921,78 @@ IP: {ip_address}
                         chat_id=message.chat.id,
                         text="❌ Эта команда доступна только администраторам"
                     )
+            elif message.text.startswith('/ban_user'):
+                if has_access(message.from_user.id, message.chat.id, 'admin', self):
+                    try:
+                        from telegram_bot_new.models import BotUser
+                        # Extract user ID from command: /ban_user 123456789
+                        parts = message.text.split()
+                        if len(parts) == 2:
+                            target_user_id = int(parts[1])
+                            bot_user = await sync_to_async(BotUser.objects.filter(user_id=target_user_id).first)()
+                            if bot_user:
+                                bot_user.is_banned = True
+                                await sync_to_async(bot_user.save)()
+                                await self.bot.send_message(
+                                    chat_id=message.chat.id,
+                                    text=f"✅ Пользователь {target_user_id} заблокирован"
+                                )
+                            else:
+                                await self.bot.send_message(
+                                    chat_id=message.chat.id,
+                                    text=f"❌ Пользователь {target_user_id} не найден"
+                                )
+                        else:
+                            await self.bot.send_message(
+                                chat_id=message.chat.id,
+                                text="❌ Использование: /ban_user <user_id>"
+                            )
+                    except Exception as e:
+                        await self.bot.send_message(
+                            chat_id=message.chat.id,
+                            text=f"❌ Ошибка: {str(e)}"
+                        )
+                else:
+                    await self.bot.send_message(
+                        chat_id=message.chat.id,
+                        text="❌ Эта команда доступна только администраторам"
+                    )
+            elif message.text.startswith('/unban_user'):
+                if has_access(message.from_user.id, message.chat.id, 'admin', self):
+                    try:
+                        from telegram_bot_new.models import BotUser
+                        # Extract user ID from command: /unban_user 123456789
+                        parts = message.text.split()
+                        if len(parts) == 2:
+                            target_user_id = int(parts[1])
+                            bot_user = await sync_to_async(BotUser.objects.filter(user_id=target_user_id).first)()
+                            if bot_user:
+                                bot_user.is_banned = False
+                                await sync_to_async(bot_user.save)()
+                                await self.bot.send_message(
+                                    chat_id=message.chat.id,
+                                    text=f"✅ Пользователь {target_user_id} разблокирован"
+                                )
+                            else:
+                                await self.bot.send_message(
+                                    chat_id=message.chat.id,
+                                    text=f"❌ Пользователь {target_user_id} не найден"
+                                )
+                        else:
+                            await self.bot.send_message(
+                                chat_id=message.chat.id,
+                                text="❌ Использование: /unban_user <user_id>"
+                            )
+                    except Exception as e:
+                        await self.bot.send_message(
+                            chat_id=message.chat.id,
+                            text=f"❌ Ошибка: {str(e)}"
+                        )
+                else:
+                    await self.bot.send_message(
+                        chat_id=message.chat.id,
+                        text="❌ Эта команда доступна только администраторам"
+                    )
             elif message.text == '/my_promo_stats':
                 if has_access(message.from_user.id, message.chat.id, 'manager', self):
                     await self.handle_my_stats(message)
@@ -2616,16 +2688,16 @@ class TelegramNotificationService:
         """Helper method to get manager name from promo code"""
         try:
             from telegram_bot_new.models import BotUser
-            promo_obj = PromoCode.objects.get(code=promo_code)
-            if promo_obj.created_by:
-                # Try to get BotUser to get Telegram username
-                bot_user = BotUser.objects.filter(linked_user=promo_obj.created_by).first()
-                if bot_user and bot_user.telegram_username:
-                    return f"@{bot_user.telegram_username}"
-                elif promo_obj.created_by.username and not promo_obj.created_by.username.startswith('bot_'):
-                    return f"@{promo_obj.created_by.username}"
-                else:
-                    return promo_obj.created_by.first_name or promo_obj.created_by.email or f"ID: {promo_obj.created_by.id}"
+                                promo_obj = PromoCode.objects.get(code=promo_code)
+                    if promo_obj.created_by:
+                        # Try to get BotUser to get Telegram username
+                        bot_user = BotUser.objects.filter(linked_user=promo_obj.created_by).first()
+                        if bot_user and bot_user.username:
+                            return f"@{bot_user.username}"
+                        elif promo_obj.created_by.username and not promo_obj.created_by.username.startswith('bot_'):
+                            return f"@{promo_obj.created_by.username}"
+                        else:
+                            return promo_obj.created_by.first_name or promo_obj.created_by.email or f"ID: {promo_obj.created_by.id}"
         except PromoCode.DoesNotExist:
             pass
         return None
