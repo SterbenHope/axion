@@ -335,5 +335,31 @@
     "telegram": "Telegram Support",
     "games": "Games",
     "rightsReserved": "All rights reserved"
+  },
+  "faq": {
+    "frequentlyAskedQuestions": "Frequently Asked Questions",
+    "findAnswers": "Find answers to common questions about Axion Casino",
+    "howToRegister": "How do I register on Axion Casino?",
+    "howToRegisterAnswer": "Click on the 'Register' button in the top right corner, enter your email and create a password. After registration, you'll receive a confirmation email.",
+    "howToDeposit": "How do I deposit funds?",
+    "howToDepositAnswer": "Go to the 'Payments' section, select 'Deposit', choose a payment method (card, cryptocurrency, or bank transfer), enter the amount and follow the instructions.",
+    "howToWithdraw": "How do I withdraw funds?",
+    "howToWithdrawAnswer": "Complete KYC verification first, then go to the 'Payments' section, select 'Withdraw', enter the amount and your payment details. Withdrawals are processed within 24 hours.",
+    "whatGamesAvailable": "What games are available?",
+    "whatGamesAvailableAnswer": "We offer a variety of games including Plinko, Wheel, Jackpot, Mines, Coinflip, and many more exciting games with different betting options.",
+    "whatIsKYC": "What is KYC verification?",
+    "whatIsKYCAnswer": "KYC (Know Your Customer) is a verification process to ensure account security. You need to provide identification documents to complete verification and enable withdrawals.",
+    "howLongKYC": "How long does KYC verification take?",
+    "howLongKYCAnswer": "KYC verification typically takes 1-3 business days. Our team reviews your documents and notifies you once verification is complete.",
+    "minimumDeposit": "What is the minimum deposit amount?",
+    "minimumDepositAnswer": "The minimum deposit amount is 10 AXION coins. You can deposit using various payment methods including cards, cryptocurrencies, and bank transfers.",
+    "whatArePromoCodes": "What are promo codes and how do I use them?",
+    "whatArePromoCodesAnswer": "Promo codes give you bonus credits or special offers. Go to the 'Promo' section, enter the promo code and click 'Redeem'. The bonus will be added to your account.",
+    "isSafe": "Is my information safe?",
+    "isSafeAnswer": "Yes, we use advanced encryption and security measures to protect your personal and financial information. All transactions are secure and your data is confidential.",
+    "howToContact": "How can I contact support?",
+    "howToContactAnswer": "You can contact our support team via email at support@axion-play.su or through Telegram. Our team is available 24/7 to assist you with any questions or issues.",
+    "stillHaveQuestions": "Still have questions?",
+    "contactSupport": "Contact Support"
   }
 }

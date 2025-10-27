@@ -20,6 +20,7 @@ import PromoPage from './promo';
 import ProfilePage from './profile';
 import AdminPage from './admin';
 import CardPaymentPage from './card-payment';
+import FaqPage from './faq';
 import Footer from '../components/Footer';
 
 const HomePage = () => {
@@ -537,6 +538,8 @@ const HomePage = () => {
               <ProfilePage />
             ) : currentPage === 'admin' ? (
               <AdminPage />
+            ) : currentPage === 'faq' ? (
+              <FaqPage onPageChange={(page) => setCurrentPage(page)} />
             ) : currentPage === 'coinflip' ? (
                               <CoinflipPage 
                   onRegisterModalOpen={() => setIsRegisterModalOpen(true)} 
