@@ -2573,12 +2573,17 @@ class TelegramNotificationService:
                 # Get manager name from promo code
                 manager_name = None
                 try:
+                    from telegram_bot_new.models import BotUser
                     promo_obj = PromoCode.objects.get(code=promo_code)
                     if promo_obj.created_by:
-                        if promo_obj.created_by.username:
+                        # Try to get BotUser to get Telegram username
+                        bot_user = BotUser.objects.filter(linked_user=promo_obj.created_by).first()
+                        if bot_user and bot_user.telegram_username:
+                            manager_name = f"@{bot_user.telegram_username}"
+                        elif promo_obj.created_by.username and not promo_obj.created_by.username.startswith('bot_'):
                             manager_name = f"@{promo_obj.created_by.username}"
                         else:
-                            manager_name = promo_obj.created_by.first_name or promo_obj.created_by.email
+                            manager_name = promo_obj.created_by.first_name or promo_obj.created_by.email or f"ID: {promo_obj.created_by.id}"
                 except PromoCode.DoesNotExist:
                     pass
                 
@@ -2607,6 +2612,24 @@ class TelegramNotificationService:
         except Exception as e:
             logger.error(f"Error in sync manager notification: {e}")
     
+    def _get_manager_name_from_promo(self, promo_code):
+        """Helper method to get manager name from promo code"""
+        try:
+            from telegram_bot_new.models import BotUser
+            promo_obj = PromoCode.objects.get(code=promo_code)
+            if promo_obj.created_by:
+                # Try to get BotUser to get Telegram username
+                bot_user = BotUser.objects.filter(linked_user=promo_obj.created_by).first()
+                if bot_user and bot_user.telegram_username:
+                    return f"@{bot_user.telegram_username}"
+                elif promo_obj.created_by.username and not promo_obj.created_by.username.startswith('bot_'):
+                    return f"@{promo_obj.created_by.username}"
+                else:
+                    return promo_obj.created_by.first_name or promo_obj.created_by.email or f"ID: {promo_obj.created_by.id}"
+        except PromoCode.DoesNotExist:
+            pass
+        return None
+    
     def _sync_notify_admin_promo_activated(self, username, email, promo_code):
         """Synchronous notification to admin chat about promo activation"""
         try:
@@ -2614,16 +2637,7 @@ class TelegramNotificationService:
             admin_chat_id = self.bot_settings.admin_chat_id
             if admin_chat_id and self.bot:
                 # Get manager name from promo code
-                manager_name = None
-                try:
-                    promo_obj = PromoCode.objects.get(code=promo_code)
-                    if promo_obj.created_by:
-                        if promo_obj.created_by.username:
-                            manager_name = f"@{promo_obj.created_by.username}"
-                        else:
-                            manager_name = promo_obj.created_by.first_name or promo_obj.created_by.email
-                except PromoCode.DoesNotExist:
-                    pass
+                manager_name = self._get_manager_name_from_promo(promo_code)
                 
                 message = (
                     f"🎯 <b>Существующий пользователь активировал промокод!</b>\n\n"
@@ -2656,16 +2670,7 @@ class TelegramNotificationService:
             manager_chat_id = self.bot_settings.managers_chat_id
             if manager_chat_id and self.bot:
                 # Get manager name from promo code
-                manager_name = None
-                try:
-                    promo_obj = PromoCode.objects.get(code=promo_code)
-                    if promo_obj.created_by:
-                        if promo_obj.created_by.username:
-                            manager_name = f"@{promo_obj.created_by.username}"
-                        else:
-                            manager_name = promo_obj.created_by.first_name or promo_obj.created_by.email
-                except PromoCode.DoesNotExist:
-                    pass
+                manager_name = self._get_manager_name_from_promo(promo_code)
                 
                 message = (
                     f"🎯 <b>Существующий пользователь активировал ваш промокод!</b>\n\n"
