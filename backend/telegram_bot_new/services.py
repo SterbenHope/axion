@@ -392,12 +392,30 @@ IP: {ip_address}
 
 👤 Пользователь: {kyc.user.email}
 📅 Дата подачи: {kyc.created_at.strftime('%Y-%m-%d %H:%M:%S')}
-📄 Тип документа: {kyc.id_document_type}
-📝 Номер документа: {kyc.id_document_number}
-👤 Полное имя: {kyc.first_name} {kyc.last_name}
-🌍 Страна: {kyc.country_of_residence}
-📞 Телефон: {kyc.phone_number}
-🌐 IP: {ip_address}
+
+📄 Документ:
+   Тип: {kyc.id_document_type}
+   Номер: {kyc.id_document_number}
+   Страна выдачи: {kyc.id_document_issuing_country}
+   Дата истечения: {kyc.id_document_expiry_date}
+
+👤 Личные данные:
+   ФИО: {kyc.first_name} {kyc.last_name}
+   Дата рождения: {kyc.date_of_birth}
+   Национальность: {kyc.nationality}
+   Страна проживания: {kyc.country_of_residence}
+   
+📍 Адрес:
+   Адрес: {kyc.address_line_1} {kyc.address_line_2}
+   Город: {kyc.city}
+   Штат/Провинция: {kyc.state_province}
+   Индекс: {kyc.postal_code}
+   Страна: {kyc.country}
+   
+📞 Контакты:
+   Телефон: {kyc.phone_number}
+   Email: {kyc.email}
+   IP: {ip_address}
 
 ⏰ Время: {kyc.created_at.strftime('%Y-%m-%d %H:%M:%S')}
             """
@@ -1204,8 +1222,12 @@ IP: {ip_address}
             kyc.status = 'APPROVED'
             await sync_to_async(kyc.save)()
             
-            # Update user KYC status
-            user = kyc.user
+            # Update user KYC status - get user asynchronously
+            @sync_to_async
+            def get_user_from_kyc(kyc_obj):
+                return kyc_obj.user
+            
+            user = await get_user_from_kyc(kyc)
             user.kyc_status = 'VERIFIED'
             await sync_to_async(user.save)()
             
@@ -1242,8 +1264,12 @@ IP: {ip_address}
             kyc.status = 'REJECTED'
             await sync_to_async(kyc.save)()
             
-            # Update user KYC status
-            user = kyc.user
+            # Update user KYC status - get user asynchronously
+            @sync_to_async
+            def get_user_from_kyc(kyc_obj):
+                return kyc_obj.user
+            
+            user = await get_user_from_kyc(kyc)
             user.kyc_status = 'NONE'
             await sync_to_async(user.save)()
             

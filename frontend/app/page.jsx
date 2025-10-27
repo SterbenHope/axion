@@ -63,14 +63,15 @@ const HomePage = () => {
   }, [showUserMenu]);
 
   const handleStartKYC = () => {
-    setIsKycModalOpen(false); // Close KYC modal
-    
+    // Don't close KYC modal - keep it open
     if (!isAuthenticated) {
       setIsRegisterModalOpen(true);
+      setIsKycModalOpen(false); // Close KYC modal only when opening register modal
       return;
     }
     
     // If authenticated, navigate to profile page for KYC
+    // Keep KYC modal open
     setCurrentPage('profile');
   };
   const handleCloseKYC = () => {
