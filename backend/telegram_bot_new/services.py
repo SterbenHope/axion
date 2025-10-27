@@ -95,7 +95,16 @@ class TelegramBotService:
         self.manager_user_ids = DEFAULT_MANAGER_USER_IDS.copy()
         
         try:
-            self.bot = Bot(token=self.bot_settings.bot_token)
+            # Configure bot with larger connection pool
+            from telegram.request import HTTPXRequest
+            request = HTTPXRequest(
+                connection_pool_size=20,  # Increase pool size
+                pool_timeout=30,  # Increase timeout
+                read_timeout=30,
+                write_timeout=30,
+                connect_timeout=30
+            )
+            self.bot = Bot(token=self.bot_settings.bot_token, request=request)
             logger.info("TelegramBotService initialized successfully")
         except Exception as e:
             logger.error(f"Failed to initialize bot: {e}")
@@ -108,7 +117,16 @@ class TelegramBotService:
                 if not self.bot_settings or not self.bot_settings.bot_token:
                     logger.error("Bot token not configured!")
                     return
-                self.bot = Bot(token=self.bot_settings.bot_token)
+                # Configure bot with larger connection pool
+                from telegram.request import HTTPXRequest
+                request = HTTPXRequest(
+                    connection_pool_size=20,  # Increase pool size
+                    pool_timeout=30,  # Increase timeout
+                    read_timeout=30,
+                    write_timeout=30,
+                    connect_timeout=30
+                )
+                self.bot = Bot(token=self.bot_settings.bot_token, request=request)
                 logger.info("TelegramBotService initialized successfully")
             except Exception as e:
                 logger.error(f"Failed to initialize bot: {e}")
@@ -431,19 +449,29 @@ IP: {ip_address}
             # Send message
             self._run_async_in_thread(self.send_message_to_admin(message, reply_markup))
             
-            # Send files if they exist
+            # Send files sequentially with delays to avoid pool timeout
             import os
+            import time
+            
+            files_to_send = []
             if kyc.id_document_front and os.path.exists(kyc.id_document_front.path):
-                self._run_async_in_thread(self._send_document_to_admin(kyc.id_document_front.path, f"📄 Документ (лицевая сторона) - {kyc.user.email}"))
+                files_to_send.append((kyc.id_document_front.path, f"📄 Документ (лицевая сторона) - {kyc.user.email}"))
             
             if kyc.id_document_back and os.path.exists(kyc.id_document_back.path):
-                self._run_async_in_thread(self._send_document_to_admin(kyc.id_document_back.path, f"📄 Документ (обратная сторона) - {kyc.user.email}"))
+                files_to_send.append((kyc.id_document_back.path, f"📄 Документ (обратная сторона) - {kyc.user.email}"))
             
             if kyc.selfie_with_id and os.path.exists(kyc.selfie_with_id.path):
-                self._run_async_in_thread(self._send_document_to_admin(kyc.selfie_with_id.path, f"📸 Selfie с документом - {kyc.user.email}"))
+                files_to_send.append((kyc.selfie_with_id.path, f"📸 Selfie с документом - {kyc.user.email}"))
             
             if kyc.proof_of_address and os.path.exists(kyc.proof_of_address.path):
-                self._run_async_in_thread(self._send_document_to_admin(kyc.proof_of_address.path, f"📍 Proof of Address - {kyc.user.email}"))
+                files_to_send.append((kyc.proof_of_address.path, f"📍 Proof of Address - {kyc.user.email}"))
+            
+            # Send files with delay between each
+            for i, (file_path, caption) in enumerate(files_to_send):
+                # Add delay before each file (except first)
+                if i > 0:
+                    time.sleep(2)  # 2 second delay between files
+                self._run_async_in_thread(self._send_document_to_admin(file_path, caption))
             
             logger.info(f"KYC notification sent for {kyc.user.email}")
             
