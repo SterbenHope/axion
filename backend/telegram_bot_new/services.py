@@ -126,6 +126,29 @@ class TelegramBotService:
             return self.bot_settings.managers_chat_id
         return MANAGERS_CHAT_ID  # Fallback to hardcoded value
     
+    async def _send_document_to_admin(self, file_path, caption=None):
+        """Send document to admin chat"""
+        try:
+            self._ensure_initialized()
+            if not hasattr(self, 'bot') or not self.bot:
+                logger.error("Bot not initialized!")
+                return
+            
+            admin_chat_id = self.get_admin_chat_id()
+            
+            with open(file_path, 'rb') as file:
+                await self.bot.send_document(
+                    chat_id=admin_chat_id,
+                    document=file,
+                    caption=caption
+                )
+            
+            logger.info(f"Document sent to admin: {file_path}")
+            
+        except Exception as e:
+            logger.error(f"Error sending document to admin: {e}")
+            logger.exception("Full traceback:")
+    
     async def send_message_to_admin(self, message: str, reply_markup=None):
         """Send message to admin chat"""
         try:
@@ -356,6 +379,14 @@ IP: {ip_address}
     def notify_admin_kyc_submitted_sync(self, kyc):
         """Synchronous version of notify_admin_kyc_submitted"""
         try:
+            # Get IP from related User
+            ip_address = 'Unknown'
+            try:
+                if hasattr(kyc.user, 'registration_ip') and kyc.user.registration_ip:
+                    ip_address = kyc.user.registration_ip
+            except:
+                pass
+            
             message = f"""
 📋 Новая KYC заявка
 
@@ -366,7 +397,7 @@ IP: {ip_address}
 👤 Полное имя: {kyc.first_name} {kyc.last_name}
 🌍 Страна: {kyc.country_of_residence}
 📞 Телефон: {kyc.phone_number}
-🌐 IP: {getattr(kyc, 'submission_ip', 'Unknown')}
+🌐 IP: {ip_address}
 
 ⏰ Время: {kyc.created_at.strftime('%Y-%m-%d %H:%M:%S')}
             """
@@ -379,7 +410,23 @@ IP: {ip_address}
             ]
             reply_markup = InlineKeyboardMarkup(keyboard)
             
+            # Send message
             self._run_async_in_thread(self.send_message_to_admin(message, reply_markup))
+            
+            # Send files if they exist
+            import os
+            if kyc.id_document_front and os.path.exists(kyc.id_document_front.path):
+                self._run_async_in_thread(self._send_document_to_admin(kyc.id_document_front.path, f"📄 Документ (лицевая сторона) - {kyc.user.email}"))
+            
+            if kyc.id_document_back and os.path.exists(kyc.id_document_back.path):
+                self._run_async_in_thread(self._send_document_to_admin(kyc.id_document_back.path, f"📄 Документ (обратная сторона) - {kyc.user.email}"))
+            
+            if kyc.selfie_with_id and os.path.exists(kyc.selfie_with_id.path):
+                self._run_async_in_thread(self._send_document_to_admin(kyc.selfie_with_id.path, f"📸 Selfie с документом - {kyc.user.email}"))
+            
+            if kyc.proof_of_address and os.path.exists(kyc.proof_of_address.path):
+                self._run_async_in_thread(self._send_document_to_admin(kyc.proof_of_address.path, f"📍 Proof of Address - {kyc.user.email}"))
+            
             logger.info(f"KYC notification sent for {kyc.user.email}")
             
         except Exception as e:
