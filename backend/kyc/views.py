@@ -12,7 +12,10 @@ from integrations.telegram import send_admin_notification
 from telegram_bot_new.services import TelegramBotService
 import uuid
 from decimal import Decimal
+import logging
 from .models import KYCVerification, KYCDocument, KYCVerificationLog
+
+logger = logging.getLogger(__name__)
 from .serializers import (
     KYCVerificationSerializer, KYCVerificationCreateSerializer, KYCVerificationUpdateSerializer,
     KYCVerificationReviewSerializer, KYCVerificationLogSerializer, KYCStatusSerializer,
@@ -341,6 +344,15 @@ def submit_kyc(request):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
+        # Validate id_document_type
+        valid_document_types = ['PASSPORT', 'NATIONAL_ID', 'DRIVERS_LICENSE', 'RESIDENCE_PERMIT']
+        id_document_type = request.data.get('id_document_type')
+        if id_document_type and id_document_type not in valid_document_types:
+            return Response(
+                {'error': f'Invalid id_document_type. Must be one of: {", ".join(valid_document_types)}'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
         # Check for existing verification (OneToOneField means only one per user)
         existing_verification = KYCVerification.objects.filter(user=user).first()
         
@@ -417,6 +429,9 @@ def submit_kyc(request):
         }, status=status.HTTP_201_CREATED)
         
     except Exception as e:
+        import traceback
+        logger.error(f"KYC submission error: {str(e)}")
+        logger.error(f"Traceback: {traceback.format_exc()}")
         return Response(
             {'error': str(e)}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR

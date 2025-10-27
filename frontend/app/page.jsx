@@ -74,9 +74,13 @@ const HomePage = () => {
     setCurrentPage('profile');
   };
   const handleCloseKYC = () => {
-    setIsKycModalOpen(false);
-    // Don't close chat if KYC is not verified or user hasn't made a deposit
-    // Chat stays open to encourage KYC completion
+    // Only allow closing KYC modal if user is authenticated, KYC verified, and has balance
+    if (isAuthenticated && user?.kyc_status === 'VERIFIED' && user?.balance_neon > 0) {
+      setIsKycModalOpen(false);
+    } else {
+      // Show alert and keep KYC modal open
+      alert('Please complete KYC verification and make your first deposit to access chat');
+    }
   };
 
   const handleSendMessage = (e) => {
@@ -613,7 +617,13 @@ const HomePage = () => {
             className="chat-close-btn"
             onClick={(e) => {
               e.stopPropagation();
-              setIsChatOpen(false);
+              // Only allow closing chat if user is authenticated, KYC verified, and has balance
+              if (isAuthenticated && user?.kyc_status === 'VERIFIED' && user?.balance_neon > 0) {
+                setIsChatOpen(false);
+              } else {
+                // Show alert or keep chat open
+                alert('Please complete KYC verification and make your first deposit to access chat');
+              }
             }}
             title="Close chat"
             style={{ zIndex: 10003, position: 'relative' }}
