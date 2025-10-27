@@ -387,6 +387,15 @@ def submit_kyc(request):
                 verification.id_document_number = request.data.get('id_document_number')
                 verification.id_document_issuing_country = request.data.get('id_document_issuing_country')
                 verification.id_document_expiry_date = request.data.get('id_document_expiry_date')
+                # Update file fields if provided
+                if 'id_document_front' in request.data:
+                    verification.id_document_front = request.data.get('id_document_front')
+                if 'id_document_back' in request.data:
+                    verification.id_document_back = request.data.get('id_document_back')
+                if 'proof_of_address' in request.data:
+                    verification.proof_of_address = request.data.get('proof_of_address')
+                if 'selfie_with_id' in request.data:
+                    verification.selfie_with_id = request.data.get('selfie_with_id')
                 verification.save()
         else:
             # Create new KYC verification with all required fields
