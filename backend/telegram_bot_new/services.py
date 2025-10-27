@@ -2081,10 +2081,11 @@ IP: {ip_address}
             )
             
             # Notify admin chat
+            creator_name = message.from_user.username or message.from_user.first_name or 'Неизвестно'
             await self.send_message_to_admin(
                 f"🎯 Новый промокод создан менеджером\n\n"
                 f"Код: {promo_code_value}\n"
-                f"Создал: @{bot_user.username or 'неизвестно'}\n"
+                f"Создал: {message.from_user.username and f'@{message.from_user.username}' or f'{message.from_user.first_name or \"Неизвестно\"} (ID: {message.from_user.id})'}\n"
                 f"Время: {timezone.now().strftime('%d.%m.%Y %H:%M')}"
             )
             
