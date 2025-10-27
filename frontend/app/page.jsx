@@ -537,7 +537,15 @@ const HomePage = () => {
             ) : currentPage === 'admin' ? (
               <AdminPage />
             ) : currentPage === 'coinflip' ? (
-              <CoinflipPage onRegisterModalOpen={() => setIsRegisterModalOpen(true)} />
+                              <CoinflipPage 
+                  onRegisterModalOpen={() => setIsRegisterModalOpen(true)} 
+                  onPageChange={(page, tab) => {
+                    setCurrentPage(page);
+                    if (page === 'payments' && tab) {
+                      setPaymentsDefaultTab(tab);
+                    }
+                  }}
+                />
             ) : currentPage === 'mines' ? (
               <MinesPage onRegisterModalOpen={() => setIsRegisterModalOpen(true)} />
             ) : currentPage === 'plinko' ? (

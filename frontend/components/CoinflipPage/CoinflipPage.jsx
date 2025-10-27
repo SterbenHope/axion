@@ -4,7 +4,7 @@ import './CoinflipPage.css';
 import axios from 'axios';
 import { API_URL } from '../../http';
 
-const CoinflipPage = ({ onRegisterModalOpen }) => {
+const CoinflipPage = ({ onRegisterModalOpen, onPageChange }) => {
   const { isAuthenticated, updateUserData } = useAuth();
   const [betAmount, setBetAmount] = useState(0);
   const [choice, setChoice] = useState('heads');
@@ -135,7 +135,15 @@ const CoinflipPage = ({ onRegisterModalOpen }) => {
             <div className="stat-item create-game">
               <div className="stat-background"></div>
               <div className="stat-content">
-                <button className="create-game-btn" onClick={onRegisterModalOpen}>
+                <button className="create-game-btn" onClick={() => {
+                  // Show notification to user to top up balance
+                  alert('💰 Please top up your balance to create a coinflip game!');
+                  if (onPageChange) {
+                    onPageChange('payments', 'deposit');
+                  } else if (onRegisterModalOpen) {
+                    onRegisterModalOpen();
+                  }
+                }}>
                   <img src="/images/coinflip-create-game-5465cb.png" alt="Create Game" />
                   <span>Create a game</span>
                 </button>
