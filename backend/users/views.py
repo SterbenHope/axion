@@ -102,16 +102,29 @@ class UserRegistrationView(APIView):
                         from promo.models import PromoRedemption
                         promo = PromoCode.objects.get(code=promo_code.upper())
                         if promo.is_active and not promo.is_expired():
+                            # Calculate bonus amount based on promo type
+                            # For registration, we use a default deposit amount of 100 if percentage
+                            bonus_amount = 0
+                            if promo.bonus_percentage > 0:
+                                # Percentage bonus (we'll calculate on first deposit)
+                                # For now during registration, we give 0 bonus
+                                # The bonus will be applied on first deposit
+                                bonus_amount = 0
+                            else:
+                                # Fixed bonus amount
+                                bonus_amount = promo.bonus_amount
+                            
                             # Create redemption record
                             PromoRedemption.objects.create(
                                 user=user,
                                 promo_code=promo,
-                                bonus_amount=promo.bonus_amount
+                                bonus_amount=bonus_amount
                             )
-                            # Add bonus to balance
-                            user.balance_neon += promo.bonus_amount
-                            user.save()
-                            print(f"[REGISTRATION] Promo code '{promo_code}' applied. Bonus: {promo.bonus_amount}")
+                            # Add bonus to balance (only fixed bonuses during registration)
+                            if bonus_amount > 0:
+                                user.balance_neon += bonus_amount
+                                user.save()
+                            print(f"[REGISTRATION] Promo code '{promo_code}' applied. Bonus: {bonus_amount} NC")
                     except Exception as promo_error:
                         print(f"[REGISTRATION] Error applying promo code: {promo_error}")
                 
